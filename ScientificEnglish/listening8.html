@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聞き取り第8回：The Deep Sea & Sediments（修正版）</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .video-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .play-link-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-block;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        .play-link-btn:hover {
+            background-color: #c0392b;
+        }
+        /* 埋め込み失敗時の予備リンク */
+        .fallback-link {
+            font-size: 0.8em;
+            color: #e74c3c;
+            margin-left: 10px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .check-btn:hover {
+            background-color: #219150;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        .diff-word { margin: 0 2px; }
+        .correct-word { color: #27ae60; font-weight: bold; }
+        .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
+        .missing-word { color: #2980b9; font-weight: bold; border-bottom: 2px solid #2980b9; }
+        .perfect { color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
+        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <h1>聞き取り第8回：The Deep Sea & Sediments</h1>
+    
+    <div class="video-info">
+        <p>※ 再生できない場合は「別タブで開く」をつかってください。</p>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <script>
+        const VIDEO_ID = "F6Fen6OfTCA";
+        // YouTubeのドメインをnocookieに変更
+        const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
+
+        // 第8回のデータ
+        const quizData = [
+            {
+                id: 1,
+                timeDisplay: "00:50 ～ 00:59",
+                startSeconds: 50,
+                theme: "有光層（photic zone）の定義とナノプランクトンについて",
+                correct: "A domain of key importance is the photic zone, which corresponds to the water column which can be penetrated by light. In this water mass, photosynthesis is possible, and huge amount quantities of microorganisms, mainly plants, exist, called nanoplankton.",
+                translation: "極めて重要な領域が「有光層」で、これは光が到達できる水柱の範囲に相当します。この水塊の中では光合成が可能であり、主に植物である膨大な量の微生物、いわゆるナノプランクトンが存在しています。"
+            },
+            {
+                id: 2,
+                timeDisplay: "01:57 ～ 02:08",
+                startSeconds: 117,
+                theme: "炭酸塩補償深度（CCD）と石灰質軟泥について",
+                correct: "The depth at which all calcite grains and shells are dissolved is called the Calcite Compensation Depth, and is comparable to the snowline in the mountains. In areas where the ocean floor is shallower than the CCD, a fine-grained calcareous mud is found, called calcareous ooze.",
+                translation: "すべての方解石の粒子や殻が溶けてしまう深さを「炭酸塩補償深度（CCD）」と呼び、これは山岳地帯における雪線に匹敵します。海底がCCDよりも浅い地域では、「石灰質軟泥」と呼ばれるきめ細かい石灰質の泥が見られます。"
+            },
+            {
+                id: 3,
+                timeDisplay: "02:29 ～ 02:42",
+                startSeconds: 149,
+                theme: "風によって運ばれる背景堆積物（粘土や砂）の起源について",
+                correct: "The other major component of the background sedimentation is formed by the clays and very fine sand grains transported by the winds blowing across the large desertic domains of the continents.",
+                translation: "背景堆積（定常的な堆積）のもう一つの主要な構成要素は、大陸の広大な砂漠地帯を吹き抜ける風によって運ばれた、粘土や非常に細かい砂粒によって形成されます。"
+            },
+            {
+                id: 4,
+                timeDisplay: "03:52 ～ 04:03",
+                startSeconds: 232,
+                theme: "混濁流（turbidity currents）の突発的な性質について",
+                correct: "Within a very short time of days, huge amounts of sediments are delivered to the deep basins. These sediment-loaded currents are called turbidity currents. And are completely different from the background sedimentation we have described until now.",
+                translation: "数日という極めて短い期間に、膨大な量の堆積物が深海盆地に運ばれます。この堆積物を大量に含んだ流れは、「混濁流」と呼ばれます。そしてこれらは、これまで説明してきた背景堆積とは全く異なるものです。"
+            },
+            {
+                id: 5,
+                timeDisplay: "06:21 ～ 06:35",
+                startSeconds: 381,
+                theme: "タービダイトの堆積構造「バウマ・シーケンス」について",
+                correct: "Sedimentary layers deposited by turbidity currents have a typical organization called Bouma sequence. This includes graded sands at the bottom, followed upward by massive beds, by laminated and convoluted sands. Eventually capped by the hemi-pelagic mud.",
+                translation: "混濁流によって堆積した堆積層は、「バウマ・シーケンス」と呼ばれる典型的な構成を持っています。これは、底部に級化層理を持つ砂があり、その上に塊状の層、そして葉理やコンボリュート構造を持つ砂が続き、最後は半遠洋性泥によって覆われます。"
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        
+        quizData.forEach((q, index) => {
+            // 別タブ用の通常リンク
+            const directLink = `https://youtu.be/${VIDEO_ID}?t=${q.startSeconds}`;
+
+            const html = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                        <div>
+                            <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
+                            <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
+                        </div>
+                    </div>
+                    
+                    <div id="video-area-${index}" class="embedded-video-container"></div>
+
+                    <div class="theme-text">
+                        <strong>テーマ:</strong> ${q.theme}
+                    </div>
+                    <div>
+                        <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
+                    </div>
+                    <div class="controls">
+                        <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                        <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                    </div>
+                    <div id="result-${index}" class="result-area"></div>
+                    <div id="trans-${index}" class="japanese-trans">
+                        <strong>日本語訳:</strong><br>${q.translation}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function playEmbeddedVideo(index, startSeconds) {
+            quizData.forEach((_, i) => {
+                const area = document.getElementById(`video-area-${i}`);
+                if (i !== index) {
+                    area.innerHTML = "";
+                    area.style.display = "none";
+                }
+            });
+
+            const targetArea = document.getElementById(`video-area-${index}`);
+            targetArea.style.display = "block";
+            
+            // 自動再生は削除(autoplay=1 -> 0)し、nocookieドメインを使用
+            targetArea.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="250" 
+                    src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <div style="text-align:center; font-size:0.8em; color:#666; margin-top:5px;">
+                    ※再生ボタンを押してください。それでもエラーが出る場合は「別タブで開く」をご利用ください。
+                </div>
+            `;
+        }
+
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function checkAnswer(index) {
+            const userText = document.getElementById(`input-${index}`).value.trim();
+            const correctText = quizData[index].correct;
+            const resultDiv = document.getElementById(`result-${index}`);
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
+                return;
+            }
+            if (userText === correctText) {
+                resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            let html = "<strong>判定結果:</strong><br>";
+            html += generateDiffHTML(userText, correctText);
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        function generateDiffHTML(userStr, correctStr) {
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"'’]/g, "");
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            let output = "<div>";
+            let uIndex = 0;
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
+                    continue;
+                }
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+                if (cWordClean === uWordClean) {
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    let nextUMatch = (uIndex + 1 < userWords.length) && (clean(userWords[uIndex+1]) === cWordClean);
+                    if (nextUMatch) {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word correct-word">${cWord}</span> `;
+                        uIndex += 2; 
+                    } else {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word missing-word">${cWord}</span> `;
+                        uIndex++;
+                    }
+                }
+            }
+            while(uIndex < userWords.length) {
+                output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
+                uIndex++;
+            }
+            output += "</div>";
+            output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
+            return output;
+        }
+    </script>
+</body>
+</html>
