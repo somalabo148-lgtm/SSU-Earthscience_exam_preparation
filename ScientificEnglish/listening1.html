@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聞き取り第1回：地質学</title>
+    <title>聞き取り第1回：地質学（修正版）</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
             background-color: #f4f4f9;
             color: #333;
-            max-width: 800px; /* 幅を少し狭めて読みやすく */
+            max-width: 800px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -26,16 +26,6 @@
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        .video-link {
-            color: #e74c3c;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1.1em;
-        }
-        .video-link:hover {
-            text-decoration: underline;
-        }
-
         .question-card {
             background: #fff;
             border-radius: 8px;
@@ -50,27 +40,37 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .q-title {
             font-size: 1.2em;
             font-weight: bold;
             color: #2980b9;
         }
-        /* ボタン風のリンクスタイル */
         .play-link-btn {
             background-color: #e74c3c;
             color: white;
-            text-decoration: none;
+            border: none;
+            cursor: pointer;
             padding: 6px 15px;
             border-radius: 4px;
             font-size: 0.9em;
             display: inline-block;
             transition: background-color 0.2s;
+            text-decoration: none;
         }
         .play-link-btn:hover {
             background-color: #c0392b;
         }
-        
+        /* 埋め込み失敗時の予備リンク */
+        .fallback-link {
+            font-size: 0.8em;
+            color: #e74c3c;
+            margin-left: 10px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
         .theme-text {
             font-size: 0.95em;
             color: #555;
@@ -117,45 +117,14 @@
             display: none;
             line-height: 1.6;
         }
-        
-        /* 判定結果のスタイル */
-        .diff-word {
-            margin: 0 2px;
-        }
-        .correct-word {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        .wrong-word {
-            color: #c0392b;
-            text-decoration: line-through;
-            margin-right: 4px;
-        }
-        .missing-word {
-            color: #2980b9;
-            font-weight: bold;
-            border-bottom: 2px solid #2980b9;
-        }
-        .perfect {
-            color: #27ae60;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        
-        .translation-toggle {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .japanese-trans {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #eee;
-            font-size: 0.9em;
-            color: #555;
-            display: none;
-        }
+        .diff-word { margin: 0 2px; }
+        .correct-word { color: #27ae60; font-weight: bold; }
+        .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
+        .missing-word { color: #2980b9; font-weight: bold; border-bottom: 2px solid #2980b9; }
+        .perfect { color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
+        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
     </style>
 </head>
 <body>
@@ -163,23 +132,17 @@
     <h1>聞き取り第1回：地質学</h1>
     
     <div class="video-info">
-        対象動画URL: 
-        <a href="https://www.youtube.com/watch?v=qNiOXc6pSBQ" target="_blank" class="video-link">
-            https://www.youtube.com/watch?v=qNiOXc6pSBQ
-        </a>
-        <br>
-        <span style="font-size:0.8em; color:#666;">※ 各問題の「YouTubeで再生」ボタンを押すと、別タブで該当箇所から再生されます。</span>
+        <p>※ 動画が「エラー153」で再生できない場合、動画の所有者が埋め込みを許可していません。<br>
+        その場合は下の「別タブで開く」を使ってください。</p>
     </div>
 
-    <div id="quiz-container">
-        </div>
+    <div id="quiz-container"></div>
 
     <script>
-        // 動画ID
         const VIDEO_ID = "qNiOXc6pSBQ";
-        const BASE_URL = `https://youtu.be/${VIDEO_ID}`;
+        // YouTubeのドメインをnocookieに変更
+        const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
 
-        // データ定義
         const quizData = [
             {
                 id: 1,
@@ -223,19 +186,24 @@
             }
         ];
 
-        // HTML生成
         const container = document.getElementById('quiz-container');
         
         quizData.forEach((q, index) => {
-            // YouTubeの時間指定付きリンクを作成 (例: https://youtu.be/xxx?t=70)
-            const videoLink = `${BASE_URL}?t=${q.startSeconds}`;
+            // 別タブ用の通常リンク
+            const directLink = `https://youtu.be/${VIDEO_ID}?t=${q.startSeconds}`;
 
             const html = `
                 <div class="question-card">
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
-                        <a href="${videoLink}" target="_blank" class="play-link-btn">▶ YouTubeで再生 (${q.timeDisplay})</a>
+                        <div>
+                            <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
+                            <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
+                        </div>
                     </div>
+                    
+                    <div id="video-area-${index}" class="embedded-video-container"></div>
+
                     <div class="theme-text">
                         <strong>テーマ:</strong> ${q.theme}
                     </div>
@@ -246,7 +214,6 @@
                         <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
                         <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
                     </div>
-                    
                     <div id="result-${index}" class="result-area"></div>
                     <div id="trans-${index}" class="japanese-trans">
                         <strong>日本語訳:</strong><br>${q.translation}
@@ -256,69 +223,83 @@
             container.innerHTML += html;
         });
 
+        function playEmbeddedVideo(index, startSeconds) {
+            quizData.forEach((_, i) => {
+                const area = document.getElementById(`video-area-${i}`);
+                if (i !== index) {
+                    area.innerHTML = "";
+                    area.style.display = "none";
+                }
+            });
+
+            const targetArea = document.getElementById(`video-area-${index}`);
+            targetArea.style.display = "block";
+            
+            // 自動再生は削除(autoplay=1 -> 0)し、nocookieドメインを使用
+            targetArea.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="250" 
+                    src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <div style="text-align:center; font-size:0.8em; color:#666; margin-top:5px;">
+                    ※再生ボタンを押してください。それでもエラーが出る場合は「別タブで開く」をご利用ください。
+                </div>
+            `;
+        }
+
         function toggleTrans(index) {
             const el = document.getElementById(`trans-${index}`);
             el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
 
-        // 正誤判定ロジック
         function checkAnswer(index) {
             const userText = document.getElementById(`input-${index}`).value.trim();
             const correctText = quizData[index].correct;
             const resultDiv = document.getElementById(`result-${index}`);
-
             if (!userText) {
                 resultDiv.style.display = 'block';
                 resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
                 return;
             }
-
             if (userText === correctText) {
                 resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
                 resultDiv.style.display = 'block';
                 return;
             }
-
             let html = "<strong>判定結果:</strong><br>";
             html += generateDiffHTML(userText, correctText);
-
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = html;
         }
 
-        // 単語ごとの比較HTMLを生成する関数
         function generateDiffHTML(userStr, correctStr) {
             const clean = s => s.toLowerCase().replace(/[.,?!;:"']/g, "");
-            
             const userWords = userStr.split(/\s+/);
             const correctWords = correctStr.split(/\s+/);
-            
             let output = "<div>";
             let uIndex = 0;
-            
             for (let i = 0; i < correctWords.length; i++) {
                 let cWord = correctWords[i];
                 let cWordClean = clean(cWord);
-                
                 if (uIndex >= userWords.length) {
                     output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
                     continue;
                 }
-
                 let uWord = userWords[uIndex];
                 let uWordClean = clean(uWord);
-
                 if (cWordClean === uWordClean) {
                     output += `<span class="diff-word correct-word">${cWord}</span> `;
                     uIndex++;
                 } else {
-                    // 次の単語が一致するかチェック（余計な単語が入っている場合の対策）
                     let nextUMatch = (uIndex + 1 < userWords.length) && (clean(userWords[uIndex+1]) === cWordClean);
-                    
                     if (nextUMatch) {
                         output += `<span class="diff-word wrong-word">${uWord}</span> `;
                         output += `<span class="diff-word correct-word">${cWord}</span> `;
-                        uIndex += 2; // 現在の余分な語と、次の一致した語をスキップ
+                        uIndex += 2; 
                     } else {
                         output += `<span class="diff-word wrong-word">${uWord}</span> `;
                         output += `<span class="diff-word missing-word">${cWord}</span> `;
@@ -326,15 +307,12 @@
                     }
                 }
             }
-            
             while(uIndex < userWords.length) {
                 output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
                 uIndex++;
             }
-
             output += "</div>";
             output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
-            
             return output;
         }
     </script>
