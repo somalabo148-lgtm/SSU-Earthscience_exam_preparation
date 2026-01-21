@@ -7,7 +7,23 @@
 <style>
     :root { --primary: #2c3e50; --accent: #3498db; --bg: #f4f7f6; }
     body { font-family: "Helvetica Neue", Arial, sans-serif; background-color: var(--bg); color: #333; margin: 0; padding: 20px; text-align: center; }
-    
+
+    /* 追加した戻るボタンのスタイル */
+    .back-link-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 8px 16px;
+        background-color: #95a5a6;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: background-color 0.2s;
+    }
+    .back-link-btn:hover {
+        background-color: #7f8c8d;
+    }
+        
     header { margin-bottom: 30px; }
     h1 { color: var(--primary); margin: 0; font-size: 1.5rem; }
     p { color: #7f8c8d; font-size: 0.9rem; }
@@ -38,6 +54,7 @@
 <body>
 
 <header>
+    <a href="../index.html" class="back-link-btn">🏠 ホームに戻る</a>
     <h1>第四紀学<br>試験対策ポータル</h1>
     <p>最終確認用学習アプリセット</p>
 </header>
@@ -81,4 +98,5 @@
 </footer>
 
 </body>
+
 </html>
