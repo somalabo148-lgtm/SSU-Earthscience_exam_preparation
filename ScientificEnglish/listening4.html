@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聞き取り第4回：The Water Cycle & Sediment Transport</title>
+    <title>聞き取り第4回：The Water Cycle & Sediment Transport（修正版）</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
@@ -21,19 +21,10 @@
         .video-info {
             text-align: center;
             margin-bottom: 30px;
-            padding: 15px;
+            padding: 10px;
             background: #fff;
             border-radius: 8px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        .video-link {
-            color: #e74c3c;
-            font-weight: bold;
-            text-decoration: none;
-            font-size: 1.2em;
-        }
-        .video-link:hover {
-            text-decoration: underline;
         }
         .question-card {
             background: #fff;
@@ -49,6 +40,8 @@
             border-bottom: 1px solid #eee;
             padding-bottom: 10px;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
         .q-title {
             font-size: 1.2em;
@@ -58,15 +51,25 @@
         .play-link-btn {
             background-color: #e74c3c;
             color: white;
-            text-decoration: none;
-            padding: 8px 16px;
+            border: none;
+            cursor: pointer;
+            padding: 6px 15px;
             border-radius: 4px;
             font-size: 0.9em;
             display: inline-block;
             transition: background-color 0.2s;
+            text-decoration: none;
         }
         .play-link-btn:hover {
             background-color: #c0392b;
+        }
+        /* 埋め込み失敗時の予備リンク */
+        .fallback-link {
+            font-size: 0.8em;
+            color: #e74c3c;
+            margin-left: 10px;
+            text-decoration: underline;
+            cursor: pointer;
         }
         .theme-text {
             font-size: 0.95em;
@@ -114,44 +117,14 @@
             display: none;
             line-height: 1.6;
         }
-        .diff-word {
-            margin: 0 2px;
-            padding: 2px 0;
-            display: inline-block;
-        }
-        .correct-word {
-            color: #27ae60;
-            font-weight: bold;
-        }
-        .wrong-word {
-            color: #c0392b;
-            text-decoration: line-through;
-            margin-right: 4px;
-        }
-        .missing-word {
-            color: #2980b9;
-            font-weight: bold;
-            border-bottom: 2px solid #2980b9;
-        }
-        .perfect {
-            color: #27ae60;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-        .translation-toggle {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            cursor: pointer;
-            text-decoration: underline;
-        }
-        .japanese-trans {
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed #eee;
-            font-size: 0.9em;
-            color: #555;
-            display: none;
-        }
+        .diff-word { margin: 0 2px; }
+        .correct-word { color: #27ae60; font-weight: bold; }
+        .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
+        .missing-word { color: #2980b9; font-weight: bold; border-bottom: 2px solid #2980b9; }
+        .perfect { color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
+        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
     </style>
 </head>
 <body>
@@ -159,24 +132,17 @@
     <h1>聞き取り第4回：The Water Cycle & Sediment Transport</h1>
     
     <div class="video-info">
-        対象動画URL: 
-        <a href="https://www.youtube.com/watch?v=LGpNXsAxqv4" target="_blank" class="video-link">
-            https://www.youtube.com/watch?v=LGpNXsAxqv4
-        </a>
-        <br>
-        <span style="font-size:0.9em; color:#666; display:block; margin-top:5px;">
-            ※ 各問題の「YouTubeで再生」ボタンを押すと、別タブで該当箇所から再生されます。
-        </span>
+        <p>※ 再生できない場合は「別タブで開く」をつかってください。</p>
     </div>
 
-    <div id="quiz-container">
-        </div>
+    <div id="quiz-container"></div>
 
     <script>
-        // 動画IDとベースURL
-        const BASE_URL = "https://youtu.be/LGpNXsAxqv4";
+        const VIDEO_ID = "LGpNXsAxqv4";
+        // YouTubeのドメインをnocookieに変更
+        const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
 
-        // データ定義 [cite: 110, 113-145]
+        // 第4回のデータ
         const quizData = [
             {
                 id: 1,
@@ -189,7 +155,7 @@
             {
                 id: 2,
                 timeDisplay: "02:21 ～ 02:30",
-                startSeconds: 141, // 2分21秒
+                startSeconds: 141,
                 theme: "川の運搬能力（Carrying capacity）の定義と決定要因について",
                 correct: "The carrying capacity is a measure of the amount of sediments transported by the river and of the grain size it can carry. Carrying capacity is primarily dependent on the velocity of the water flow.",
                 translation: "運搬能力（Carrying capacity）とは、川が運搬する堆積物の量と、運搬できる粒子サイズの尺度です。運搬能力は、主に水流の速度に依存します。"
@@ -197,7 +163,7 @@
             {
                 id: 3,
                 timeDisplay: "03:56 ～ 04:08",
-                startSeconds: 236, // 3分56秒
+                startSeconds: 236,
                 theme: "ユルストローム図（Hjulstrom diagram）の役割について",
                 correct: "A way to link the speed of the water flow with erosion, transport, or sedimentation is the Hjulstrom diagram in which the velocity of the flowing water is plotted against the grains size.",
                 translation: "水流の速度を侵食、運搬、または堆積と結びつける方法の一つがユルストローム図（Hjulström diagram）であり、そこでは流れる水の速度が粒子のサイズに対してプロットされています。"
@@ -205,7 +171,7 @@
             {
                 id: 4,
                 timeDisplay: "05:15 ～ 05:29",
-                startSeconds: 315, // 5分15秒
+                startSeconds: 315,
                 theme: "川の流速が急激に低下した場合の現象（堆積）について",
                 correct: "Imagine that a river loaded with all possible grain sizes and flowing at 800cm per second suddenly decreases its speed to 60-70cm per second. Then it will dump most of the sediments and will only carry grain sizes smaller than 0.05 mm.",
                 translation: "あらゆるサイズの粒子を含み、秒速800cmで流れていた川が、突然その速度を秒速60〜70cmに落としたと想像してください。すると、堆積物の大部分を放出し、0.05mmより小さい粒子サイズのみを運ぶようになります。"
@@ -213,153 +179,142 @@
             {
                 id: 5,
                 timeDisplay: "06:54 ～ 07:04",
-                startSeconds: 414, // 6分54秒
+                startSeconds: 414,
                 theme: "氷河による堆積物の運搬（ベルトコンベアのような動き）について",
                 correct: "The ice will keep on moving from the high to the low altitudes constantly carrying sediments off scraped from the bottom and the sides of the valley to the front like a conveyor belt.",
                 translation: "氷は高地から低地へと動き続け、谷底や側面から削り取られた堆積物を、コンベアベルトのように絶えず前線へと運びます。"
             }
         ];
 
-        // HTML生成関数
-        function renderQuiz() {
-            const container = document.getElementById('quiz-container');
-            container.innerHTML = ""; // 初期化
+        const container = document.getElementById('quiz-container');
+        
+        quizData.forEach((q, index) => {
+            // 別タブ用の通常リンク
+            const directLink = `https://youtu.be/${VIDEO_ID}?t=${q.startSeconds}`;
 
-            quizData.forEach((q, index) => {
-                // YouTubeの時間指定付きリンク
-                const videoLink = `${BASE_URL}?t=${q.startSeconds}`;
-
-                const html = `
-                    <div class="question-card">
-                        <div class="q-header">
-                            <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
-                            <a href="${videoLink}" target="_blank" class="play-link-btn">▶ YouTubeで再生</a>
-                        </div>
-                        <div class="theme-text">
-                            <strong>テーマ:</strong> ${q.theme}
-                        </div>
+            const html = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
                         <div>
-                            <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
-                        </div>
-                        <div class="controls">
-                            <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
-                            <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
-                        </div>
-                        
-                        <div id="result-${index}" class="result-area"></div>
-                        <div id="trans-${index}" class="japanese-trans">
-                            <strong>日本語訳:</strong><br>${q.translation}
+                            <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
+                            <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
                         </div>
                     </div>
-                `;
-                container.innerHTML += html;
+                    
+                    <div id="video-area-${index}" class="embedded-video-container"></div>
+
+                    <div class="theme-text">
+                        <strong>テーマ:</strong> ${q.theme}
+                    </div>
+                    <div>
+                        <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
+                    </div>
+                    <div class="controls">
+                        <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                        <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                    </div>
+                    <div id="result-${index}" class="result-area"></div>
+                    <div id="trans-${index}" class="japanese-trans">
+                        <strong>日本語訳:</strong><br>${q.translation}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function playEmbeddedVideo(index, startSeconds) {
+            quizData.forEach((_, i) => {
+                const area = document.getElementById(`video-area-${i}`);
+                if (i !== index) {
+                    area.innerHTML = "";
+                    area.style.display = "none";
+                }
             });
+
+            const targetArea = document.getElementById(`video-area-${index}`);
+            targetArea.style.display = "block";
+            
+            // 自動再生は削除(autoplay=1 -> 0)し、nocookieドメインを使用
+            targetArea.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="250" 
+                    src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <div style="text-align:center; font-size:0.8em; color:#666; margin-top:5px;">
+                    ※再生ボタンを押してください。それでもエラーが出る場合は「別タブで開く」をご利用ください。
+                </div>
+            `;
         }
 
-        // 日本語訳の表示切替
         function toggleTrans(index) {
             const el = document.getElementById(`trans-${index}`);
-            if (el) {
-                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-            }
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
         }
 
-        // 判定ロジック
         function checkAnswer(index) {
-            const inputEl = document.getElementById(`input-${index}`);
+            const userText = document.getElementById(`input-${index}`).value.trim();
+            const correctText = quizData[index].correct;
             const resultDiv = document.getElementById(`result-${index}`);
-            
-            if (!inputEl || !resultDiv) return;
-
-            const userText = inputEl.value.trim();
-            // 正解文の前後の空白も除去
-            const correctText = quizData[index].correct.trim();
-
             if (!userText) {
                 resultDiv.style.display = 'block';
-                resultDiv.innerHTML = '<span style="color:#c0392b;">テキストを入力してください。</span>';
+                resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
                 return;
             }
-
-            // 完全一致の場合
             if (userText === correctText) {
                 resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
                 resultDiv.style.display = 'block';
                 return;
             }
-
-            // 差分生成
-            const html = "<strong>判定結果:</strong><br>" + generateDiffHTML(userText, correctText);
+            let html = "<strong>判定結果:</strong><br>";
+            html += generateDiffHTML(userText, correctText);
             resultDiv.style.display = 'block';
             resultDiv.innerHTML = html;
         }
 
-        // 差分HTML生成ロジック
         function generateDiffHTML(userStr, correctStr) {
-            // 単語比較用にクリーニング（小文字化＆記号削除）
             const clean = s => s.toLowerCase().replace(/[.,?!;:"'’]/g, "");
-            
             const userWords = userStr.split(/\s+/);
             const correctWords = correctStr.split(/\s+/);
-            
             let output = "<div>";
             let uIndex = 0;
-            
             for (let i = 0; i < correctWords.length; i++) {
                 let cWord = correctWords[i];
                 let cWordClean = clean(cWord);
-                
-                // ユーザー入力が先に終わってしまった場合（残りはすべて「不足」）
                 if (uIndex >= userWords.length) {
                     output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
                     continue;
                 }
-
                 let uWord = userWords[uIndex];
                 let uWordClean = clean(uWord);
-
                 if (cWordClean === uWordClean) {
-                    // 正解
                     output += `<span class="diff-word correct-word">${cWord}</span> `;
                     uIndex++;
                 } else {
-                    // 不一致の場合：
-                    // 「次のユーザー単語」が「現在の正解」と一致するか確認（余分な単語が入ったパターン）
-                    let nextUMatch = false;
-                    if (uIndex + 1 < userWords.length) {
-                         nextUMatch = (clean(userWords[uIndex+1]) === cWordClean);
-                    }
-                    
+                    let nextUMatch = (uIndex + 1 < userWords.length) && (clean(userWords[uIndex+1]) === cWordClean);
                     if (nextUMatch) {
-                        // 現在のユーザー単語は「間違い（余分）」
                         output += `<span class="diff-word wrong-word">${uWord}</span> `;
-                        // 次の正解単語を表示
                         output += `<span class="diff-word correct-word">${cWord}</span> `;
-                        uIndex += 2; // ユーザー側のインデックスを2つ進める
+                        uIndex += 2; 
                     } else {
-                        // 単なる間違い、または単語が抜けている
                         output += `<span class="diff-word wrong-word">${uWord}</span> `;
                         output += `<span class="diff-word missing-word">${cWord}</span> `;
                         uIndex++;
                     }
                 }
             }
-            
-            // ユーザー入力が余っている場合（最後につけたし過ぎた場合など）
             while(uIndex < userWords.length) {
                 output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
                 uIndex++;
             }
-
             output += "</div>";
             output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
-            
             return output;
         }
-
-        // 初期化実行
-        renderQuiz();
-
     </script>
 </body>
 </html>
