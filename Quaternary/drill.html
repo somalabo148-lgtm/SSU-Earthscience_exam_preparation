@@ -14,7 +14,21 @@
     .nav-tabs { display: flex; justify-content: space-around; background: #fff; padding: 0; margin: 0; list-style: none; border-bottom: 1px solid #ddd; }
     .nav-item { flex: 1; text-align: center; padding: 12px 5px; cursor: pointer; font-weight: bold; font-size: 0.9rem; color: #7f8c8d; border-bottom: 3px solid transparent; transition: 0.3s; }
     .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); background: #fdfdfd; }
-    
+    /* 追加した戻るボタンのスタイル */
+    .back-link-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 8px 16px;
+        background-color: #95a5a6;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: background-color 0.2s;
+    }
+    .back-link-btn:hover {
+        background-color: #7f8c8d;
+    }
     /* Progress Bar */
     .progress-container { background: #e0e0e0; height: 6px; width: 100%; position: sticky; top: 54px; z-index: 99; }
     .progress-bar { height: 100%; background: var(--correct); width: 0%; transition: width 0.3s; }
@@ -57,6 +71,7 @@
 <body>
 
 <header>
+    <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
     <h1>第四紀学 200問完全攻略</h1>
 </header>
 
@@ -427,4 +442,5 @@ window.onload = function() {
 
 </script>
 </body>
+
 </html>
