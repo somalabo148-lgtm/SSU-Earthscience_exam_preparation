@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聞き取り第1回：地質学</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px; /* 幅を少し狭めて読みやすく */
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .video-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .video-link {
+            color: #e74c3c;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
+
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        /* ボタン風のリンクスタイル */
+        .play-link-btn {
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+        .play-link-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .check-btn:hover {
+            background-color: #219150;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        
+        /* 判定結果のスタイル */
+        .diff-word {
+            margin: 0 2px;
+        }
+        .correct-word {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .wrong-word {
+            color: #c0392b;
+            text-decoration: line-through;
+            margin-right: 4px;
+        }
+        .missing-word {
+            color: #2980b9;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+        }
+        .perfect {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        
+        .translation-toggle {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .japanese-trans {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 0.9em;
+            color: #555;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>聞き取り第1回：地質学</h1>
+    
+    <div class="video-info">
+        対象動画URL: 
+        <a href="https://www.youtube.com/watch?v=qNiOXc6pSBQ" target="_blank" class="video-link">
+            https://www.youtube.com/watch?v=qNiOXc6pSBQ
+        </a>
+        <br>
+        <span style="font-size:0.8em; color:#666;">※ 各問題の「YouTubeで再生」ボタンを押すと、別タブで該当箇所から再生されます。</span>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <script>
+        // 動画ID
+        const VIDEO_ID = "qNiOXc6pSBQ";
+        const BASE_URL = `https://youtu.be/${VIDEO_ID}`;
+
+        // データ定義
+        const quizData = [
+            {
+                id: 1,
+                timeDisplay: "01:10 ～ 01:22",
+                startSeconds: 70,
+                theme: "地質学の定義と学際的な性質について",
+                correct: "At its core, geology is a multidisciplinary science that combines chemistry, physics, and mathematics to investigate an enormous variety of processes that occur on and in the Earth.",
+                translation: "その核心において、地質学とは、化学、物理学、数学を組み合わせて、地球上および地球内部で起こる膨大な種類のプロセスを調査する、学際的な科学である。"
+            },
+            {
+                id: 2,
+                timeDisplay: "02:51 ～ 02:59",
+                startSeconds: 171,
+                theme: "過去の地質学的プロセスを知るための基本的な考え方について",
+                correct: "The simple answer is that the processes that shaped our planet billions of years ago still occur today and can be easily observed and measured.",
+                translation: "単純な答えは、数十億年前に私たちの惑星を形作ったプロセスは、今日でも依然として起こっており、容易に観察し測定することができる、ということだ。"
+            },
+            {
+                id: 3,
+                timeDisplay: "03:47 ～ 03:58",
+                startSeconds: 227,
+                theme: "アリストテレスとデモクリトスによる地震の原因に関する仮説について",
+                correct: "Aristotle thought earthquakes were caused by opposing winds within the cavernous Earth, while Democritus thought the cause was water forcing its way into the Earth as it rains.",
+                translation: "アリストテレスは、地震は空洞状の地球内部で風がぶつかり合うことによって引き起こされると考えた一方、デモクリトスは、雨が降るときに水が地球に無理やり入り込むことが原因だと考えた。"
+            },
+            {
+                id: 4,
+                timeDisplay: "04:29 ～ 04:45",
+                startSeconds: 269,
+                theme: "地質学と現代社会の生活水準（インフラや技術）との関係について",
+                correct: "Furthermore, Earth contains minerals, metals, and sources of energy that we have used to build and power the technology and infrastructure responsible for raising our collective standard of living over the past few hundred years.",
+                translation: "さらに、地球には、過去数百年にわたって私たちの集団的な生活水準の向上を担ってきた技術やインフラを構築し、電力を供給するために私たちが使用してきた鉱物、金属、エネルギー源が含まれている。"
+            },
+            {
+                id: 5,
+                timeDisplay: "05:39 ～ 05:57",
+                startSeconds: 339,
+                theme: "地質学の知識が惑星科学（火星や月など）にどのように応用されているかについて",
+                correct: "The understanding of Earth provided by geologists acts as the framework that planetary scientists use to study outflow channels on Mars, crater topography on the Moon, and unique features of exoplanets that are continually being discovered.",
+                translation: "地質学者によって提供される地球の理解は、惑星科学者が火星のアウトフローチャネル、月のクレーターの地形、そして発見され続けている太陽系外惑星の特異な特徴を研究するために使用する枠組みとして機能する。"
+            }
+        ];
+
+        // HTML生成
+        const container = document.getElementById('quiz-container');
+        
+        quizData.forEach((q, index) => {
+            // YouTubeの時間指定付きリンクを作成 (例: https://youtu.be/xxx?t=70)
+            const videoLink = `${BASE_URL}?t=${q.startSeconds}`;
+
+            const html = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                        <a href="${videoLink}" target="_blank" class="play-link-btn">▶ YouTubeで再生 (${q.timeDisplay})</a>
+                    </div>
+                    <div class="theme-text">
+                        <strong>テーマ:</strong> ${q.theme}
+                    </div>
+                    <div>
+                        <textarea id="input-${index}" placeholder="ここに聞き取った英語を入力してください..."></textarea>
+                    </div>
+                    <div class="controls">
+                        <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                        <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                    </div>
+                    
+                    <div id="result-${index}" class="result-area"></div>
+                    <div id="trans-${index}" class="japanese-trans">
+                        <strong>日本語訳:</strong><br>${q.translation}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        // 正誤判定ロジック
+        function checkAnswer(index) {
+            const userText = document.getElementById(`input-${index}`).value.trim();
+            const correctText = quizData[index].correct;
+            const resultDiv = document.getElementById(`result-${index}`);
+
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
+                return;
+            }
+
+            if (userText === correctText) {
+                resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+
+            let html = "<strong>判定結果:</strong><br>";
+            html += generateDiffHTML(userText, correctText);
+
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        // 単語ごとの比較HTMLを生成する関数
+        function generateDiffHTML(userStr, correctStr) {
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"']/g, "");
+            
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            
+            let output = "<div>";
+            let uIndex = 0;
+            
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+                
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
+                    continue;
+                }
+
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+
+                if (cWordClean === uWordClean) {
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    // 次の単語が一致するかチェック（余計な単語が入っている場合の対策）
+                    let nextUMatch = (uIndex + 1 < userWords.length) && (clean(userWords[uIndex+1]) === cWordClean);
+                    
+                    if (nextUMatch) {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word correct-word">${cWord}</span> `;
+                        uIndex += 2; // 現在の余分な語と、次の一致した語をスキップ
+                    } else {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word missing-word">${cWord}</span> `;
+                        uIndex++;
+                    }
+                }
+            }
+            
+            while(uIndex < userWords.length) {
+                output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
+                uIndex++;
+            }
+
+            output += "</div>";
+            output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
+            
+            return output;
+        }
+    </script>
+</body>
+</html>

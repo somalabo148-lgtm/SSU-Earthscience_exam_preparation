@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聞き取り第7回</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .video-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-left: 5px solid #e74c3c;
+        }
+        .notice-text {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .check-btn:hover {
+            background-color: #219150;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        .diff-word {
+            margin: 0 2px;
+            padding: 2px 0;
+            display: inline-block;
+        }
+        .correct-word {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .wrong-word {
+            color: #c0392b;
+            text-decoration: line-through;
+            margin-right: 4px;
+        }
+        .missing-word {
+            color: #2980b9;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+        }
+        .perfect {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .translation-toggle {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .japanese-trans {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 0.9em;
+            color: #555;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>聞き取り第7回</h1>
+    
+    <div class="video-info">
+        <div class="notice-text">
+            ※ 元となる動画がないため、授業ページを参照してください。
+        </div>
+        <div style="font-size:0.9em; color:#666; margin-top:5px;">
+            以下の問題の再生時間は、授業ページ内の動画に対応しています。
+        </div>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <script>
+        // データ定義
+        const quizData = [
+            {
+                id: 1,
+                timeDisplay: "00:17 ～ 00:24",
+                theme: "気候変動に関する誤解について",
+                correct: "Well, here's a misconception. The threat of climate change has to do with the absolute warmth of the Earth. It's not the case.",
+                translation: "実は、ここに誤解がある。気候変動の脅威とは、地球の絶対的な暖かさ（温度の絶対値）にあると思われがちだが、事実はそうではない。"
+            },
+            {
+                id: 2,
+                timeDisplay: "00:46 ～ 01:03",
+                theme: "過去の気候を復元する方法（プロキシ記録）について",
+                correct: "So, to reconstruct how climate changed in the distant past, prior to the period of the roughly 100 to 150 years where we have widespread historical measurements of climate variables, we need to turn to so called proxy records.",
+                translation: "気候変数の広範な歴史的測定データが存在するのは過去およそ100～150年間だが、それより以前の遠い過去に気候がどう変化したかを復元するには、いわゆるプロキシ記録に頼る必要がある。"
+            },
+            {
+                id: 3,
+                timeDisplay: "02:08 ～ 02:23",
+                theme: "過去1000年間の気温変動パターン（中世温暖期と小氷期）について",
+                correct: "And the pattern that it revealed was relatively warm conditions a thousand years ago, during what's sometimes called the Medieval Warm Period, and a slow cooling as we descend into the Little Ice age of the 17th, 18th and 19th centuries.",
+                translation: "その曲線が明らかにしたパターンは次のようなものだった。1000年前は比較的温暖な状態（いわゆる中世の温暖期）があり、その後、17世紀、18世紀、19世紀の小氷期に向かってゆっくりと寒冷化していくというものである。"
+            },
+            {
+                id: 4,
+                timeDisplay: "02:34 ～ 02:43",
+                theme: "グラフの形状と「ホッケースティック」の喩えについて",
+                correct: "In fact, if you use your imagination, that record sort of resembles a sports implement known as a hockey stick.",
+                translation: "実際、想像力を働かせて見れば、その記録はスポーツ用具の「ホッケースティック」に少し似ている。"
+            },
+            {
+                id: 5,
+                timeDisplay: "03:40 ～ 03:57",
+                theme: "現在の科学的コンセンサス（「ホッケーリーグ」）について",
+                correct: "But today, there's no longer a hockey stick. There is a veritable hockey league, which is to say there are many of these sorts of reconstructions of past temperatures that have been done by different teams of scientists using different data and different methods.",
+                translation: "しかし今日では、もはや一本のホッケースティックだけではない。言ってみればホッケーリーグが存在する。つまり、異なる科学者チームが、異なるデータと異なる手法を使って行った、過去の気温の復元記録がたくさんあるということだ。"
+            }
+        ];
+
+        // HTML生成関数
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = ""; // 初期化
+
+            quizData.forEach((q, index) => {
+                const html = `
+                    <div class="question-card">
+                        <div class="q-header">
+                            <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                            </div>
+                        <div class="theme-text">
+                            <strong>テーマ:</strong> ${q.theme}
+                        </div>
+                        <div>
+                            <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
+                        </div>
+                        <div class="controls">
+                            <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                            <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                        </div>
+                        
+                        <div id="result-${index}" class="result-area"></div>
+                        <div id="trans-${index}" class="japanese-trans">
+                            <strong>日本語訳:</strong><br>${q.translation}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // 日本語訳の表示切替
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            if (el) {
+                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+
+        // 判定ロジック
+        function checkAnswer(index) {
+            const inputEl = document.getElementById(`input-${index}`);
+            const resultDiv = document.getElementById(`result-${index}`);
+            
+            if (!inputEl || !resultDiv) return;
+
+            const userText = inputEl.value.trim();
+            // 正解文の前後の空白も除去
+            const correctText = quizData[index].correct.trim();
+
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:#c0392b;">テキストを入力してください。</span>';
+                return;
+            }
+
+            // 完全一致の場合
+            if (userText === correctText) {
+                resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+
+            // 差分生成
+            const html = "<strong>判定結果:</strong><br>" + generateDiffHTML(userText, correctText);
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        // 差分HTML生成ロジック
+        function generateDiffHTML(userStr, correctStr) {
+            // 単語比較用にクリーニング（小文字化＆記号削除）
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"'’]/g, "");
+            
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            
+            let output = "<div>";
+            let uIndex = 0;
+            
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+                
+                // ユーザー入力が先に終わってしまった場合（残りはすべて「不足」）
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
+                    continue;
+                }
+
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+
+                if (cWordClean === uWordClean) {
+                    // 正解
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    // 不一致の場合：
+                    // 「次のユーザー単語」が「現在の正解」と一致するか確認（余分な単語が入ったパターン）
+                    let nextUMatch = false;
+                    if (uIndex + 1 < userWords.length) {
+                         nextUMatch = (clean(userWords[uIndex+1]) === cWordClean);
+                    }
+                    
+                    if (nextUMatch) {
+                        // 現在のユーザー単語は「間違い（余分）」
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        // 次の正解単語を表示
+                        output += `<span class="diff-word correct-word">${cWord}</span> `;
+                        uIndex += 2; // ユーザー側のインデックスを2つ進める
+                    } else {
+                        // 単なる間違い、または単語が抜けている
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word missing-word">${cWord}</span> `;
+                        uIndex++;
+                    }
+                }
+            }
+            
+            // ユーザー入力が余っている場合（最後につけたし過ぎた場合など）
+            while(uIndex < userWords.length) {
+                output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
+                uIndex++;
+            }
+
+            output += "</div>";
+            output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
+            
+            return output;
+        }
+
+        // 初期化実行
+        renderQuiz();
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聞き取り第3回：The basics of climate</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .video-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .video-link {
+            color: #e74c3c;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        .video-link:hover {
+            text-decoration: underline;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .play-link-btn {
+            background-color: #e74c3c;
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+        .play-link-btn:hover {
+            background-color: #c0392b;
+        }
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .check-btn:hover {
+            background-color: #219150;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        .diff-word {
+            margin: 0 2px;
+            padding: 2px 0;
+            display: inline-block;
+        }
+        .correct-word {
+            color: #27ae60;
+            font-weight: bold;
+        }
+        .wrong-word {
+            color: #c0392b;
+            text-decoration: line-through;
+            margin-right: 4px;
+        }
+        .missing-word {
+            color: #2980b9;
+            font-weight: bold;
+            border-bottom: 2px solid #2980b9;
+        }
+        .perfect {
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+        .translation-toggle {
+            font-size: 0.85em;
+            color: #7f8c8d;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .japanese-trans {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px dashed #eee;
+            font-size: 0.9em;
+            color: #555;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>聞き取り第3回：The basics of climate</h1>
+    
+    <div class="video-info">
+        対象動画URL: 
+        <a href="https://www.youtube.com/watch?v=JQ_zElncvfE" target="_blank" class="video-link">
+            https://www.youtube.com/watch?v=JQ_zElncvfE
+        </a>
+        <br>
+        <span style="font-size:0.9em; color:#666; display:block; margin-top:5px;">
+            ※ 各問題の「YouTubeで再生」ボタンを押すと、別タブで該当箇所から再生されます。
+        </span>
+    </div>
+
+    <div id="quiz-container">
+        </div>
+
+    <script>
+        // 動画IDとベースURL
+        const BASE_URL = "https://youtu.be/JQ_zElncvfE";
+
+        // データ定義
+        const quizData = [
+            {
+                id: 1,
+                timeDisplay: "00:29 ～ 00:39",
+                startSeconds: 29,
+                theme: "気候（Climate）の定義と含まれる要素について",
+                correct: "Climate is the weather measured over tens of years. It includes knowledge of temperature, humidity, atmospheric pressure, wind and precipitations.",
+                translation: "気候とは、数十年にわたって測定された天候のことです。それには気温、湿度、気圧、風、そして降水の知識が含まれます。"
+            },
+            {
+                id: 2,
+                timeDisplay: "02:48 ～ 03:00",
+                startSeconds: 168, // 2分48秒
+                theme: "太陽エネルギーと大陸（土壌や植生）との相互作用について",
+                correct: "A substantial amount of the energy, roughly half of the incoming amount will interact with the continents. Soil, vegetation and so on, will absorb large amount of the energy and then emitted back.",
+                translation: "かなりの量のエネルギー、おおよそ入ってくる量の半分が、大陸と相互作用します。土壌、植生などが大量のエネルギーを吸収し、その後、再放出されます。"
+            },
+            {
+                id: 3,
+                timeDisplay: "03:24 ～ 03:38",
+                startSeconds: 204, // 3分24秒
+                theme: "地球から放射されたエネルギーが温室効果ガス層によってどうなるかについて",
+                correct: "The energy emitted by the Earth will then start travelling backward towards the higher atmosphere but it will then be blocked by clouds and more importantly by the layer of greenhouse gases. Because of the higher wavelengths, the energy emitted by the sun cannot move further and will bounce back towards the Earth.",
+                translation: "地球から放出されたエネルギーは、その後、上層大気に向かって戻り始めますが、雲、そしてさらに重要なことに温室効果ガスの層によって遮られます。波長が長いため、そのエネルギーはそれ以上進むことができず、地球に向かって跳ね返されます。<br>（注: 動画音声では 'emitted by the sun' と言っていますが、文脈的には地球から放射されたエネルギーを指しています）"
+            },
+            {
+                id: 4,
+                timeDisplay: "04:19 ～ 04:30",
+                startSeconds: 259, // 4分19秒
+                theme: "アルベド（Albedo）の定義と氷河の役割について",
+                correct: "Albedo is the percentage of reflected energy with respect to the incident energy. Clearly, glaciers has a very high albedo.",
+                translation: "アルベドとは、入射エネルギーに対する反射エネルギーの割合（パーセンテージ）です。明らかに、氷河は非常に高いアルベドを持っています。"
+            },
+            {
+                id: 5,
+                timeDisplay: "04:48 ～ 05:00",
+                startSeconds: 288, // 4分48秒
+                theme: "植生（vegetation）が気候に与える二重の効果について",
+                correct: "A third very important component is vegetation. And here things start getting complicated as vegetation has a twofold effect. Increasing vegetation also increases the emission of CO2.",
+                translation: "第三の非常に重要な要素は植生です。そして、植生は二重の効果を持つため、ここで事態は複雑になり始めます。植生を増やすことは、CO2の排出も増加させます。"
+            }
+        ];
+
+        // HTML生成関数
+        function renderQuiz() {
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = ""; // 初期化
+
+            quizData.forEach((q, index) => {
+                // YouTubeの時間指定付きリンク
+                const videoLink = `${BASE_URL}?t=${q.startSeconds}`;
+
+                const html = `
+                    <div class="question-card">
+                        <div class="q-header">
+                            <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                            <a href="${videoLink}" target="_blank" class="play-link-btn">▶ YouTubeで再生</a>
+                        </div>
+                        <div class="theme-text">
+                            <strong>テーマ:</strong> ${q.theme}
+                        </div>
+                        <div>
+                            <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
+                        </div>
+                        <div class="controls">
+                            <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                            <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                        </div>
+                        
+                        <div id="result-${index}" class="result-area"></div>
+                        <div id="trans-${index}" class="japanese-trans">
+                            <strong>日本語訳:</strong><br>${q.translation}
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // 日本語訳の表示切替
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            if (el) {
+                el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+            }
+        }
+
+        // 判定ロジック
+        function checkAnswer(index) {
+            const inputEl = document.getElementById(`input-${index}`);
+            const resultDiv = document.getElementById(`result-${index}`);
+            
+            if (!inputEl || !resultDiv) return;
+
+            const userText = inputEl.value.trim();
+            // 正解文の前後の空白も除去
+            const correctText = quizData[index].correct.trim();
+
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:#c0392b;">テキストを入力してください。</span>';
+                return;
+            }
+
+            // 完全一致の場合
+            if (userText === correctText) {
+                resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+
+            // 差分生成
+            const html = "<strong>判定結果:</strong><br>" + generateDiffHTML(userText, correctText);
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        // 差分HTML生成ロジック
+        function generateDiffHTML(userStr, correctStr) {
+            // 単語比較用にクリーニング（小文字化＆記号削除）
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"'’]/g, "");
+            
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            
+            let output = "<div>";
+            let uIndex = 0;
+            
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+                
+                // ユーザー入力が先に終わってしまった場合（残りはすべて「不足」）
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
+                    continue;
+                }
+
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+
+                if (cWordClean === uWordClean) {
+                    // 正解
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    // 不一致の場合：
+                    // 「次のユーザー単語」が「現在の正解」と一致するか確認（余分な単語が入ったパターン）
+                    let nextUMatch = false;
+                    if (uIndex + 1 < userWords.length) {
+                         nextUMatch = (clean(userWords[uIndex+1]) === cWordClean);
+                    }
+                    
+                    if (nextUMatch) {
+                        // 現在のユーザー単語は「間違い（余分）」
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        // 次の正解単語を表示
+                        output += `<span class="diff-word correct-word">${cWord}</span> `;
+                        uIndex += 2; // ユーザー側のインデックスを2つ進める
+                    } else {
+                        // 単なる間違い、または単語が抜けている
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word missing-word">${cWord}</span> `;
+                        uIndex++;
+                    }
+                }
+            }
+            
+            // ユーザー入力が余っている場合（最後につけたし過ぎた場合など）
+            while(uIndex < userWords.length) {
+                output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
+                uIndex++;
+            }
+
+            output += "</div>";
+            output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
+            
+            return output;
+        }
+
+        // 初期化実行
+        renderQuiz();
+
+    </script>
+</body>
+</html>
