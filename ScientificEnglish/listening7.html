@@ -226,7 +226,6 @@
                 <div class="question-card">
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
-                        <button class="play-link-btn" onclick="playLocalAudio(${index}, ${q.startSeconds})">▶ この場で再生</button>
                     </div>
                     
                     <div id="audio-area-${index}" class="embedded-audio-container"></div>
@@ -235,6 +234,9 @@
                         <strong>テーマ:</strong> ${q.theme}
                     </div>
                     <div>
+                        <button class="play-link-btn" onclick="playLocalAudio(${index}, ${q.startSeconds})">▶ この場で再生</button>
+                        <br>
+                        <br>
                         <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
                     </div>
                     <div class="controls">
@@ -361,5 +363,6 @@
     </script>
 </body>
 </html>
+
 
 
