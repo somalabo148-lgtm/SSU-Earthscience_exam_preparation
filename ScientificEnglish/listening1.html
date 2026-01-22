@@ -211,7 +211,6 @@
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
                         <div>
-                            <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
                             <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
                         </div>
                     </div>
@@ -222,6 +221,8 @@
                         <strong>テーマ:</strong> ${q.theme}
                     </div>
                     <div>
+                        <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
+                        <br>
                         <textarea id="input-${index}" placeholder="ここに聞き取った英語を入力してください..."></textarea>
                     </div>
                     <div class="controls">
@@ -332,6 +333,7 @@
     </script>
 </body>
 </html>
+
 
 
 
