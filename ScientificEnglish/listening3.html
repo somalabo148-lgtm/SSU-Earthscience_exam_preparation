@@ -211,16 +211,17 @@
                 <div class="question-card">
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                         <div class="theme-text">
+                            <strong>テーマ:</strong> ${q.theme}
+                        </div>
+                        <br>
                         <div>
                             <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
                         </div>
                     </div>
                     
                     <div id="video-area-${index}" class="embedded-video-container"></div>
-
-                    <div class="theme-text">
-                        <strong>テーマ:</strong> ${q.theme}
-                    </div>
+                    
                     <div>
                         <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
                         <br>
@@ -256,7 +257,7 @@
             targetArea.innerHTML = `
                 <iframe 
                     width="100%" 
-                    height="250" 
+                    height="150" 
                     src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}" 
                     frameborder="0" 
                     allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -335,5 +336,6 @@
     </script>
 </body>
 </html>
+
 
 
