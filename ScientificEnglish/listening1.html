@@ -251,7 +251,7 @@
             const targetArea = document.getElementById(`video-area-${index}`);
             targetArea.style.display = "block";
             
-            // 自動再生は削除(autoplay=1 -> 0)し、nocookieドメインを使用
+            // 自動再生を再登載
             targetArea.innerHTML = `
                 <iframe 
                     width="100%" 
@@ -259,6 +259,7 @@
                     src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}&autplay=1" 
                     frameborder="0" 
                     allow="accelerometer; autplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen>
                 </iframe>
                 <div style="text-align:center; font-size:0.8em; color:#666; margin-top:5px;">
@@ -334,6 +335,7 @@
     </script>
 </body>
 </html>
+
 
 
 
