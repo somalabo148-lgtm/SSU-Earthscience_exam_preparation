@@ -212,6 +212,10 @@
                 <div class="question-card">
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                        <div class="theme-text">
+                            <strong>テーマ:</strong> ${q.theme}
+                        </div>
+                        <br>
                         <div>
                             <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
                         </div>
@@ -224,7 +228,6 @@
                     </div>
                     <div>
                         <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
-                        <br>
                         <br>
                         <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
                     </div>
@@ -336,6 +339,7 @@
     </script>
 </body>
 </html>
+
 
 
 
