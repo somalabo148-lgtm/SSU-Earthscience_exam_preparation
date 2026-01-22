@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>聞き取り第7回：Climate Change（修正版）</title>
+    <title>聞き取り第7回：Climate Change（音声版）</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
@@ -18,7 +18,7 @@
             color: #2c3e50;
             margin-bottom: 10px;
         }
-        /* 戻るボタンのスタイル */
+        /* 戻るボタン */
         .back-link-btn {
             display: inline-block;
             margin-bottom: 15px;
@@ -66,7 +66,7 @@
         }
         /* 再生ボタン */
         .play-link-btn {
-            background-color: #e74c3c;
+            background-color: #3498db; /* 音声版なので色を青に変更 */
             color: white;
             border: none;
             cursor: pointer;
@@ -78,7 +78,7 @@
             text-decoration: none;
         }
         .play-link-btn:hover {
-            background-color: #c0392b;
+            background-color: #2980b9;
         }
 
         .theme-text {
@@ -128,7 +128,6 @@
             line-height: 1.6;
         }
         
-        /* 判定結果のスタイル */
         .diff-word { margin: 0 2px; }
         .correct-word { color: #27ae60; font-weight: bold; }
         .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
@@ -138,9 +137,16 @@
         .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
         .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
         
-        /* 動画埋め込みエリア */
-        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
-        video { width: 100%; display: block; }
+        /* 音声プレーヤー埋め込みエリア（動画よりシンプルに） */
+        .embedded-audio-container { 
+            margin-top: 10px; 
+            margin-bottom: 10px; 
+            display: none; 
+            background: #f1f3f4; /* 明るいグレー */
+            border-radius: 30px; /* 丸みをつける */
+            padding: 5px;
+        }
+        audio { width: 100%; display: block; outline: none; }
     </style>
 </head>
 <body>
@@ -150,20 +156,20 @@
     <h1>聞き取り第7回：Climate Change</h1>
     
     <div class="video-info">
-        <p>※ 「この場で再生」ボタンを押すと、下部の動画プレーヤーが移動して再生されます。</p>
+        <p>※ 音声ファイル（MP3）を使用しています。「この場で再生」ボタンを押すと音声が流れます。</p>
     </div>
 
-    <div id="shared-video-wrapper" style="display:none;">
-        <video id="main-video" controls>
-            <source src="聞き取り7.mp4" type="video/mp4">
-            お使いのブラウザは動画タグに対応していません。
-        </video>
+    <div id="shared-audio-wrapper" style="display:none;">
+        <audio id="main-audio" controls>
+            <source src="listening7.mp3" type="audio/mp3">
+            お使いのブラウザはaudioタグに対応していません。
+        </audio>
     </div>
 
     <div id="quiz-container"></div>
 
     <script>
-        // データ定義（指定された時間に修正済み）
+        // データ定義
         const quizData = [
             {
                 id: 1,
@@ -184,7 +190,7 @@
             {
                 id: 3,
                 timeDisplay: "02:08 ～ ", 
-                startSeconds: 128, // 02:08
+                startSeconds: 128,
                 theme: "過去1000年間の気温変動パターン（中世温暖期と小氷期）について",
                 correct: "And the pattern that it revealed was relatively warm conditions a thousand years ago, during what's sometimes called the Medieval Warm Period, and a slow cooling as we descend into the Little Ice age of the 17th, 18th and 19th centuries.",
                 translation: "その曲線が明らかにしたパターンは次のようなものだった。1000年前は比較的温暖な状態（いわゆる中世の温暖期）があり、その後、17世紀、18世紀、19世紀の小氷期に向かってゆっくりと寒冷化していくというものである。"
@@ -192,7 +198,7 @@
             {
                 id: 4,
                 timeDisplay: "02:43 ～ ", 
-                startSeconds: 163, // 02:43
+                startSeconds: 163,
                 theme: "グラフの形状と「ホッケースティック」の喩えについて",
                 correct: "In fact, if you use your imagination, that record sort of resembles a sports implement known as a hockey stick.",
                 translation: "実際、想像力を働かせて見れば、その記録はスポーツ用具の「ホッケースティック」に少し似ている。"
@@ -200,7 +206,7 @@
             {
                 id: 5,
                 timeDisplay: "03:40 ～ ", 
-                startSeconds: 220, // 03:40
+                startSeconds: 220,
                 theme: "現在の科学的コンセンサス（「ホッケーリーグ」）について",
                 correct: "But today, there's no longer a hockey stick. There is a veritable hockey league, which is to say there are many of these sorts of reconstructions of past temperatures that have been done by different teams of scientists using different data and different methods.",
                 translation: "しかし今日では、もはや一本のホッケースティックだけではない。言ってみればホッケーリーグが存在する。つまり、異なる科学者チームが、異なるデータと異なる手法を使って行った、過去の気温の復元記録がたくさんあるということだ。"
@@ -214,10 +220,10 @@
                 <div class="question-card">
                     <div class="q-header">
                         <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
-                        <button class="play-link-btn" onclick="playLocalVideo(${index}, ${q.startSeconds})">▶ この場で再生</button>
+                        <button class="play-link-btn" onclick="playLocalAudio(${index}, ${q.startSeconds})">▶ この場で再生</button>
                     </div>
                     
-                    <div id="video-area-${index}" class="embedded-video-container"></div>
+                    <div id="audio-area-${index}" class="embedded-audio-container"></div>
 
                     <div class="theme-text">
                         <strong>テーマ:</strong> ${q.theme}
@@ -239,29 +245,29 @@
             container.innerHTML += html;
         });
 
-        // ローカル動画を再生する関数（DOM移動方式）
-        function playLocalVideo(index, startSeconds) {
-            const videoElement = document.getElementById('main-video');
-            const wrapper = document.getElementById('shared-video-wrapper');
-            const targetArea = document.getElementById(`video-area-${index}`);
+        // ローカル音声を再生する関数（DOM移動方式）
+        function playLocalAudio(index, startSeconds) {
+            const audioElement = document.getElementById('main-audio');
+            const wrapper = document.getElementById('shared-audio-wrapper');
+            const targetArea = document.getElementById(`audio-area-${index}`);
             
-            // 全てのビデオエリアを一度非表示・空にする
+            // 全ての音声エリアを一度非表示・空にする
             quizData.forEach((_, i) => {
-                const area = document.getElementById(`video-area-${i}`);
-                if (i !== index && area.contains(videoElement)) {
-                    wrapper.appendChild(videoElement);
+                const area = document.getElementById(`audio-area-${i}`);
+                if (i !== index && area.contains(audioElement)) {
+                    wrapper.appendChild(audioElement);
                     area.style.display = 'none';
                 }
                 if (i !== index) area.style.display = 'none';
             });
 
-            // 動画要素をターゲットエリアに移動
-            targetArea.appendChild(videoElement);
+            // 音声要素をターゲットエリアに移動
+            targetArea.appendChild(audioElement);
             targetArea.style.display = 'block';
 
             // 時間を指定して再生
-            videoElement.currentTime = startSeconds;
-            videoElement.play();
+            audioElement.currentTime = startSeconds;
+            audioElement.play();
         }
 
         function toggleTrans(index) {
