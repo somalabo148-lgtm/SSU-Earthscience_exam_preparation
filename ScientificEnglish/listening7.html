@@ -66,7 +66,7 @@
         }
         /* 再生ボタン */
         .play-link-btn {
-            background-color: #3498db; /* 音声版なので色を青に変更 */
+            background-color: #3498db;
             color: white;
             border: none;
             cursor: pointer;
@@ -137,13 +137,13 @@
         .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
         .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
         
-        /* 音声プレーヤー埋め込みエリア（動画よりシンプルに） */
+        /* 音声プレーヤー埋め込みエリア */
         .embedded-audio-container { 
             margin-top: 10px; 
             margin-bottom: 10px; 
             display: none; 
-            background: #f1f3f4; /* 明るいグレー */
-            border-radius: 30px; /* 丸みをつける */
+            background: #f1f3f4; 
+            border-radius: 30px;
             padding: 5px;
         }
         audio { width: 100%; display: block; outline: none; }
@@ -156,57 +156,63 @@
     <h1>聞き取り第7回：Climate Change</h1>
     
     <div class="video-info">
-        <p>※ 音声ファイル（MP3）を使用しています。「この場で再生」ボタンを押すと音声が流れます。</p>
+        <p>※ 音声ファイル（listening7.mp3）を使用します。「この場で再生」を押してください。</p>
     </div>
 
     <div id="shared-audio-wrapper" style="display:none;">
         <audio id="main-audio" controls>
             <source src="listening7.mp3" type="audio/mp3">
-            お使いのブラウザはaudioタグに対応していません。
+            <source src="聞き取り7.mp3" type="audio/mp3"> お使いのブラウザはaudioタグに対応していません。
         </audio>
     </div>
 
     <div id="quiz-container"></div>
 
     <script>
-        // データ定義
+        // 音声ファイルのエラーチェック
+        document.getElementById('main-audio').addEventListener('error', function(e) {
+            console.error("Audio Load Error:", e);
+            alert("音声ファイルを読み込めませんでした。\n・ファイル名が 'listening7.mp3' になっているか\n・HTMLと同じフォルダにあるか\nを確認してください。");
+        }, true);
+
+        // データ定義（再生開始時間を5秒ずつ早めました）
         const quizData = [
             {
                 id: 1,
-                timeDisplay: "00:17 ～ ", 
-                startSeconds: 17,
+                timeDisplay: "00:12 ～ ", // 17s - 5s
+                startSeconds: 12,
                 theme: "気候変動に関する誤解について",
                 correct: "Well, here's a misconception. The threat of climate change has to do with the absolute warmth of the Earth. It's not the case.",
                 translation: "実は、ここに誤解がある。気候変動の脅威とは、地球の絶対的な暖かさ（温度の絶対値）にあると思われがちだが、事実はそうではない。"
             },
             {
                 id: 2,
-                timeDisplay: "00:46 ～ ", 
-                startSeconds: 46,
+                timeDisplay: "00:41 ～ ", // 46s - 5s
+                startSeconds: 41,
                 theme: "過去の気候を復元する方法（プロキシ記録）について",
                 correct: "So, to reconstruct how climate changed in the distant past, prior to the period of the roughly 100 to 150 years where we have widespread historical measurements of climate variables, we need to turn to so called proxy records.",
                 translation: "気候変数の広範な歴史的測定データが存在するのは過去およそ100～150年間だが、それより以前の遠い過去に気候がどう変化したかを復元するには、いわゆるプロキシ記録に頼る必要がある。"
             },
             {
                 id: 3,
-                timeDisplay: "02:08 ～ ", 
-                startSeconds: 128,
+                timeDisplay: "02:03 ～ ", // 128s - 5s = 123s
+                startSeconds: 123,
                 theme: "過去1000年間の気温変動パターン（中世温暖期と小氷期）について",
                 correct: "And the pattern that it revealed was relatively warm conditions a thousand years ago, during what's sometimes called the Medieval Warm Period, and a slow cooling as we descend into the Little Ice age of the 17th, 18th and 19th centuries.",
                 translation: "その曲線が明らかにしたパターンは次のようなものだった。1000年前は比較的温暖な状態（いわゆる中世の温暖期）があり、その後、17世紀、18世紀、19世紀の小氷期に向かってゆっくりと寒冷化していくというものである。"
             },
             {
                 id: 4,
-                timeDisplay: "02:43 ～ ", 
-                startSeconds: 163,
+                timeDisplay: "02:38 ～ ", // 163s - 5s = 158s
+                startSeconds: 158,
                 theme: "グラフの形状と「ホッケースティック」の喩えについて",
                 correct: "In fact, if you use your imagination, that record sort of resembles a sports implement known as a hockey stick.",
                 translation: "実際、想像力を働かせて見れば、その記録はスポーツ用具の「ホッケースティック」に少し似ている。"
             },
             {
                 id: 5,
-                timeDisplay: "03:40 ～ ", 
-                startSeconds: 220,
+                timeDisplay: "03:35 ～ ", // 220s - 5s = 215s
+                startSeconds: 215,
                 theme: "現在の科学的コンセンサス（「ホッケーリーグ」）について",
                 correct: "But today, there's no longer a hockey stick. There is a veritable hockey league, which is to say there are many of these sorts of reconstructions of past temperatures that have been done by different teams of scientists using different data and different methods.",
                 translation: "しかし今日では、もはや一本のホッケースティックだけではない。言ってみればホッケーリーグが存在する。つまり、異なる科学者チームが、異なるデータと異なる手法を使って行った、過去の気温の復元記録がたくさんあるということだ。"
@@ -266,8 +272,16 @@
             targetArea.style.display = 'block';
 
             // 時間を指定して再生
-            audioElement.currentTime = startSeconds;
-            audioElement.play();
+            if (audioElement.readyState >= 1) { // メタデータロード済みなら
+                audioElement.currentTime = startSeconds;
+                audioElement.play().catch(e => console.log("再生エラー:", e));
+            } else {
+                // ロード待ち
+                audioElement.onloadedmetadata = function() {
+                    audioElement.currentTime = startSeconds;
+                    audioElement.play().catch(e => console.log("再生エラー:", e));
+                };
+            }
         }
 
         function toggleTrans(index) {
