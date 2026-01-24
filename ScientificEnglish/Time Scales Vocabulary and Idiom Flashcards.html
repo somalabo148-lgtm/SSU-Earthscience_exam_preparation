@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Time Scales 英単語・熟語 200問完全版</title>
+<style>
+    :root { --primary: #2c3e50; --accent: #d35400; --correct: #27ae60; --wrong: #c0392b; --bg: #fdfdfd; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", sans-serif; background-color: var(--bg); color: #333; margin: 0; padding-bottom: 60px; -webkit-text-size-adjust: 100%; }
+    
+    /* Header & Nav */
+    header { background: var(--primary); color: white; padding: 15px 10px; text-align: center; position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+    h1 { margin: 0; font-size: 1.1rem; }
+    
+    /* 5つのタブ */
+    .nav-tabs { display: flex; justify-content: space-between; background: #fff; padding: 0; margin: 0; list-style: none; border-bottom: 1px solid #ddd; }
+    .nav-item { flex: 1; text-align: center; padding: 10px 2px; cursor: pointer; font-weight: bold; font-size: 0.75rem; color: #95a5a6; border-bottom: 3px solid transparent; transition: 0.3s; }
+    .nav-item.active { color: var(--accent); border-bottom-color: var(--accent); background: #fffdf9; }
+    
+    /* Progress Bar */
+    .progress-container { background: #e0e0e0; height: 6px; width: 100%; position: sticky; top: 52px; z-index: 99; }
+    .progress-bar { height: 100%; background: var(--correct); width: 0%; transition: width 0.3s; }
+    .score-display { text-align: center; padding: 8px; font-weight: bold; color: var(--primary); font-size: 0.85rem; background: #fff; border-bottom: 1px solid #eee; }
+
+    /* Question Cards */
+    .container { max-width: 800px; margin: 0 auto; padding: 15px; }
+    .card { background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); margin-bottom: 15px; overflow: hidden; border-left: 5px solid transparent; transition: transform 0.1s; border: 1px solid #eee; border-left-width: 5px; }
+    .card.solved-correct { border-left-color: var(--correct); background-color: #fafffb; }
+    .card.solved-wrong { border-left-color: var(--wrong); background-color: #fff5f5; }
+    
+    .q-box { padding: 20px 15px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+    .q-text { font-size: 1.1rem; font-weight: bold; font-family: "Georgia", serif; color: #2c3e50; width: 100%; }
+    .q-num { font-size: 0.8rem; color: #bdc3c7; margin-right: 10px; display: inline-block; min-width: 30px; font-family: sans-serif; font-weight: normal; }
+    .toggle-icon { font-weight: bold; color: #ccc; margin-left: 10px; }
+
+    .a-box { display: none; padding: 0 15px 20px 15px; border-top: 1px dashed #eee; animation: fadeIn 0.2s; background-color: #fafafa; }
+    .a-label { font-size: 0.75rem; color: #95a5a6; margin-top: 10px; margin-bottom: 5px; }
+    .a-text { margin: 5px 0 15px 0; font-size: 1rem; line-height: 1.6; color: #34495e; }
+
+    /* Action Buttons */
+    .actions { display: flex; gap: 10px; margin-top: 10px; }
+    .btn { flex: 1; padding: 12px; border: none; border-radius: 50px; font-weight: bold; cursor: pointer; font-size: 0.95rem; transition: opacity 0.2s; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .btn:active { transform: scale(0.96); }
+    .btn-ok { background: var(--correct); }
+    .btn-ng { background: var(--wrong); }
+    
+    /* Reset Button */
+    .reset-area { text-align: center; margin: 40px 0; }
+    .btn-reset { background: #95a5a6; color: white; padding: 8px 20px; border: none; border-radius: 20px; font-size: 0.8rem; }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    
+    /* Content Visibility */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Time Scales 英単語・熟語 (英語→日本語・全200語)</h1>
+</header>
+
+<ul class="nav-tabs">
+    <li class="nav-item active" onclick="switchTab(1)">Part 1<br>導入</li>
+    <li class="nav-item" onclick="switchTab(2)">Part 2<br>地質・層序</li>
+    <li class="nav-item" onclick="switchTab(3)">Part 3<br>生物</li>
+    <li class="nav-item" onclick="switchTab(4)">Part 4<br>政治</li>
+    <li class="nav-item" onclick="switchTab(5)">Part 5<br>季節・激変</li>
+</ul>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="score-display" id="scoreText">正解率: 0 / 0 (0%)</div>
+
+<div class="container">
+    <div id="content-1" class="tab-content active"></div>
+    <div id="content-2" class="tab-content"></div>
+    <div id="content-3" class="tab-content"></div>
+    <div id="content-4" class="tab-content"></div>
+    <div id="content-5" class="tab-content"></div>
+    
+    <div class="reset-area">
+        <button class="btn-reset" onclick="resetCurrentPart()">このパートの記録をリセット</button>
+    </div>
+</div>
+
+<script>
+// ==========================================
+// 単語データ (全200語・完全版)
+// ==========================================
+const vocabData = [
+    // --- Part 1: Introduction / General (44 words) ---
+    // Source Table 1
+    { p:1, q:"State-of-the-art", a:"最先端の、現在到達できる最高の技術水準の" },
+    { p:1, q:"Immutable", a:"不変の" },
+    { p:1, q:"Analogous", a:"類似している" },
+    { p:1, q:"Terrestrial", a:"地球の、陸上の" },
+    { p:1, q:"Biota", a:"生物相" },
+    { p:1, q:"Sprightly", a:"活発な" },
+    { p:1, q:"Wrought", a:"もたらした（workの過去分詞・古語）" },
+    { p:1, q:"over the course of", a:"～を通して、～の過程で" },
+    { p:1, q:"the integrated web of life", a:"相互依存する生命の網" },
+    { p:1, q:"Remedy", a:"救済策" },
+    { p:1, q:"adverse impacts", a:"悪影響" },
+    { p:1, q:"far-reaching", a:"広範囲に及ぶ" },
+    { p:1, q:"Appreciation", a:"（真の）理解" },
+    { p:1, q:"Sustained", a:"（生命を）維持する、持続的な" },
+    { p:1, q:"Impoverishment", a:"貧困化、劣化" },
+    { p:1, q:"let alone", a:"まして（～ない）" },
+    { p:1, q:"barely", a:"ほとんど～ない" },
+    { p:1, q:"Innate", a:"生まれつきの、生得的な" },
+    { p:1, q:"Intuitive", a:"直感的な" },
+    { p:1, q:"Reinforced", a:"強化された" },
+    { p:1, q:"Obliquely", a:"遠回しに" },
+    { p:1, q:"Duration", a:"継続、期間" },
+    { p:1, q:"Succinct", a:"簡潔な" },
+    { p:1, q:"Illuminating", a:"啓発的な" },
+    { p:1, q:"Unaided", a:"肉眼の（機械の助けを借りず）" },
+    { p:1, q:"Document", a:"記録する" },
+    { p:1, q:"Flits", a:"飛び回る" },
+    { p:1, q:"Evoke", a:"呼び起こす" },
+    { p:1, q:"Means", a:"手段" },
+    { p:1, q:"Triangulation", a:"三角測量（位置特定）" },
+    { p:1, q:"Hence", a:"それ故、したがって" },
+    { p:1, q:"Quantitatively", a:"定量的に" },
+    { p:1, q:"Static", a:"静止した" },
+    { p:1, q:"Nature", a:"本質" },
+    { p:1, q:"Invariant", a:"不変の" },
+    { p:1, q:"Attribute", a:"属性、特性" },
+    { p:1, q:"a sort of", a:"一種の" },
+    { p:1, q:"Offset", a:"相殺する" },
+    { p:1, q:"Imperceptible", a:"感知できない、知覚できないほど微細な" },
+    { p:1, q:"Net", a:"正味の" },
+    { p:1, q:"Compensated", a:"補償される" },
+    { p:1, q:"Inexorable", a:"容赦ない" },
+    { p:1, q:"Intergradational", a:"相互に移行する" },
+    { p:1, q:"Cataclysmic", a:"劇的な、激変的な" },
+
+    // --- Part 2: Geologic Time & Stratigraphy (46 words) ---
+    // Source Table 2 (20 words)
+    { p:2, q:"Newcomer", a:"新参者" },
+    { p:2, q:"Clumped", a:"塊になった、凝集した" },
+    { p:2, q:"Repulsive", a:"反発する" },
+    { p:2, q:"Explosively blew apart", a:"爆発的に四散した" },
+    { p:2, q:"apart from", a:"～は別として" },
+    { p:2, q:"Nebula", a:"星雲" },
+    { p:2, q:"Planetesimals", a:"微惑星" },
+    { p:2, q:"Concurrently", a:"同時に" },
+    { p:2, q:"Vigorous", a:"激しい、活発な" },
+    { p:2, q:"Precise", a:"精密な" },
+    { p:2, q:"Accurate", a:"正確な" },
+    { p:2, q:"Unraveling", a:"明らかにする、解明する" },
+    { p:2, q:"Muscovite", a:"白雲母" },
+    { p:2, q:"Granitic", a:"花崗岩の" },
+    { p:2, q:"Incorporates", a:"取り込む" },
+    { p:2, q:"Pulverized", a:"粉砕された" },
+    { p:2, q:"Appreciably", a:"感知できるほど" },
+    { p:2, q:"Radioactive isotopes", a:"放射性同位体" },
+    { p:2, q:"Parent / Daughter isotopes", a:"親同位体 / 娘同位体" },
+    { p:2, q:"Half-life", a:"半減期" },
+    // Source Table 3 (26 words)
+    { p:2, q:"Tenet", a:"原理、信条" },
+    { p:2, q:"Undeformed", a:"変形していない" },
+    { p:2, q:"Successively", a:"連続して" },
+    { p:2, q:"law of superposition", a:"地層累重の法則" },
+    { p:2, q:"Inferred", a:"推論された" },
+    { p:2, q:"Uniformitarianism", a:"斉一説（せいいつせつ）" },
+    { p:2, q:"life-entombed", a:"埋没した生物" },
+    { p:2, q:"Progressively", a:"次第に" },
+    { p:2, q:"Contrasting", a:"対照的な" },
+    { p:2, q:"Ubiquitous", a:"いたるところにある、遍在する" },
+    { p:2, q:"Stratified", a:"層状の" },
+    { p:2, q:"Extrapolate", a:"外挿する、推定する" },
+    { p:2, q:"Gauge", a:"測定する" },
+    { p:2, q:"Nonexistent", a:"存在しない" },
+    { p:2, q:"Crude", a:"粗い、大まかな" },
+    { p:2, q:"Turbulent", a:"激動の、荒れ狂う" },
+    { p:2, q:"Accretion", a:"降着、惑星の成長（集積）" },
+    { p:2, q:"Engrossing", a:"夢中にさせる" },
+    { p:2, q:"Briefly", a:"簡単に、手短に" },
+    { p:2, q:"Clues", a:"手がかり" },
+    { p:2, q:"Obscure", a:"不明瞭な" },
+    { p:2, q:"Lapsed", a:"過ぎ去った、経過した" },
+    { p:2, q:"Evidently", a:"明らかに" },
+    { p:2, q:"Infinitesimally", a:"限りなく小さく、無限に" },
+    { p:2, q:"Flourishing", a:"繁栄する" },
+    { p:2, q:"Phanerozoic Eon", a:"顕生代（けんせいだい）" },
+
+    // --- Part 3: Biologic Time (39 words) ---
+    // Source Table 4
+    { p:3, q:"Corresponds", a:"対応する" },
+    { p:3, q:"Reducing", a:"還元的な" },
+    { p:3, q:"Scarcity", a:"乏しさ" },
+    { p:3, q:"Paleoclimatology", a:"古気候学" },
+    { p:3, q:"Prokaryotes", a:"原核生物" },
+    { p:3, q:"Eukaryotes", a:"真核生物" },
+    { p:3, q:"Anaerobes", a:"嫌気性生物" },
+    { p:3, q:"Oxidation", a:"酸化" },
+    { p:3, q:"Abundance", a:"豊富さ" },
+    { p:3, q:"Metazoans", a:"後生動物（多細胞動物）" },
+    { p:3, q:"Invertebrate", a:"無脊椎動物" },
+    { p:3, q:"bottom-dwelling", a:"底生の（水底に住む）" },
+    { p:3, q:"perplexing lineage", a:"不可解な系統" },
+    { p:3, q:"Morphologic", a:"形態学的な" },
+    { p:3, q:"floral and faunal", a:"動植物相の" },
+    { p:3, q:"Proliferation", a:"急増、繁栄" },
+    { p:3, q:"Amphibians", a:"両生類" },
+    { p:3, q:"Reptiles", a:"爬虫類" },
+    { p:3, q:"Demise", a:"終焉、絶滅" },
+    { p:3, q:"Inherit", a:"受け継ぐ" },
+    { p:3, q:"Precursors", a:"先駆者" },
+    { p:3, q:"Diversifying", a:"多様化している" },
+    { p:3, q:"Evolving", a:"進化している" },
+    { p:3, q:"Dentition", a:"歯列" },
+    { p:3, q:"Limb", a:"四肢" },
+    { p:3, q:"Digits", a:"指" },
+    { p:3, q:"Attributes", a:"特性" },
+    { p:3, q:"Perpetuate", a:"永続させる" },
+    { p:3, q:"Favorable", a:"有利な、好ましい" },
+    { p:3, q:"inversely related", a:"反比例の関係にある" },
+    { p:3, q:"Longevity", a:"長寿、寿命" },
+    { p:3, q:"Vertebrate", a:"脊椎動物" },
+    { p:3, q:"Pleistocene", a:"更新世" },
+    { p:3, q:"Arose", a:"生じた" },
+    { p:3, q:"Anatomically", a:"解剖学的に" },
+    { p:3, q:"printing press", a:"活版印刷" },
+    { p:3, q:"Magnitude", a:"桁、大きさ" },
+    { p:3, q:"Briefer", a:"（より）短い" },
+    { p:3, q:"Stately", a:"ゆったりした、堂々とした" },
+
+    // --- Part 4: Political Time (47 words) ---
+    // Source Table 5
+    { p:4, q:"Abbreviated", a:"短縮された、短い" },
+    { p:4, q:"Hostilities", a:"戦闘状態、敵対行為" },
+    { p:4, q:"Inception", a:"開始、発足" },
+    { p:4, q:"Broad", a:"広範な" },
+    { p:4, q:"Feat", a:"偉業" },
+    { p:4, q:"Formidable", a:"手ごわい、困難な" },
+    { p:4, q:"Inextricably", a:"切っても切れないほど、不可分に" },
+    { p:4, q:"profoundly conflicting", a:"深く対立する" },
+    { p:4, q:"Abatement", a:"低減、減少" },
+    { p:4, q:"sheds little light on", a:"～をほとんど解明しない" },
+    { p:4, q:"the anthropogenic buildup", a:"人為的な蓄積" },
+    { p:4, q:"Awareness", a:"意識、認識" },
+    { p:4, q:"Electorate", a:"有権者" },
+    { p:4, q:"Empowered", a:"権限を与えられた" },
+    { p:4, q:"Intellectually", a:"知的に" },
+    { p:4, q:"Burgeoning", a:"急増する" },
+    { p:4, q:"Hamstring", a:"妨げる" },
+    { p:4, q:"Exploitation", a:"搾取、開発" },
+    { p:4, q:"fuel (verb)", a:"（比喩的に）煽る、活気づける" },
+    { p:4, q:"Today’s pressing", a:"今日の差し迫った" },
+    { p:4, q:"chlorine-bearing", a:"塩素を含む" },
+    { p:4, q:"Refrigerants", a:"冷媒、冷却材" },
+    { p:4, q:"Presence", a:"存在（in the presence of sunlight：日光に曝された状態で）" },
+    { p:4, q:"Liberate", a:"放出する、遊離させる" },
+    { p:4, q:"Catalytic", a:"触媒の" },
+    { p:4, q:"Destruction", a:"破壊" },
+    { p:4, q:"Agent", a:"要因、物質" },
+    { p:4, q:"Antarctica", a:"南極大陸" },
+    { p:4, q:"Galvanized", a:"衝撃を与える、突き動かす" },
+    { p:4, q:"Assembly", a:"会議、集会" },
+    { p:4, q:"Accord", a:"協定" },
+    { p:4, q:"Synthetic", a:"合成の" },
+    { p:4, q:"Mandates", a:"義務付ける" },
+    { p:4, q:"Subsequent", a:"その後の" },
+    { p:4, q:"Triumph", a:"勝利" },
+    { p:4, q:"Unbridled", a:"無制限な、抑えられない" },
+    { p:4, q:"Patents", a:"特許" },
+    { p:4, q:"Lapse", a:"失効する" },
+    { p:4, q:"Elapsed", a:"時が経過した" },
+    { p:4, q:"Disquieting", a:"不安にさせる" },
+    { p:4, q:"Currency", a:"通貨" },
+    { p:4, q:"Consumption", a:"消費" },
+    { p:4, q:"Abundantly", a:"豊富に" },
+    { p:4, q:"represent a finite", a:"～は有限である" },
+    { p:4, q:"If ~ to be", a:"もし～するつもりならば（意図）" },
+    { p:4, q:"Complement", a:"補完物、補完量" },
+    { p:4, q:"Intensifying", a:"激化している" },
+
+    // --- Part 5: Seasonal & Catastrophes (24 words) ---
+    // Source Table 6 (5 words)
+    { p:5, q:"Fashion", a:"方法、様式" },
+    { p:5, q:"Periodic", a:"周期的な" },
+    { p:5, q:"Discerned", a:"見分ける、識別される" },
+    { p:5, q:"Implications", a:"結果、影響、意味合い" },
+    { p:5, q:"Intricate", a:"複雑な、入り組んだ" },
+    // Source Table 7 (19 words)
+    { p:5, q:"Subtle", a:"微妙な" },
+    { p:5, q:"Vastly", a:"はるかに" },
+    { p:5, q:"Typifying", a:"典型的に表す" },
+    { p:5, q:"Discrete", a:"個別の、分離した" },
+    { p:5, q:"Enlarging", a:"拡大する" },
+    { p:5, q:"Primordial", a:"初期の、原始の" },
+    { p:5, q:"Projectile", a:"投射体（ここでは隕石のこと）" },
+    { p:5, q:"Manifested", a:"現れた、明らかになった" },
+    { p:5, q:"Coincided", a:"同時期に起こった" },
+    { p:5, q:"Precisely", a:"正確に" },
+    { p:5, q:"Soot", a:"煤（すす）" },
+    { p:5, q:"Vaporized", a:"蒸発させた" },
+    { p:5, q:"Ensuing", a:"続いて起こる、結果として起こる（注：訳文の「加わる」は文脈意訳）" },
+    { p:5, q:"Entrained", a:"巻き込まれた" },
+    { p:5, q:"Ignited", a:"点火した、火をつけた" },
+    { p:5, q:"Distinctive", a:"特徴的な" },
+    { p:5, q:"Diligent", a:"入念な、勤勉な" },
+    { p:5, q:"Peninsula", a:"半島" },
+    { p:5, q:"Excavated", a:"掘削した、穴をうがった" }
+];
+
+// ==========================================
+// アプリ機能の実装
+// ==========================================
+let currentPart = 1;
+// ユーザーの解答状況 { "q-0": true, "q-1": false ... }
+let userStatus = JSON.parse(localStorage.getItem('timescales_vocab_status_v2')) || {};
+
+function saveStatus() {
+    localStorage.setItem('timescales_vocab_status_v2', JSON.stringify(userStatus));
+    updateProgress();
+}
+
+function switchTab(part) {
+    currentPart = part;
+    // タブUI更新
+    document.querySelectorAll('.nav-item').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === part);
+    });
+    // コンテンツ表示切替
+    document.querySelectorAll('.tab-content').forEach((el, idx) => {
+        el.classList.toggle('active', idx + 1 === part);
+    });
+    renderQuestions(part);
+    updateProgress();
+    // ページ上部へスクロール
+    window.scrollTo(0, 0);
+}
+
+function renderQuestions(part) {
+    const container = document.getElementById(`content-${part}`);
+    if (container.innerHTML !== "") return; // 描画済みなら何もしない
+
+    const partQuestions = vocabData.filter(q => q.p === part);
+    
+    let html = "";
+    partQuestions.forEach((item) => {
+        // 全体配列の中でのインデックス（ユニークID用）
+        const globalIndex = vocabData.indexOf(item);
+        const status = userStatus[`q-${globalIndex}`];
+        
+        let cardClass = "";
+        if (status === true) cardClass = "solved-correct";
+        if (status === false) cardClass = "solved-wrong";
+
+        html += `
+        <div class="card ${cardClass}" id="card-${globalIndex}">
+            <div class="q-box" onclick="toggleAnswer(${globalIndex})">
+                <div class="q-text">
+                    <span class="q-num">${globalIndex + 1}.</span> ${item.q}
+                </div>
+                <div class="toggle-icon">▼</div>
+            </div>
+            <div class="a-box" id="ans-${globalIndex}">
+                <div class="a-label">意味</div>
+                <div class="a-text">${item.a}</div>
+                <div class="actions">
+                    <button class="btn btn-ok" onclick="markAnswer(${globalIndex}, true)">覚えた</button>
+                    <button class="btn btn-ng" onclick="markAnswer(${globalIndex}, false)">不安</button>
+                </div>
+            </div>
+        </div>
+        `;
+    });
+    container.innerHTML = html;
+}
+
+function toggleAnswer(id) {
+    const ansBox = document.getElementById(`ans-${id}`);
+    const toggleIcon = document.querySelector(`#card-${id} .toggle-icon`);
+    
+    if (ansBox.style.display === "block") {
+        ansBox.style.display = "none";
+        toggleIcon.textContent = "▼";
+    } else {
+        ansBox.style.display = "block";
+        toggleIcon.textContent = "▲";
+    }
+}
+
+function markAnswer(id, isCorrect) {
+    userStatus[`q-${id}`] = isCorrect;
+    const card = document.getElementById(`card-${id}`);
+    
+    // クラス更新
+    card.classList.remove('solved-correct', 'solved-wrong');
+    if (isCorrect) {
+        card.classList.add('solved-correct');
+    } else {
+        card.classList.add('solved-wrong');
+    }
+    
+    saveStatus();
+}
+
+function updateProgress() {
+    const partQuestions = vocabData.filter(q => q.p === currentPart);
+    const total = partQuestions.length;
+    let correctCount = 0;
+    
+    partQuestions.forEach(item => {
+        const globalIndex = vocabData.indexOf(item);
+        if (userStatus[`q-${globalIndex}`] === true) {
+            correctCount++;
+        }
+    });
+    
+    const percentage = total === 0 ? 0 : Math.round((correctCount / total) * 100);
+    document.getElementById('progressBar').style.width = `${percentage}%`;
+    document.getElementById('scoreText').textContent = `Part ${currentPart} 習得率: ${correctCount} / ${total} (${percentage}%)`;
+}
+
+function resetCurrentPart() {
+    if(!confirm("このパートの記録をリセットしますか？")) return;
+    
+    const partQuestions = vocabData.filter(q => q.p === currentPart);
+    partQuestions.forEach(item => {
+        const globalIndex = vocabData.indexOf(item);
+        delete userStatus[`q-${globalIndex}`];
+        const card = document.getElementById(`card-${globalIndex}`);
+        if(card) {
+            card.classList.remove('solved-correct', 'solved-wrong');
+            document.getElementById(`ans-${globalIndex}`).style.display = "none";
+            document.querySelector(`#card-${globalIndex} .toggle-icon`).textContent = "▼";
+        }
+    });
+    
+    saveStatus();
+}
+
+// 初期化
+window.onload = function() {
+    switchTab(1);
+};
+
+</script>
+</body>
+</html>
