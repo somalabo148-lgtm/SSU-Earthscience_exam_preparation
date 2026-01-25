@@ -3,173 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>地質学・生命史 和訳演習</title>
+    <title>地質学・生命史 和訳演習（モバイル最適化版）</title>
     <style>
+        :root {
+            --primary-color: #2980b9;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --card-bg: #fff;
+        }
+
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
             line-height: 1.6;
         }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
         h1 {
             text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
             color: #2c3e50;
-            border-bottom: 2px solid #2c3e50;
-            padding-bottom: 10px;
         }
-        /* 戻るボタン */
+
         .back-link-btn {
             display: inline-block;
-            margin-bottom: 15px;
-            padding: 8px 16px;
+            padding: 6px 12px;
             background-color: #95a5a6;
             color: white;
             text-decoration: none;
             border-radius: 4px;
-            font-size: 0.9em;
-            transition: background-color 0.2s;
+            font-size: 0.85em;
         }
-        .back-link-btn:hover {
-            background-color: #7f8c8d;
+
+        /* メインコンテナのレイアウト */
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
+
         .quiz-section {
-            background: #fff;
+            background: var(--card-bg);
             border-radius: 12px;
-            padding: 25px;
-            margin-bottom: 40px;
+            padding: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
         }
+
         h2 {
-            color: #2980b9;
-            font-size: 1.4em;
-            border-left: 6px solid #2980b9;
-            padding-left: 15px;
-            margin-bottom: 20px;
+            color: var(--primary-color);
+            font-size: 1.1em;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+            margin: 0 0 15px 0;
         }
-        .instruction {
-            background-color: #e8f4f8;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            font-weight: bold;
+
+        /* 英文と入力欄を横並び（または上下固定）にするためのラッパー */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* PCでは左右 */
+            gap: 20px;
+            height: 60vh; /* 画面の60%の高さに固定 */
         }
-        .english-text {
+
+        .english-area {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
+            overflow-y: auto; /* 英文エリアだけ独立してスクロール */
             font-family: "Georgia", serif;
-            font-size: 1.1em;
-            margin-bottom: 20px;
-            white-space: pre-wrap;
+            font-size: 1.05em;
         }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+        }
+
         textarea {
+            flex-grow: 1; /* 親要素の高さ一杯に広がる */
             width: 100%;
-            height: 150px;
             padding: 15px;
             border: 2px solid #bdc3c7;
             border-radius: 8px;
             font-size: 1em;
             box-sizing: border-box;
-            margin-bottom: 15px;
+            resize: none;
             transition: border-color 0.3s;
         }
+
         textarea:focus {
-            border-color: #3498db;
+            border-color: var(--primary-color);
             outline: none;
         }
-        .btn-container {
-            text-align: right;
+
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
+
         .show-ans-btn {
             background-color: #34495e;
             color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 1em;
             transition: background-color 0.2s;
         }
-        .show-ans-btn:hover {
-            background-color: #2c3e50;
-        }
+
         .answer-area {
             display: none;
-            margin-top: 20px;
-            padding: 20px;
+            margin-top: 15px;
+            padding: 15px;
             background-color: #f1f9f1;
             border: 1px solid #d4e8d4;
             border-radius: 8px;
+            font-size: 0.95em;
         }
+
         .answer-title {
             font-weight: bold;
             color: #27ae60;
-            margin-bottom: 10px;
             display: block;
+            margin-bottom: 5px;
         }
-        .answer-content {
-            color: #2c3e50;
-            white-space: pre-wrap;
+
+        /* スマートフォン向け調整 */
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr; /* 上下並び */
+                height: 75vh; /* スマホでは少し高めに確保 */
+                grid-template-rows: 1fr 1.2fr; /* 英文と入力欄の比率 */
+            }
+            
+            h1 { font-size: 1rem; }
+            h2 { font-size: 1em; }
+            .english-area { font-size: 0.95em; }
         }
     </style>
 </head>
 <body>
-    <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
-    <h1>地質学・生命史 和訳演習</h1>
+    <header>
+        <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+        <h1>地質学・生命史 和訳演習</h1>
+    </header>
 
-    <div class="quiz-section">
-        <h2>第1題：生命の多様化と進化の時代</h2>
-        <p class="instruction">次の文章を日本語に訳しなさい。</p>
-        <div class="english-text">Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. However, a rich collection of soft-bodied creatures of perplexing lineage - the so-called Ediacara fauna has been described from the youngest Proterozoic strata (termed "Vendian" in age) of eastern Australia. By the beginning of the Cambrian period, plants and animals displaying remarkable morphologic diversification and occupying a wide range of habitats burst onto the scene. To our knowledge, most life forms had developed shells or other preservable hard parts by this time. Such organisms are more likely to leave fossil evidence than are soft-bodied forms. Who knows how many floral and faunal types left no record at all?
-
-The Paleozoic Era, lasting 325 million years, witnessed a proliferation of invertebrates, fishes, and amphibians. The following 180-million-year-long Mesozoic Era is characterized as the age of dinosaurs. Reptiles actually arose in the late Paleozoic, and some have survived into the Cenozoic, or age of mammals. Similarly, primitive mammals existed throughout the Mesozoic Era; however, only after the demise of the dinosaurs approximately 65 million years ago - did they inherit the Earth. Once the reptiles' reign of terror was largely concluded, mammals rapidly occupied the many ecologic niches previously controlled by their cold-blooded precursors, diversifying and evolving in the process an activity that continues to this day. The general phenomenon by which organisms evolve in harmony with the changing environment is termed adaptive radiation.</div>
-        
-        <textarea placeholder="ここに自分の訳を入力してください..."></textarea>
-        
-        <div class="btn-container">
-            <button class="show-ans-btn" onclick="toggleAnswer(0)">正解を表示する</button>
+    <div class="quiz-container">
+        <div class="quiz-section">
+            <h2>第1題：生命の多様化と進化の時代</h2>
+            <div class="workspace">
+                <div class="english-area">
+                    [cite_start]Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. [cite: 1] [cite_start]The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. [cite: 3, 4] [cite_start]However, a rich collection of soft-bodied creatures of perplexing lineage - the so-called Ediacara fauna has been described from the youngest Proterozoic strata (termed "Vendian" in age) of eastern Australia. [cite: 5, 6] [cite_start]By the beginning of the Cambrian period, plants and animals displaying remarkable morphologic diversification and occupying a wide range of habitats burst onto the scene. [cite: 7, 8] [cite_start]To our knowledge, most life forms had developed shells or other preservable hard parts by this time. [cite: 9, 10] [cite_start]Such organisms are more likely to leave fossil evidence than are soft-bodied forms. [cite: 11, 13] [cite_start]Who knows how many floral and faunal types left no record at all? [cite: 14, 15]<br><br>
+                    [cite_start]The Paleozoic Era, lasting 325 million years, witnessed a proliferation of invertebrates, fishes, and amphibians. [cite: 16, 17] [cite_start]The following 180-million-year-long Mesozoic Era is characterized as the age of dinosaurs. [cite: 18, 19] [cite_start]Reptiles actually arose in the late Paleozoic, and some have survived into the Cenozoic, or age of mammals. [cite: 20, 21] [cite_start]Similarly, primitive mammals existed throughout the Mesozoic Era; however, only after the demise of the dinosaurs approximately 65 million years ago - did they inherit the Earth. [cite: 22, 23] [cite_start]Once the reptiles' reign of terror was largely concluded, mammals rapidly occupied the many ecologic niches previously controlled by their cold-blooded precursors, diversifying and evolving in the process an activity that continues to this day. [cite: 24, 25, 26] [cite_start]The general phenomenon by which organisms evolve in harmony with the changing environment is termed adaptive radiation. [cite: 27, 28]
+                </div>
+                <div class="input-area">
+                    <textarea placeholder="ここに和訳を入力...（英文を見ながら入力できます）"></textarea>
+                    <div class="controls">
+                        <span style="font-size: 0.8em; color: #666;">※上にスワイプ/スクロールで英文の続き</span>
+                        <button class="show-ans-btn" onclick="toggleAnswer(0)">正解表示</button>
+                    </div>
+                    <div id="answer-0" class="answer-area">
+                        <span class="answer-title">【公式和訳】</span>
+                        [cite_start]先カンブリア紀（およそ6から8億年前）の終わり頃にしか、より複雑な多細胞生物の存在とその後の原始的な無脊椎動物の存在について何の証拠も得られていない。[cite: 2] [cite_start]その手がかり（証拠）は主に植物の印象化石や底生の海洋性の無脊椎動物によって作られた生痕化石という形で存在する。[cite: 4] [cite_start]しかしながら、エディアカラ動物群と呼ばれる系統不明の多種多様な軟らかい体をした動物は、東オーストラリアの最も新しい原生代の地層（「ヴェンド紀」と呼ばれる時代）から発見された。[cite: 6] [cite_start]カンブリア紀の始まりまでに、著しい形態的な多様化を示し、広範囲にわたる生息地を占有した植物と動物が突如として現れた。[cite: 8] [cite_start]我々の知っている限り、このときにはほとんどの生命は殻やその他の保存され得る堅い部位を発達させていた。[cite: 10] [cite_start]このような生命体は、軟らかい体の生物よりも化石の証拠を残しやすい。[cite: 13] [cite_start]どれほどの動植物群が何の記録（痕跡）も残さなかったのかなど、誰が知っているだろうか？[cite: 15]<br><br>
+                        [cite_start]3億2500万年続いた古生代には、無脊椎動物と魚類と両生類の急増が起きた。[cite: 17] [cite_start]その後の1億8000万年間の中生代は、恐竜の時代として特徴付けられる。[cite: 19] [cite_start]爬虫類は実際、後期古生代に登場し、その一部は哺乳類の時代である新生代まで生き残った。[cite: 21] [cite_start]同様に、原始的な哺乳類は中生代を通して存在していたが、およそ6500万年前の恐竜の絶滅のあとになって初めて地球を支配するようになった。[cite: 23] [cite_start]爬虫類の支配がほとんど終わると、哺乳類は爬虫類によって支配されていた生態学的なニッチを急速に占めるとともに多様化と進化を遂げた。その過程は今日までも続いている。[cite: 26] [cite_start]生物が変化し続ける環境と調和を取りながら進化する一般的な現象のことを適応放散と呼ぶ。[cite: 28]
+                    </div>
+                </div>
+            </div>
         </div>
-        
-        <div id="answer-0" class="answer-area">
-            <span class="answer-title">【公式和訳（正解）】</span>
-            <div class="answer-content">先カンブリア紀（およそ6から8億年前）の終わり頃にしか、より複雑な多細胞生物の存在とその後の原始的な無脊椎動物の存在について何の証拠も得られていない。その手がかり（証拠）は主に植物の印象化石や底生の海洋性の無脊椎動物によって作られた生痕化石という形で存在する。しかしながら、エディアカラ動物群と呼ばれる系統不明の多種多様な軟らかい体をした動物は、東オーストラリアの最も新しい原生代の地層（「ヴェンド紀」と呼ばれる時代）から発見された。カンブリア紀の始まりまでに、著しい形態的な多様化を示し、広範囲にわたる生息地を占有した植物と動物が突如として現れた。我々の知っている限り、このときにはほとんどの生命は殻やその他の保存され得る堅い部位を発達させていた。このような生命体は、軟らかい体の生物よりも化石の証拠を残しやすい。どれほどの動植物群が何の記録（痕跡）も残さなかったのかなど、誰が知っているだろうか？
 
-3億2500万年続いた古生代には、無脊椎動物と魚類と両生類の急増が起きた。その後の1億8000万年間の中生代は、恐竜の時代として特徴付けられる。爬虫類は実際、後期古生代に登場し、その一部は哺乳類の時代である新生代まで生き残った。同様に、原始的な哺乳類は中生代を通して存在していたが、およそ6500万年前の恐竜の絶滅のあとになって初めて地球を支配するようになった。爬虫類の支配がほとんど終わると、哺乳類は爬虫類によって支配されていた生態学的なニッチを急速に占めるとともに多様化と進化を遂げた。その過程は今日までも続いている。生物が変化し続ける環境と調和を取りながら進化する一般的な現象のことを適応放散と呼ぶ。</div>
-        </div>
-    </div>
-
-    <div class="quiz-section">
-        <h2>第2題：始生代の生命と環境（2023年度 追試）</h2>
-        <p class="instruction">次の文章を日本語に訳しなさい。</p>
-        <div class="english-text">The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia and must have existed even earlier. These filamentous single-celled organisms formed domical, or mushroom-like colonies called stromatolites. They flourished in tidal marine waters, and still do in protected lagoons such as Shark Bay in western Australia, and the Gulf of California. As fine clay washed over these ancient biogenic mounds and they were buried by later sediments, aqueous fluids percolated through the muds, hardening them into layered rock; in the process, the original organic structures were replaced by new mineral matter, thus preserving some such colonies as fossil stromatolitic reefs.
-
-Stromatolites were widespread in the early Earth. Minerals preserved in Archean strata, as well as computer models of planetary outgassing and paleoclimatology, suggest that early in its history, the planet was enveloped by a strongly reducing atmosphere characterized by the scarcity of free oxygen but rich in methane, hydrogen, and perhaps also ammonia.</div>
-        
-        <textarea placeholder="ここに自分の訳を入力してください..."></textarea>
-        
-        <div class="btn-container">
-            <button class="show-ans-btn" onclick="toggleAnswer(1)">正解を表示する</button>
-        </div>
-        
-        <div id="answer-1" class="answer-area">
-            <span class="answer-title">【公式和訳（正解）】</span>
-            <div class="answer-content">生物活動の痕跡は始生代にまでさかのぼるため、陸上生命の進化は地質時代とかなり密接に対応している。嫌気性（すなわち酸素を消費せずに生きること）かつ光合成を行う細菌は、西オーストラリアの35億年前の珪質堆積物から発見されており、それらはさらに古い時代にも存在していたに違いない。これらの糸状単細胞生物は、ストロマトライトと呼ばれるドーム状またはきのこ状のコロニーを形成していた。それらはかつて潮汐域の海洋で繁栄し、現在でも、西オーストラリアのシャーク湾やカリフォルニア湾などの保護されたラグーン内でみられる。微細な粘土がこれらの古代の生物起源のマウンド（ストロマトライト）を覆い、後の堆積物によって埋められるにつれて水性の流体が泥を通って浸透し、それらを層状の堆積岩へと硬化させた。その過程で元の生物由来の構造は新しい鉱物成分に置き換えられ、結果としていくつかのコロニーはストロマトライト礁の化石として保存された。
-
-ストロマトライトは初期地球に広く分布していた。始生代の地層に保存された鉱物や、惑星のガス放出と古気候学のコンピューターモデルは、地球史初期において、遊離酸素が欠乏し、メタン、水素、そしておそらくアンモニアに富む非常に還元的な大気に覆われていたことを示唆している。</div>
+        <div class="quiz-section">
+            <h2>第2題：始生代の生命と環境（追試）</h2>
+            <div class="workspace">
+                <div class="english-area">
+                                        [cite_start]The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. [cite: 29, 30, 31] [cite_start]Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia and must have existed even earlier. [cite: 32, 33, 61] [cite_start]These filamentous single-celled organisms formed domical, or mushroom-like colonies called stromatolites. [cite: 34, 62] [cite_start]They flourished in tidal marine waters, and still do in protected lagoons such as Shark Bay in western Australia, and the Gulf of California. [cite: 35, 63] [cite_start]As fine clay washed over these ancient biogenic mounds and they were buried by later sediments, aqueous fluids percolated through the muds, hardening them into layered rock; [cite: 37, 64] [cite_start]in the process, the original organic structures were replaced by new mineral matter, thus preserving some such colonies as fossil stromatolitic reefs. [cite: 38, 65]<br><br>
+                    [cite_start]Stromatolites were widespread in the early Earth. [cite: 40, 41, 66] [cite_start]Minerals preserved in Archean strata, as well as computer models of planetary outgassing and paleoclimatology, suggest that early in its history, the planet was enveloped by a strongly reducing atmosphere characterized by the scarcity of free oxygen but rich in methane, hydrogen, and perhaps also ammonia. [cite: 42, 43, 66]
+                </div>
+                <div class="input-area">
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
+                    <div class="controls">
+                        <span style="font-size: 0.8em; color: #666;">※スクロールで英文の続きを確認</span>
+                        <button class="show-ans-btn" onclick="toggleAnswer(1)">正解表示</button>
+                    </div>
+                    <div id="answer-1" class="answer-area">
+                        <span class="answer-title">【公式和訳】</span>
+                        [cite_start]生物活動の痕跡は始生代にまでさかのぼるため、陸上生命の進化は地質時代とかなり密接に対応している。[cite: 31, 60] [cite_start]嫌気性（すなわち酸素を消費せずに生きること）かつ光合成を行う細菌は、西オーストラリアの35億年前の珪質堆積物から発見されており、それらはさらに古い時代にも存在していたに違いない。[cite: 33, 61] [cite_start]これらの糸状単細胞生物は、ストロマトライトと呼ばれるドーム状またはきのこ状のコロニーを形成していた。[cite: 36, 62] [cite_start]それらはかつて潮汐域の海洋で繁栄し、現在でも、西オーストラリアのシャーク湾やカリフォルニア湾などの保護されたラグーン内でみられる。[cite: 36, 63] [cite_start]微細な粘土がこれらの古代の生物起源のマウンド（ストロマトライト）を覆い、後の堆積物によって埋められるにつれて水性の流体が泥を通って浸透し、それらを層状の堆積岩へと硬化させた。[cite: 39, 64] [cite_start]その過程で元の生物由来の構造は新しい鉱物成分に置き換えられ、結果としていくつかのコロニーはストロマトライト礁の化石として保存された。[cite: 39, 65]<br><br>
+                        [cite_start]ストロマトライトは初期地球に広く分布していた。[cite: 41, 66] [cite_start]始生代の地層に保存された鉱物や、惑星のガス放出と古気候学のコンピューターモデルは、地球史初期において、遊離酸素が欠乏し、メタン、水素、そしておそらくアンモニアに富む非常に還元的な大気に覆われていたことを示唆している。[cite: 43, 66]
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
         function toggleAnswer(id) {
             const ans = document.getElementById('answer-' + id);
-            const btn = ans.previousElementSibling.firstElementChild;
+            const btn = ans.previousElementSibling.querySelector('.show-ans-btn');
             if (ans.style.display === 'block') {
                 ans.style.display = 'none';
-                btn.textContent = '正解を表示する';
+                btn.textContent = '正解表示';
             } else {
                 ans.style.display = 'block';
                 btn.textContent = '正解を隠す';
