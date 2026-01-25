@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>地質学リスニング・トレーニング</title>
+    <title>過去問</title>
     <style>
         body {
             font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
@@ -17,6 +17,20 @@
             text-align: center;
             color: #2c3e50;
             margin-bottom: 30px;
+        }
+        .back-link-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .back-link-btn:hover {
+        background-color: #7f8c8d;
         }
         .question-card {
             background: #fff;
@@ -105,11 +119,12 @@
     </style>
 </head>
 <body>
+    
 
     <h1>地質学リスニング・トレーニング</h1>
     
     <div id="quiz-container"></div>
-
+    <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
     <script>
         const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
 
@@ -253,4 +268,5 @@
         }
     </script>
 </body>
+
 </html>
