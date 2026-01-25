@@ -47,7 +47,6 @@
             font-size: 0.85em;
         }
 
-        /* メインコンテナのレイアウト */
         .quiz-container {
             display: flex;
             flex-direction: column;
@@ -74,12 +73,11 @@
             margin: 0 0 15px 0;
         }
 
-        /* 英文と入力欄を横並び（または上下固定）にするためのラッパー */
         .workspace {
             display: grid;
-            grid-template-columns: 1fr 1fr; /* PCでは左右 */
+            grid-template-columns: 1fr 1fr;
             gap: 20px;
-            height: 60vh; /* 画面の60%の高さに固定 */
+            height: 60vh;
         }
 
         .english-area {
@@ -87,7 +85,7 @@
             border: 1px solid #ddd;
             padding: 15px;
             border-radius: 8px;
-            overflow-y: auto; /* 英文エリアだけ独立してスクロール */
+            overflow-y: auto;
             font-family: "Georgia", serif;
             font-size: 1.05em;
         }
@@ -98,7 +96,7 @@
         }
 
         textarea {
-            flex-grow: 1; /* 親要素の高さ一杯に広がる */
+            flex-grow: 1;
             width: 100%;
             padding: 15px;
             border: 2px solid #bdc3c7;
@@ -106,12 +104,6 @@
             font-size: 1em;
             box-sizing: border-box;
             resize: none;
-            transition: border-color 0.3s;
-        }
-
-        textarea:focus {
-            border-color: var(--primary-color);
-            outline: none;
         }
 
         .controls {
@@ -128,7 +120,6 @@
             padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.2s;
         }
 
         .answer-area {
@@ -148,17 +139,12 @@
             margin-bottom: 5px;
         }
 
-        /* スマートフォン向け調整 */
         @media (max-width: 768px) {
             .workspace {
-                grid-template-columns: 1fr; /* 上下並び */
-                height: 75vh; /* スマホでは少し高めに確保 */
-                grid-template-rows: 1fr 1.2fr; /* 英文と入力欄の比率 */
+                grid-template-columns: 1fr;
+                height: 75vh;
+                grid-template-rows: 1fr 1.2fr;
             }
-            
-            h1 { font-size: 1rem; }
-            h2 { font-size: 1em; }
-            .english-area { font-size: 0.95em; }
         }
     </style>
 </head>
@@ -173,19 +159,19 @@
             <h2>第1題：生命の多様化と進化の時代</h2>
             <div class="workspace">
                 <div class="english-area">
-                    [cite_start]Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. [cite: 1] [cite_start]The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. [cite: 3, 4] [cite_start]However, a rich collection of soft-bodied creatures of perplexing lineage - the so-called Ediacara fauna has been described from the youngest Proterozoic strata (termed "Vendian" in age) of eastern Australia. [cite: 5, 6] [cite_start]By the beginning of the Cambrian period, plants and animals displaying remarkable morphologic diversification and occupying a wide range of habitats burst onto the scene. [cite: 7, 8] [cite_start]To our knowledge, most life forms had developed shells or other preservable hard parts by this time. [cite: 9, 10] [cite_start]Such organisms are more likely to leave fossil evidence than are soft-bodied forms. [cite: 11, 13] [cite_start]Who knows how many floral and faunal types left no record at all? [cite: 14, 15]<br><br>
-                    [cite_start]The Paleozoic Era, lasting 325 million years, witnessed a proliferation of invertebrates, fishes, and amphibians. [cite: 16, 17] [cite_start]The following 180-million-year-long Mesozoic Era is characterized as the age of dinosaurs. [cite: 18, 19] [cite_start]Reptiles actually arose in the late Paleozoic, and some have survived into the Cenozoic, or age of mammals. [cite: 20, 21] [cite_start]Similarly, primitive mammals existed throughout the Mesozoic Era; however, only after the demise of the dinosaurs approximately 65 million years ago - did they inherit the Earth. [cite: 22, 23] [cite_start]Once the reptiles' reign of terror was largely concluded, mammals rapidly occupied the many ecologic niches previously controlled by their cold-blooded precursors, diversifying and evolving in the process an activity that continues to this day. [cite: 24, 25, 26] [cite_start]The general phenomenon by which organisms evolve in harmony with the changing environment is termed adaptive radiation. [cite: 27, 28]
+                    Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. However, a rich collection of soft-bodied creatures of perplexing lineage - the so-called Ediacara fauna has been described from the youngest Proterozoic strata (termed "Vendian" in age) of eastern Australia. By the beginning of the Cambrian period, plants and animals displaying remarkable morphologic diversification and occupying a wide range of habitats burst onto the scene. To our knowledge, most life forms had developed shells or other preservable hard parts by this time. Such organisms are more likely to leave fossil evidence than are soft-bodied forms. Who knows how many floral and faunal types left no record at all?<br><br>
+                    The Paleozoic Era, lasting 325 million years, witnessed a proliferation of invertebrates, fishes, and amphibians. The following 180-million-year-long Mesozoic Era is characterized as the age of dinosaurs. Reptiles actually arose in the late Paleozoic, and some have survived into the Cenozoic, or age of mammals. Similarly, primitive mammals existed throughout the Mesozoic Era; however, only after the demise of the dinosaurs approximately 65 million years ago - did they inherit the Earth. Once the reptiles' reign of terror was largely concluded, mammals rapidly occupied the many ecologic niches previously controlled by their cold-blooded precursors, diversifying and evolving in the process an activity that continues to this day. The general phenomenon by which organisms evolve in harmony with the changing environment is termed adaptive radiation.
                 </div>
                 <div class="input-area">
-                    <textarea placeholder="ここに和訳を入力...（英文を見ながら入力できます）"></textarea>
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
                     <div class="controls">
-                        <span style="font-size: 0.8em; color: #666;">※上にスワイプ/スクロールで英文の続き</span>
+                        <span style="font-size: 0.8em; color: #666;">※スクロールで英文を確認できます</span>
                         <button class="show-ans-btn" onclick="toggleAnswer(0)">正解表示</button>
                     </div>
                     <div id="answer-0" class="answer-area">
                         <span class="answer-title">【公式和訳】</span>
-                        [cite_start]先カンブリア紀（およそ6から8億年前）の終わり頃にしか、より複雑な多細胞生物の存在とその後の原始的な無脊椎動物の存在について何の証拠も得られていない。[cite: 2] [cite_start]その手がかり（証拠）は主に植物の印象化石や底生の海洋性の無脊椎動物によって作られた生痕化石という形で存在する。[cite: 4] [cite_start]しかしながら、エディアカラ動物群と呼ばれる系統不明の多種多様な軟らかい体をした動物は、東オーストラリアの最も新しい原生代の地層（「ヴェンド紀」と呼ばれる時代）から発見された。[cite: 6] [cite_start]カンブリア紀の始まりまでに、著しい形態的な多様化を示し、広範囲にわたる生息地を占有した植物と動物が突如として現れた。[cite: 8] [cite_start]我々の知っている限り、このときにはほとんどの生命は殻やその他の保存され得る堅い部位を発達させていた。[cite: 10] [cite_start]このような生命体は、軟らかい体の生物よりも化石の証拠を残しやすい。[cite: 13] [cite_start]どれほどの動植物群が何の記録（痕跡）も残さなかったのかなど、誰が知っているだろうか？[cite: 15]<br><br>
-                        [cite_start]3億2500万年続いた古生代には、無脊椎動物と魚類と両生類の急増が起きた。[cite: 17] [cite_start]その後の1億8000万年間の中生代は、恐竜の時代として特徴付けられる。[cite: 19] [cite_start]爬虫類は実際、後期古生代に登場し、その一部は哺乳類の時代である新生代まで生き残った。[cite: 21] [cite_start]同様に、原始的な哺乳類は中生代を通して存在していたが、およそ6500万年前の恐竜の絶滅のあとになって初めて地球を支配するようになった。[cite: 23] [cite_start]爬虫類の支配がほとんど終わると、哺乳類は爬虫類によって支配されていた生態学的なニッチを急速に占めるとともに多様化と進化を遂げた。その過程は今日までも続いている。[cite: 26] [cite_start]生物が変化し続ける環境と調和を取りながら進化する一般的な現象のことを適応放散と呼ぶ。[cite: 28]
+                        先カンブリア紀（およそ6から8億年前）の終わり頃にしか、より複雑な多細胞生物の存在とその後の原始的な無脊椎動物の存在について何の証拠も得られていない。 その手がかり（証拠）は主に植物の印象化石や底生の海洋性の無脊椎動物によって作られた生痕化石という形で存在する。 しかしながら、エディアカラ動物群と呼ばれる系統不明の多種多様な軟らかい体をした動物は、東オーストラリアの最も新しい原生代の地層（「ヴェンド紀」と呼ばれる時代）から発見された。 カンブリア紀の始まりまでに、著しい形態的な多様化を示し、広範囲にわたる生息地を占有した植物と動物が突如として現れた。 我々の知っている限り、このときにはほとんどの生命は殻やその他の保存され得る堅い部位を発達させていた。 このような生命体は、軟らかい体の生物よりも化石の証拠を残しやすい。 どれほどの動植物群が何の記録（痕跡）も残さなかったのかなど、誰が知っているだろうか？<br><br>
+                        3億2500万年続いた古生代には、無脊椎動物と魚類と両生類の急増が起きた。 その後の1億8000万年間の中生代は、恐竜の時代として特徴付けられる。 爬虫類は実際、後期古生代に登場し、その一部は哺乳類の時代である新生代まで生き残った。 同様に、原始的な哺乳類は中生代を通して存在していたが、およそ6500万年前の恐竜の絶滅のあとになって初めて地球を支配するようになった。 爬虫類の支配がほとんど終わると、哺乳類は爬虫類によって支配されていた生態学的なニッチを急速に占めるとともに多様化と進化を遂げた。その過程は今日までも続いている。 生物が変化し続ける環境と調和を取りながら進化する一般的な現象のことを適応放散と呼ぶ。
                     </div>
                 </div>
             </div>
@@ -195,19 +181,19 @@
             <h2>第2題：始生代の生命と環境（追試）</h2>
             <div class="workspace">
                 <div class="english-area">
-                                        [cite_start]The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. [cite: 29, 30, 31] [cite_start]Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia and must have existed even earlier. [cite: 32, 33, 61] [cite_start]These filamentous single-celled organisms formed domical, or mushroom-like colonies called stromatolites. [cite: 34, 62] [cite_start]They flourished in tidal marine waters, and still do in protected lagoons such as Shark Bay in western Australia, and the Gulf of California. [cite: 35, 63] [cite_start]As fine clay washed over these ancient biogenic mounds and they were buried by later sediments, aqueous fluids percolated through the muds, hardening them into layered rock; [cite: 37, 64] [cite_start]in the process, the original organic structures were replaced by new mineral matter, thus preserving some such colonies as fossil stromatolitic reefs. [cite: 38, 65]<br><br>
-                    [cite_start]Stromatolites were widespread in the early Earth. [cite: 40, 41, 66] [cite_start]Minerals preserved in Archean strata, as well as computer models of planetary outgassing and paleoclimatology, suggest that early in its history, the planet was enveloped by a strongly reducing atmosphere characterized by the scarcity of free oxygen but rich in methane, hydrogen, and perhaps also ammonia. [cite: 42, 43, 66]
+                    The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia and must have existed even earlier. These filamentous single-celled organisms formed domical, or mushroom-like colonies called stromatolites. They flourished in tidal marine waters, and still do in protected lagoons such as Shark Bay in western Australia, and the Gulf of California. As fine clay washed over these ancient biogenic mounds and they were buried by later sediments, aqueous fluids percolated through the muds, hardening them into layered rock; in the process, the original organic structures were replaced by new mineral matter, thus preserving some such colonies as fossil stromatolitic reefs.<br><br>
+                    Stromatolites were widespread in the early Earth. Minerals preserved in Archean strata, as well as computer models of planetary outgassing and paleoclimatology, suggest that early in its history, the planet was enveloped by a strongly reducing atmosphere characterized by the scarcity of free oxygen but rich in methane, hydrogen, and perhaps also ammonia.
                 </div>
                 <div class="input-area">
                     <textarea placeholder="ここに和訳を入力..."></textarea>
                     <div class="controls">
-                        <span style="font-size: 0.8em; color: #666;">※スクロールで英文の続きを確認</span>
+                        <span style="font-size: 0.8em; color: #666;">※英文と入力欄は独立して動かせます</span>
                         <button class="show-ans-btn" onclick="toggleAnswer(1)">正解表示</button>
                     </div>
                     <div id="answer-1" class="answer-area">
                         <span class="answer-title">【公式和訳】</span>
-                        [cite_start]生物活動の痕跡は始生代にまでさかのぼるため、陸上生命の進化は地質時代とかなり密接に対応している。[cite: 31, 60] [cite_start]嫌気性（すなわち酸素を消費せずに生きること）かつ光合成を行う細菌は、西オーストラリアの35億年前の珪質堆積物から発見されており、それらはさらに古い時代にも存在していたに違いない。[cite: 33, 61] [cite_start]これらの糸状単細胞生物は、ストロマトライトと呼ばれるドーム状またはきのこ状のコロニーを形成していた。[cite: 36, 62] [cite_start]それらはかつて潮汐域の海洋で繁栄し、現在でも、西オーストラリアのシャーク湾やカリフォルニア湾などの保護されたラグーン内でみられる。[cite: 36, 63] [cite_start]微細な粘土がこれらの古代の生物起源のマウンド（ストロマトライト）を覆い、後の堆積物によって埋められるにつれて水性の流体が泥を通って浸透し、それらを層状の堆積岩へと硬化させた。[cite: 39, 64] [cite_start]その過程で元の生物由来の構造は新しい鉱物成分に置き換えられ、結果としていくつかのコロニーはストロマトライト礁の化石として保存された。[cite: 39, 65]<br><br>
-                        [cite_start]ストロマトライトは初期地球に広く分布していた。[cite: 41, 66] [cite_start]始生代の地層に保存された鉱物や、惑星のガス放出と古気候学のコンピューターモデルは、地球史初期において、遊離酸素が欠乏し、メタン、水素、そしておそらくアンモニアに富む非常に還元的な大気に覆われていたことを示唆している。[cite: 43, 66]
+                        生物活動の痕跡は始生代にまでさかのぼるため、陸上生命の進化は地質時代とかなり密接に対応している。 嫌気性（すなわち酸素を消費せずに生きること）かつ光合成を行う細菌は、西オーストラリアの35億年前の珪質堆積物から発見されており、それらはさらに古い時代にも存在していたに違いない。 これらの糸状単細胞生物は、ストロマトライトと呼ばれるドーム状またはきのこ状のコロニーを形成していた。 それらはかつて潮汐域の海洋で繁栄し、現在でも、西オーストラリアのシャーク湾やカリフォルニア湾などの保護されたラグーン内でみられる。 微細な粘土がこれらの古代の生物起源のマウンド（ストロマトライト）を覆い、後の堆積物によって埋められるにつれて水性の流体が泥を通って浸透し、それらを層状の堆積岩へと硬化させた。 その過程で元の生物由来の構造は新しい鉱物成分に置き換えられ、結果としていくつかのコロニーはストロマトライト礁の化石として保存された。<br><br>
+                        ストロマトライトは初期地球に広く分布していた。 始生代の地層に保存された鉱物や、惑星のガス放出と古気候学のコンピューターモデルは、地球史初期において、遊離酸素が欠乏し、メタン、水素、そしておそらくアンモニアに富む非常に還元的な大気に覆われていたことを示唆している。
                     </div>
                 </div>
             </div>
