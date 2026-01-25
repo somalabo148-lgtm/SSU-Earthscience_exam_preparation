@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地質学リスニング・トレーニング</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .play-link-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-block;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        .play-link-btn:hover { background-color: #c0392b; }
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        .diff-word { margin: 0 2px; }
+        .correct-word { color: #27ae60; font-weight: bold; }
+        .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
+        .missing-word { color: #2980b9; font-weight: bold; border-bottom: 2px solid #2980b9; }
+        .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
+        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <h1>地質学リスニング・トレーニング</h1>
+    
+    <div id="quiz-container"></div>
+
+    <script>
+        const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
+
+        // 提示された3つの動画と英文に基づいたデータ
+        const quizData = [
+            {
+                id: 1,
+                videoId: "4rywXDZlOZw",
+                timeDisplay: "02:29 ～ 02:48",
+                startSeconds: 149,
+                theme: "地球の核の形成過程とその構成要素について",
+                correct: "The Earth core results from the primary segregation of the gases forming the Earth 4.5 billion years ago. It is formed by minerals very rich in heavy elements such as iron and Nickel. It still releases heat which forms a substantial part of the heat reaching the surface.",
+                translation: "地球の核は、45億年前に地球を形成したガスが最初に分化したことによってできました。それは鉄やニッケルのような重い元素に富む鉱物によって形成されています。それは今でも熱を放出し続けており、その熱が地表に達する熱のかなりの部分を占めています。"
+            },
+            {
+                id: 2,
+                videoId: "JQ_zElncvfE",
+                timeDisplay: "00:01 ～ 00:15",
+                startSeconds: 1,
+                theme: "地形の形成と浸食、堆積のプロセスについて",
+                correct: "We have created mountains and valleys. What now? As soon as mountains start growing erosion will occur and sediments will be produced transported and eventually deposited in the subsiding domains.",
+                translation: "山や谷が形成されました。さて、次は？山が成長を始めるとすぐに侵食が起こり、堆積物が生成・運搬され、最終的に沈降域に堆積します。"
+            },
+            {
+                id: 3,
+                videoId: "N1kF88Eznr8",
+                timeDisplay: "00:01 ～ 00:20",
+                startSeconds: 1,
+                theme: "河川による土砂の運搬と海洋環境のダイナミズムについて",
+                correct: "The rivers with their sediment load have reached the sea. Here, they will enter a very dynamic environment with bathymetries varying from 0 to more than 10000 meters. A domain characterized by slow and very rapid water movements.",
+                translation: "土砂を運搬してきた川は、海へと到達しました。ここで川は、水深が0メートルから10,000メートル以上にまで変化する非常にダイナミックな環境へと入っていきます。そこは、緩やかな水の動きと非常に急激な水の動きによって特徴づけられる領域です。"
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        
+        quizData.forEach((q, index) => {
+            const html = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                        <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, '${q.videoId}', ${q.startSeconds})">▶ 埋め込み再生</button>
+                    </div>
+                    
+                    <div id="video-area-${index}" class="embedded-video-container"></div>
+
+                    <div class="theme-text">
+                        <strong>テーマ:</strong> ${q.theme}
+                    </div>
+                    <textarea id="input-${index}" placeholder="ここに聞き取った英語を入力してください..."></textarea>
+                    
+                    <div class="controls">
+                        <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                        <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                    </div>
+                    <div id="result-${index}" class="result-area"></div>
+                    <div id="trans-${index}" class="japanese-trans">
+                        <strong>日本語訳:</strong><br>${q.translation}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function playEmbeddedVideo(index, videoId, startSeconds) {
+            // 他の動画を停止
+            quizData.forEach((_, i) => {
+                const area = document.getElementById(`video-area-${i}`);
+                if (i !== index) {
+                    area.innerHTML = "";
+                    area.style.display = "none";
+                }
+            });
+
+            const targetArea = document.getElementById(`video-area-${index}`);
+            targetArea.style.display = "block";
+            targetArea.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="300" 
+                    src="${EMBED_BASE}${videoId}?start=${startSeconds}&rel=0" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+        }
+
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function checkAnswer(index) {
+            const userText = document.getElementById(`input-${index}`).value.trim();
+            const correctText = quizData[index].correct;
+            const resultDiv = document.getElementById(`result-${index}`);
+            
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
+                return;
+            }
+
+            let html = "<strong>判定結果:</strong><br>";
+            html += generateDiffHTML(userText, correctText);
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        function generateDiffHTML(userStr, correctStr) {
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"']/g, "");
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            let output = "<div>";
+            let uIndex = 0;
+
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word">${cWord}</span> `;
+                    continue;
+                }
+
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+
+                if (cWordClean === uWordClean) {
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                    output += `<span class="diff-word missing-word">${cWord}</span> `;
+                    uIndex++;
+                }
+            }
+            output += "</div>";
+            return output;
+        }
+    </script>
+</body>
+</html>
