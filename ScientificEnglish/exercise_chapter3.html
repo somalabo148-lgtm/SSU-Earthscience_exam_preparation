@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地質学・生命史 演習（第3章・深海堆積物）</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #2980b9;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --card-bg: #fff;
+            --correct-bg: #e8f5e9;
+            --correct-border: #c8e6c9;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        h1 {
+            font-size: 1.1rem;
+            margin: 0;
+            color: var(--primary-color);
+            flex-grow: 1;
+            text-align: center;
+        }
+
+        .back-link-btn {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #7f8c8d;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            transition: background 0.3s;
+        }
+
+        .back-link-btn:hover {
+            background-color: #95a5a6;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .quiz-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--accent-color);
+            font-size: 1.2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        /* --- 和訳エリア（レイアウト崩れ対策版） --- */
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            /* height固定を廃止し、コンテンツに合わせて伸びるように変更 */
+            align-items: start; 
+        }
+
+        .english-area {
+            background-color: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: "Georgia", serif;
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+
+        .input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px; /* 最小の高さを確保 */
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 8px;
+            font-size: 1rem;
+            box-sizing: border-box;
+            resize: vertical; /* 縦方向のみリサイズ許可 */
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: var(--accent-color);
+            outline: none;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .show-ans-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: opacity 0.3s;
+        }
+
+        .show-ans-btn:hover {
+            opacity: 0.9;
+        }
+
+        .answer-area {
+            display: none;
+            margin-top: 15px;
+            padding: 20px;
+            background-color: var(--correct-bg);
+            border: 1px solid var(--correct-border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .answer-title {
+            font-weight: bold;
+            color: #2e7d32;
+            display: block;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #a5d6a7;
+            padding-bottom: 5px;
+        }
+
+        /* --- リスニングエリア --- */
+        .audio-player-container {
+            background-color: #f1f8ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        audio {
+            width: 100%;
+            margin-top: 5px;
+        }
+
+        .script-area {
+            display: none;
+            margin-top: 15px;
+            font-size: 0.95rem;
+        }
+
+        .script-en {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        .script-jp {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            padding-left: 10px;
+            border-left: 3px solid #ddd;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr; /* スマホでは縦並び */
+                gap: 15px;
+            }
+            
+            header {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+        <h1>第3章：原核生物と深海堆積物</h1>
+    </header>
+
+    <div class="container">
+
+        <div class="quiz-section">
+            <h2>Reading 1: 原核生物と酸素の蓄積</h2>
+            <div class="workspace">
+                <div class="english-area">
+                    As illustrated in Figure 3.5, cells without a nucleus - or prokaryotes have dominated the parade of terrestrial life through the geologic ages. The rise of cells containing a separate nucleus eukaryotes occurred only after nearly 2 billion years of exclusively prokaryotic life (chiefly bacteria).<br><br>
+                    The young Earth had a reducing atmosphere rich in methane, ammonia, and/or carbon monoxide/carbon dioxide, hence the most primitive, nonnucleated cells were necessarily anaerobes. Waste products of such organisms include oxygen, which led to the progressive oxidation of the nearsurface, condensed portion of the planet, and ultimately to the gradual accumulation of free oxygen in the atmosphere.
+                </div>
+                <div class="input-wrapper">
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
+                    <div class="controls">
+                        <button class="show-ans-btn" onclick="toggleDisplay('ans-1', this)">正解表示</button>
+                    </div>
+                    <div id="ans-1" class="answer-area">
+                        <span class="answer-title">【解答例】</span>
+                        図3.5に示されるように、核を持たない細胞、すなわち原核生物が、地質時代を通じて地球上の生命の行進を支配してきた。独立した核を持つ細胞、すなわち真核生物の出現は、原核生物（主にバクテリア）だけの生命が20億年近く続いた後にようやく起こった。<br><br>
+                        若い地球は、メタン、アンモニア、そして一酸化炭素や二酸化炭素に富んだ還元的な大気を持っていたため、最も原始的な細胞核を持たない細胞（原核生物）は必然的に嫌気性生物（酸素を必要としない生物）であった。そのような生物の代謝産物には酸素が含まれており、それが地球の地表近くの凝縮した部分（海洋や地殻など）の進行的な酸化を招き、最終的には大気中への遊離酸素の徐々な蓄積へとつながった。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>Reading 2: 酸素の役割と多細胞生物</h2>
+            <div class="workspace">
+                <div class="english-area">
+                    This increasing abundance of molecular oxygen in turn promoted the emergence of other biochemical energy conversion systems, including aerobic bacteria and related forms. More energetic metabolism, allowing the sustenance of more complex life forms and enhanced diversity, thus became a possibility. Was free oxygen the fuel that ignited the evolution toward eukaryotes, then to multicelled metazoans that evolved into the plants and animals we see today? Possibly!<br><br>
+                    In spite of the remarkable evolutionary blossoming that followed, it is important to remember that single-celled organisms constituted the exclusive forms of life for approximately 2.7 billion years. Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates.
+                </div>
+                <div class="input-wrapper">
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
+                    <div class="controls">
+                        <button class="show-ans-btn" onclick="toggleDisplay('ans-2', this)">正解表示</button>
+                    </div>
+                    <div id="ans-2" class="answer-area">
+                        <span class="answer-title">【解答例】</span>
+                        この増加し、豊富になった酸素は、今度は好気性細菌やその関連形態を含む、他の生化学的エネルギー変換システムの出現を促進した。よりエネルギー効率の高い代謝が可能になり、それによってより複雑な生命体の維持と多様性の拡大が実現可能となった。遊離酸素こそが、真核生物への進化、そして今日我々が目にする植物や動物へと進化した多細胞後生動物（多細胞動物）への進化に火をつけた燃料だったのだろうか？その可能性はある！<br><br>
+                        その後に続いた驚くべき進化の開花にもかかわらず、およそ27億年の間、単細胞生物が生命の唯一の形態を構成していたことを覚えておくことは重要である。先カンブリア時代の終わり頃（約6億〜8億年前）になって初めて、より複雑な多細胞生物、そして続いて原始的な無脊椎動物の存在を示す証拠が得られる。その手がかりは主に、植物の印象化石のような形や、海底に住む無脊椎動物によって作られた化石種の足跡や這い跡という形で見いだされる。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>Listening 1: 混濁流 (Turbidity Currents)</h2>
+            <div class="audio-player-container">
+                <label>音声ファイル: レコーディング 2026-01-26 132425.mp3 (想定)</label>
+                <audio controls src="レコーディング 2026-01-26 132425.mp3">
+                    お使いのブラウザはaudioタグに対応していません。
+                </audio>
+            </div>
+            <div class="controls" style="justify-content: center;">
+                <button class="show-ans-btn" style="background-color: #e67e22;" onclick="toggleDisplay('script-1', this)">スクリプト・訳を確認</button>
+            </div>
+            <div id="script-1" class="script-area">
+                <div class="script-en">Within a very short time of days, huge amounts of sediments are delivered to the deep basins.</div>
+                <div class="script-jp">数日という極めて短い期間に、膨大な量の堆積物が深海盆地に運ばれます。</div>
+                
+                <div class="script-en">These sediment-loaded currents are called turbidity currents.</div>
+                <div class="script-jp">この堆積物を大量に含んだ流れは、「混濁流（乱泥流）」と呼ばれます。</div>
+                
+                <div class="script-en">And are completely different from the background sedimentation we have described until now.</div>
+                <div class="script-jp">そしてこれらは、これまで説明してきた静的な背景堆積とは全く異なるものです。</div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>Listening 2: 炭酸塩補償深度 (CCD)</h2>
+            <div class="audio-player-container">
+                <label>音声ファイル: レコーディング 2026-01-26 132012.mp3 (想定)</label>
+                <audio controls src="レコーディング 2026-01-26 132012.mp3">
+                    お使いのブラウザはaudioタグに対応していません。
+                </audio>
+            </div>
+            <div class="controls" style="justify-content: center;">
+                <button class="show-ans-btn" style="background-color: #e67e22;" onclick="toggleDisplay('script-2', this)">スクリプト・訳を確認</button>
+            </div>
+            <div id="script-2" class="script-area">
+                <div class="script-en">Their trip to the deep ocean floor, however, is not devoid of problems.</div>
+                <div class="script-jp">しかし、深海底への旅には問題がないわけではありません。</div>
+
+                <div class="script-en">As with decreasing temperature and increasing pressure, ocean waters become more aggressive and start dissolving the sinking shells.</div>
+                <div class="script-jp">水温が低下し圧力が上昇するにつれて、海水はより浸食性を増し、沈んでいく殻を溶かし始めるからです。</div>
+
+                <div class="script-en">The depth at which all calcite grains and shells are dissolved is called the Calcite Compensation Depth, and is comparable to the snowline in the mountains.</div>
+                <div class="script-jp">すべての方解石の粒子や殻が溶けてしまう深さを「炭酸塩補償深度（CCD）」と呼び、これは山岳地帯における雪線（万年雪の境界）に匹敵します。</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleDisplay(targetId, btnElement) {
+            const target = document.getElementById(targetId);
+            const isAnswer = targetId.startsWith('ans');
+            
+            if (target.style.display === 'block') {
+                target.style.display = 'none';
+                btnElement.textContent = isAnswer ? '正解表示' : 'スクリプト・訳を確認';
+            } else {
+                target.style.display = 'block';
+                btnElement.textContent = isAnswer ? '正解を隠す' : '閉じる';
+            }
+        }
+    </script>
+</body>
+</html>
