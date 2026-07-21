@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>日本地質 基本一問一答 100問</title>
+<style>
+    :root { --primary:#2c3e50; --accent:#3d8478; --bg:#f2f6f4; --ok:#218c74; --review:#d66a4c; }
+    * { box-sizing:border-box; }
+    body { font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; background:var(--bg); color:#2d3436; margin:0; padding-bottom:55px; line-height:1.65; }
+    header { position:sticky; top:0; z-index:10; padding:14px 15px; color:#fff; text-align:center; background:var(--primary); box-shadow:0 2px 7px rgba(0,0,0,.18); }
+    h1 { margin:4px 0 0; font-size:1.2rem; }
+    .back-link-btn { display:inline-block; padding:6px 12px; color:#fff; background:rgba(255,255,255,.16); border-radius:5px; text-decoration:none; font-size:.84rem; }
+    .status-bar { margin-top:5px; font-size:.88rem; opacity:.9; }
+    .container { max-width:820px; margin:22px auto; padding:0 15px; }
+    .card { padding:24px; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(20,55,48,.10); }
+    .q-meta { display:flex; justify-content:space-between; gap:12px; margin-bottom:11px; color:#72817d; font-size:.86rem; font-weight:bold; }
+    .tag { max-width:72%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .q-text { padding-left:14px; border-left:4px solid var(--accent); font-size:1.12rem; font-weight:bold; }
+    .question-image { display:block; max-width:100%; max-height:470px; margin:18px auto; border-radius:8px; background:#1d2728; object-fit:contain; }
+    .show-answer { width:100%; margin-top:22px; padding:14px; border:0; border-radius:8px; background:var(--primary); color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .answer-box { display:none; margin-top:18px; padding:17px; border-radius:8px; border-left:5px solid var(--accent); background:#eaf6f2; }
+    .answer-box strong { color:#1f5f55; }
+    .judge-row { display:none; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+    .judge-row button, .restart-btn { padding:13px; border:0; border-radius:8px; color:#fff; font-weight:bold; font-size:.98rem; cursor:pointer; }
+    .known-btn { background:var(--ok); } .review-btn { background:var(--review); } .restart-btn { width:100%; margin-top:14px; background:var(--primary); }
+    .result { text-align:center; } .score { margin:20px auto; width:135px; height:135px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#fff; background:var(--accent); font-size:2.25rem; font-weight:bold; }
+    .score small { font-size:.8rem; font-weight:normal; } .result p { color:#596866; }
+    @media (max-width:520px) { .card { padding:19px; } .q-text { font-size:1.04rem; } .q-meta { align-items:flex-start; flex-direction:column; gap:2px; } .tag { max-width:100%; white-space:normal; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="back-link-btn" href="index.html">← 一覧に戻る</a>
+  <h1>日本地質 基本一問一答 100問</h1>
+  <div class="status-bar" id="status">読込中...</div>
+</header>
+<main class="container" id="app"></main>
+<script>
+const originalQuestions = [{"category": "地帯区分と構造線", "prompt": "日本列島の地質を地帯に区分する主な基準を三つ挙げよ。", "answer": "構成岩石の種類・形成過程・岩石（地層）の年代。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "構造線とは何か。", "answer": "地帯の境界となる重要な断層。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "西南日本で中央構造線（MTL）より北側を何というか。", "answer": "内帯。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "西南日本で中央構造線（MTL）より南側を何というか。", "answer": "外帯。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "平による日本列島の地質体の大区分を四つ挙げよ。", "answer": "大陸地殻・付加体・衝突島弧・貫入岩体および被覆層。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "付加体とは、どのような過程で形成される地質体か。", "answer": "海洋プレートの沈み込みに伴い、海洋プレート上の堆積物や一部の海洋プレートが陸側へ付加して形成される地質体。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "日本列島の地質体で圧倒的な部分を占めるものは何か。", "answer": "付加体。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "日本列島の付加体は、現在も形成され続けているか。", "answer": "はい。現在も形成されている。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "講義資料でいう活火山とは、おおむね何年以内に活動した火山か。", "answer": "おおむね1万年以内。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "講義資料では、日本の活火山はおよそ何火山とされているか。", "answer": "110火山。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "先ジュラ紀地帯の代表例として講義資料に挙げられた地帯を一つ答えよ。", "answer": "飛騨帯（南部北上帯・秋吉帯・舞鶴帯なども可）。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "ジュラ紀地帯の代表例として講義資料に挙げられた地帯を一つ答えよ。", "answer": "美濃・丹波帯（秩父帯・三波川帯なども可）。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "白亜紀〜第三紀地帯の代表例として講義資料に挙げられた地帯を一つ答えよ。", "answer": "領家帯（四万十帯・空知蝦夷帯なども可）。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "中央構造線の英語略称は何か。", "answer": "MTL。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "仏像構造線の英語略称は何か。", "answer": "BTL。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "糸魚川―静岡構造線の英語略称は何か。", "answer": "ISTL。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "棚倉構造線の英語略称は何か。", "answer": "TTL。", "image": null, "sourceNumber": null}, {"category": "地帯区分と構造線", "prompt": "講義資料で衝突島弧として扱われた二つの火山性島弧は何か。", "answer": "伊豆―小笠原弧と千島弧。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯の別名は何か。", "answer": "飛騨―隠岐帯。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯は、どのような地殻要素とみなされているか。", "answer": "大陸の一部（大陸起源の地質体）。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯に含まれる先カンブリア時代〜古生代の代表的な変成岩は何か。", "answer": "片麻岩。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯に貫入する花崗岩類のおもな時代はいつか。", "answer": "古生代〜ジュラ紀。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯に分布する中生代の浅海成〜湖成堆積岩類を何というか。", "answer": "手取層群。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "手取層群の堆積時代はいつか。", "answer": "ジュラ紀中期〜白亜紀前期。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "手取層群はどのような環境の堆積物か。", "answer": "内湾から湖沼の堆積物。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "手取層群から産出する化石を二つ挙げよ。", "answer": "恐竜・アンモナイト（植物・貝化石も可）。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨花崗岩類のうち、約180 Maの新期花崗岩類の代表は何か。", "answer": "船津花崗岩。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨片麻岩の石英長石質片麻岩は、主に何という堆積岩を起源とするか。", "answer": "砂岩。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨片麻岩の泥質片麻岩は、主に何という堆積岩を起源とするか。", "answer": "泥岩。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "講義資料によれば、飛騨片麻岩は少なくとも何回の変成作用を受けたか。", "answer": "3回。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "宇奈月帯は飛騨帯とどのような地質境界で接するか。", "answer": "断層。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "宇奈月帯に見られる中圧型変成岩の代表例は何か。", "answer": "十字石片岩。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯は、飛騨帯とどの地帯との間に位置する構造帯か。", "answer": "ジュラ紀付加体である美濃帯との間。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯に特徴的な堆積層は、主にどのような環境で形成されたか。", "answer": "浅海。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯の浅海成層は、およそどの時代の範囲にわたるか。", "answer": "オルドビス紀〜三畳紀。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯が狭長に分布する主な理由は何か。", "answer": "断層または剪断帯によって寸断されているため。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯に含まれる岩石・層を二つ挙げよ。", "answer": "砕屑岩・石灰岩（珪長質〜苦鉄質火山岩類も可）。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯（美濃―丹波帯）は、主にいつ形成された付加体か。", "answer": "ジュラ紀。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯を形成した主要なプレート運動は何か。", "answer": "海洋プレートの沈み込みと付加作用。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯に典型的に見られる岩石の並びを何というか。", "answer": "海洋プレート層序（チャート―砕屑岩シーケンス）。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "遠洋・半遠洋・海溝での堆積物が順に記録された岩石の並びを何というか。", "answer": "海洋プレート層序。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "遠洋域に到達しにくい陸源の粗粒堆積物は何か。", "answer": "礫や砂。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯に特徴的に含まれる、さまざまな岩塊を含む混在岩を何というか。", "answer": "メランジュ。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯に含まれる火山岩を一つ答えよ。", "answer": "玄武岩。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯に含まれる生物遺骸に由来する岩石を一つ答えよ。", "answer": "石灰岩。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯に含まれる、放散虫の殻を主な起源とする岩石は何か。", "answer": "チャート。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "チャートの主成分は何か。", "answer": "二酸化ケイ素（シリカ、SiO₂）。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "石灰岩が形成された代表的な環境はどこか。", "answer": "熱帯の浅い海。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "講義資料に示された海洋プレート層序の砕屑岩を二つ答えよ。", "answer": "泥岩と砂岩。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "海底で玄武岩質溶岩が噴出してできる、枕のような形の岩石を何というか。", "answer": "枕状玄武岩。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯の形成時代をジュラ紀と考える上で重要だった微化石は何か。", "answer": "放散虫化石。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "放散虫化石によって美濃帯の年代観が大きく改められた出来事を何というか。", "answer": "放散虫革命。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯の形成時代についての見解は、古生代・三畳紀を経て最終的に何時代へ改められたか。", "answer": "ジュラ紀。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家帯を構成する二つの主要な岩石群は何か。", "answer": "領家変成岩類と領家花崗岩類。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類の源岩は何か。", "answer": "ジュラ紀付加体（美濃―丹波帯）。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類は、高温型・高圧型のどちらか。", "answer": "高温型（高温低圧型）。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類の代表的な岩石を二つ答えよ。", "answer": "ホルンフェルスと片麻岩。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家花崗岩類は、およそ何Ma〜何Maに形成されたか。", "answer": "約100 Ma〜65 Ma。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類の形成に大きく関わった熱源は何か。", "answer": "領家花崗岩類。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類は、どの地質体へ漸移するか。", "answer": "ジュラ紀付加体。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家変成岩類の変成度は、どの方向へ向かうほど高くなるか。", "answer": "南西側。", "image": null, "sourceNumber": null}, {"category": "領家帯", "prompt": "領家花崗岩類は、日本を代表する何時代の花崗岩の一つか。", "answer": "白亜紀花崗岩。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "三波川帯を構成する変成岩は、高圧型・高温型のどちらか。", "answer": "高圧型変成岩。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "三波川帯の代表的な片岩を二つ答えよ。", "answer": "泥質片岩・砂質片岩（珪質片岩・苦鉄質片岩も可）。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "三波川帯の最大被熱温度はおよそ何℃〜何℃か。", "answer": "約300〜700℃。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "三波川帯の変成作用はおよそ何km〜何kmの深さで生じたとされるか。", "answer": "約20〜80 km。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "秩父帯は主にいつ形成された付加体か。", "answer": "ジュラ紀。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "秩父帯の形成過程は、美濃―丹波帯と同様に何と何によるか。", "answer": "海洋プレートの沈み込みと付加作用。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "秩父帯は何を挟んで北帯と南帯に区分されるか。", "answer": "黒瀬川帯。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "秩父帯に特徴的に含まれる混在岩を何というか。", "answer": "メランジュ。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯は主にいつ形成された付加体か。", "answer": "白亜紀〜古第三紀。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯の北帯は主に何時代の付加体か。", "answer": "白亜紀。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯の南帯は主に何時代の付加体か。", "answer": "古第三紀。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯で圧倒的に多い二つの岩石は何か。", "answer": "砂岩と泥岩。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯では、ジュラ紀付加体と比べて量が圧倒的に少ない岩石を一つ答えよ。", "answer": "玄武岩（石灰岩・チャートも可）。", "image": null, "sourceNumber": null}, {"category": "三波川帯・秩父帯・四万十帯", "prompt": "四万十帯は現在も成長しているか。", "answer": "はい。海面下には新第三紀以降の四万十帯があり、現在も成長中である。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "西南日本の地質体の配列を説明する代表的な二つの説は何か。", "answer": "横ずれ説とナップ説。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "西南日本の横ずれ説とナップ説の対立は、講義資料では解決済みか。", "answer": "未解決で、論争中である。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "北部北上帯は主に何時代の付加体か。", "answer": "ジュラ紀付加体。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "北部北上帯に見られる代表的な岩石の並びを何というか。", "answer": "海洋プレート層序（チャート―砕屑岩シーケンス）。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "北部北上帯と南部北上帯の間にある構造帯は何か。", "answer": "早池峰構造帯。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "南部北上帯は付加体か。", "answer": "いいえ。付加体ではない。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "南部北上帯に見られる代表的な堆積環境は何か。", "answer": "陸棚。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "南部北上帯の地層は、どの時代からどの時代までの範囲をもつか。", "answer": "シルル紀〜白亜紀。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "南部北上帯に豊富に含まれるものは何か。", "answer": "化石。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "南部北上帯の基盤岩の例として挙げられた約450 Maの花崗岩は何か。", "answer": "氷上花崗岩。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "阿武隈帯の変成岩は、何時代の付加体を起源とするか。", "answer": "ジュラ紀付加体。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "阿武隈帯の変成岩は、高温型・高圧型のどちらか。", "answer": "高温型（高温低圧型）。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "阿武隈帯に多く分布する花崗岩類の時代は何か。", "answer": "白亜紀。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北日本", "prompt": "阿武隈帯が領家帯と異なる点として、講義資料で挙げられた古い変成岩の時代は何か。", "answer": "カンブリア紀。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の渡島帯は主に何時代の付加体か。", "answer": "ジュラ紀付加体。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の礼文・樺戸帯は主に何時代の堆積岩からなるか。", "answer": "白亜紀。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の空知・エゾ帯は、主に何時代の付加体を含むか。", "answer": "白亜紀付加体。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の日高帯は、何によってのし上げた大陸地殻を含む地質体か。", "answer": "衝突。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の常呂帯は主に何時代の付加体か。", "answer": "白亜紀付加体。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の根室帯は主にどのような地層からなるか。", "answer": "白亜紀以降の堆積岩類。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "講義資料によれば、北海道は主にいつオホーツク古陸の衝突によって形成されたか。", "answer": "白亜紀。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "講義資料で示された千島弧の衝突は、およそ何Maに起こったか。", "answer": "約13 Ma。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道で豊富な石炭資源が形成された主な時代はいつか。", "answer": "古第三紀。", "image": null, "sourceNumber": null}, {"category": "北海道", "prompt": "北海道の石炭は、古第三紀のどのような環境で形成されたか。", "answer": "温暖期の湖や湿地の環境。", "image": null, "sourceNumber": null}];
+let currentQuiz = [];
+let currentIndex = 0;
+let knownCount = 0;
+let reviewQuestions = [];
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz(items = originalQuestions) {
+  currentQuiz = shuffle(items);
+  currentIndex = 0;
+  knownCount = 0;
+  reviewQuestions = [];
+  showQuestion();
+}
+
+function showQuestion() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  if (currentIndex >= currentQuiz.length) { showResult(); return; }
+  const item = currentQuiz[currentIndex];
+  status.textContent = `第${currentIndex + 1}問 / 全${currentQuiz.length}問　（理解済み: ${knownCount}）`;
+  const imageHtml = item.image ? `<img class="question-image" src="${item.image}" alt="問題図版">` : '';
+  const source = item.sourceNumber ? `元の第${item.sourceNumber}問` : '一問一答';
+  app.innerHTML = `
+    <section class="card">
+      <div class="q-meta"><span class="tag">${item.category}</span><span>${source}</span></div>
+      ${imageHtml}
+      <div class="q-text">${item.prompt}</div>
+      <button class="show-answer" onclick="showAnswer()">答えを表示</button>
+      <div class="answer-box" id="answer-box"><strong>答え：</strong><span id="answer-text"></span></div>
+      <div class="judge-row" id="judge-row"><button class="known-btn" onclick="judge(true)">理解できた</button><button class="review-btn" onclick="judge(false)">要復習</button></div>
+    </section>`;
+}
+
+function showAnswer() {
+  const item = currentQuiz[currentIndex];
+  document.getElementById('answer-text').textContent = item.answer;
+  document.getElementById('answer-box').style.display = 'block';
+  document.getElementById('judge-row').style.display = 'grid';
+  document.querySelector('.show-answer').style.display = 'none';
+}
+
+function judge(known) {
+  if (known) knownCount++; else reviewQuestions.push(currentQuiz[currentIndex]);
+  currentIndex++;
+  showQuestion();
+}
+
+function showResult() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  status.textContent = '結果';
+  const reviewMessage = reviewQuestions.length ? `要復習は ${reviewQuestions.length}題です。` : '全問を理解済みにできました！';
+  const reviewButton = reviewQuestions.length ? `<button class="restart-btn" onclick="startQuiz(reviewQuestions)">要復習の${reviewQuestions.length}題をもう一度</button>` : '';
+  app.innerHTML = `<section class="card result"><h2>今回の確認結果</h2><div class="score"><span>${knownCount}</span><small>/ ${currentQuiz.length} 題</small></div><p>${reviewMessage}</p>${reviewButton}<button class="restart-btn" onclick="startQuiz()">最初からもう一度</button></section>`;
+}
+
+startQuiz();
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>構造地質学 一問一答 111題</title>
+<style>
+    :root { --primary:#2c3e50; --accent:#3d8478; --bg:#f2f6f4; --ok:#218c74; --review:#d66a4c; }
+    * { box-sizing:border-box; }
+    body { font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; background:var(--bg); color:#2d3436; margin:0; padding-bottom:55px; line-height:1.65; }
+    header { position:sticky; top:0; z-index:10; padding:14px 15px; color:#fff; text-align:center; background:var(--primary); box-shadow:0 2px 7px rgba(0,0,0,.18); }
+    h1 { margin:4px 0 0; font-size:1.2rem; }
+    .back-link-btn { display:inline-block; padding:6px 12px; color:#fff; background:rgba(255,255,255,.16); border-radius:5px; text-decoration:none; font-size:.84rem; }
+    .status-bar { margin-top:5px; font-size:.88rem; opacity:.9; }
+    .container { max-width:820px; margin:22px auto; padding:0 15px; }
+    .card { padding:24px; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(20,55,48,.10); }
+    .q-meta { display:flex; justify-content:space-between; gap:12px; margin-bottom:11px; color:#72817d; font-size:.86rem; font-weight:bold; }
+    .tag { max-width:72%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .q-text { padding-left:14px; border-left:4px solid var(--accent); font-size:1.12rem; font-weight:bold; }
+    .question-image { display:block; max-width:100%; max-height:470px; margin:18px auto; border-radius:8px; background:#1d2728; object-fit:contain; }
+    .show-answer { width:100%; margin-top:22px; padding:14px; border:0; border-radius:8px; background:var(--primary); color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .answer-box { display:none; margin-top:18px; padding:17px; border-radius:8px; border-left:5px solid var(--accent); background:#eaf6f2; }
+    .answer-box strong { color:#1f5f55; }
+    .judge-row { display:none; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+    .judge-row button, .restart-btn { padding:13px; border:0; border-radius:8px; color:#fff; font-weight:bold; font-size:.98rem; cursor:pointer; }
+    .known-btn { background:var(--ok); } .review-btn { background:var(--review); } .restart-btn { width:100%; margin-top:14px; background:var(--primary); }
+    .result { text-align:center; } .score { margin:20px auto; width:135px; height:135px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#fff; background:var(--accent); font-size:2.25rem; font-weight:bold; }
+    .score small { font-size:.8rem; font-weight:normal; } .result p { color:#596866; }
+    @media (max-width:520px) { .card { padding:19px; } .q-text { font-size:1.04rem; } .q-meta { align-items:flex-start; flex-direction:column; gap:2px; } .tag { max-width:100%; white-space:normal; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="back-link-btn" href="index.html">← 一覧に戻る</a>
+  <h1>構造地質学 一問一答 111題</h1>
+  <div class="status-bar" id="status">読込中...</div>
+</header>
+<main class="container" id="app"></main>
+<script>
+const originalQuestions = [{"category": "基礎", "prompt": "構造地質学では、地質構造を主にどの三つの視点から扱うか。", "answer": "幾何学・運動学・力学。", "image": null, "sourceNumber": 1}, {"category": "基礎", "prompt": "地質構造の『幾何学』では何を明らかにするか。", "answer": "どのような形・配置の構造かを明らかにする。", "image": null, "sourceNumber": 2}, {"category": "基礎", "prompt": "地質構造の『運動学』では何を明らかにするか。", "answer": "どのような運動によって構造ができたかを明らかにする。", "image": null, "sourceNumber": 3}, {"category": "基礎", "prompt": "地質構造の『力学』では何を明らかにするか。", "answer": "どのような物理・化学的条件で構造ができたかを明らかにする。", "image": null, "sourceNumber": 4}, {"category": "基礎", "prompt": "初生構造とは何か。", "answer": "岩石・地層が生成するのに伴って形成された構造である。", "image": null, "sourceNumber": 5}, {"category": "基礎", "prompt": "後生構造とは何か。", "answer": "初生構造が、生成後に何らかの作用で変化して形成された構造である。", "image": null, "sourceNumber": 6}, {"category": "基礎", "prompt": "初生構造の代表例を一つ挙げよ。", "answer": "堆積構造。", "image": null, "sourceNumber": 7}, {"category": "基礎", "prompt": "講義で示された地質構造を観察する三つのスケールは何か。", "answer": "地質図スケール（大構造）・露頭スケール（中構造）・顕微鏡スケール（小構造）。", "image": null, "sourceNumber": 8}, {"category": "標準", "prompt": "同一の形成メカニズムを考えるとき、大・中・小構造の関係はどうあるべきか。", "answer": "互いに矛盾しないはずである。", "image": null, "sourceNumber": 9}, {"category": "基礎", "prompt": "整合とはどのような地層間の接触関係か。", "answer": "著しい堆積間隙がなく、両者が時間的にほぼ連続して堆積した関係。", "image": null, "sourceNumber": 10}, {"category": "基礎", "prompt": "不整合とはどのような地層間の接触関係か。", "answer": "新旧の地層の間に著しい堆積間隙がある関係。", "image": null, "sourceNumber": 11}, {"category": "基礎", "prompt": "貫入とはどのような接触関係か。", "answer": "マグマや砕屑物が周囲の地層・岩石中に割り込んで侵入する関係。", "image": null, "sourceNumber": 12}, {"category": "標準", "prompt": "整合・不整合・貫入などで接する岩石が後に切断されて変位した接触関係は何か。", "answer": "断層接触。", "image": null, "sourceNumber": 13}, {"category": "基礎", "prompt": "断層を定義せよ。", "answer": "岩石中の破断面のうち、その面に沿う面と平行な変位が認められるもの。", "image": null, "sourceNumber": 14}, {"category": "基礎", "prompt": "節理を定義せよ。", "answer": "破断面で、面に沿う変位が肉眼的には認められないもの。", "image": null, "sourceNumber": 15}, {"category": "基礎", "prompt": "褶曲を定義せよ。", "answer": "層状岩石が連続的に波状に変形した地質構造。", "image": null, "sourceNumber": 16}, {"category": "標準", "prompt": "地層の上下判定が構造地質学で重要な理由は何か。", "answer": "褶曲の背斜・向斜や逆転の判定など、地質構造の正しい解釈に不可欠だから。", "image": null, "sourceNumber": 17}, {"category": "標準", "prompt": "斜交葉理で、上位を示すのは『切る側』と『切られる側』のどちらか。", "answer": "切る側。斜交葉理の上端は上位の葉理で切られる。", "image": null, "sourceNumber": 18}, {"category": "基礎", "prompt": "ソールマーク（底痕）は地層の上面・下面のどちらにできるか。", "answer": "下面。", "image": null, "sourceNumber": 19}, {"category": "標準", "prompt": "級化構造やブーマシーケンスでは、一般に下位から上位へ粒度はどう変化するか。", "answer": "下位の粗粒部から上位の細粒部へ細粒化する。", "image": null, "sourceNumber": 20}, {"category": "基礎", "prompt": "断層面とは何か。", "answer": "断層の面そのもの。", "image": null, "sourceNumber": 21}, {"category": "基礎", "prompt": "上盤とは何か。", "answer": "断層面より相対的に上側にある岩体。", "image": null, "sourceNumber": 22}, {"category": "基礎", "prompt": "下盤とは何か。", "answer": "断層面より相対的に下側にある岩体。", "image": null, "sourceNumber": 23}, {"category": "標準", "prompt": "実移動（net slip）とは何か。", "answer": "断層面に沿った変位ベクトルそのもの。", "image": null, "sourceNumber": 24}, {"category": "標準", "prompt": "隔離（separation）とは何か。", "answer": "断層に沿って観察される見かけの変位。", "image": null, "sourceNumber": 25}, {"category": "基礎", "prompt": "水平変位とは、断層面のどの方向に平行な変位か。", "answer": "走向方向に平行な変位。", "image": null, "sourceNumber": 26}, {"category": "基礎", "prompt": "傾斜変位とは、断層面のどの方向の変位か。", "answer": "傾斜方向の変位。", "image": null, "sourceNumber": 27}, {"category": "基礎", "prompt": "正断層では上盤は下盤に対してどう動くか。", "answer": "相対的に下方へ動く。", "image": null, "sourceNumber": 28}, {"category": "基礎", "prompt": "逆断層では上盤は下盤に対してどう動くか。", "answer": "相対的に上方へ動く。", "image": null, "sourceNumber": 29}, {"category": "基礎", "prompt": "横ずれ断層の主な変位成分は何か。", "answer": "断層面の走向に平行な水平変位。", "image": null, "sourceNumber": 30}, {"category": "基礎", "prompt": "鏡肌とは何か。", "answer": "断層運動によって滑らかで光沢をもつ断層面。", "image": null, "sourceNumber": 31}, {"category": "基礎", "prompt": "条線（スリッケンライン）とは何か。", "answer": "断層面上に認められる線状の模様で、すべり方向の手掛かりになる構造。", "image": null, "sourceNumber": 32}, {"category": "標準", "prompt": "スリッケンステップとは何か。", "answer": "条線にほぼ直交する方向にできる階段状の凹凸で、運動センス判定に使える構造。", "image": null, "sourceNumber": 33}, {"category": "基礎", "prompt": "断層ガウジの特徴は何か。", "answer": "未固結で、粘土状の細粒な基質が多い。", "image": null, "sourceNumber": 34}, {"category": "基礎", "prompt": "断層角礫の特徴は何か。", "answer": "未固結の基質の中に角礫状の岩片が多い。", "image": null, "sourceNumber": 35}, {"category": "標準", "prompt": "破砕岩・カタクレーサイトの特徴は何か。", "answer": "基質と岩片が固結した断層岩である。", "image": null, "sourceNumber": 36}, {"category": "標準", "prompt": "マイロナイトを特徴づける変形作用は何か。", "answer": "再結晶作用を伴う変形。", "image": null, "sourceNumber": 37}, {"category": "標準", "prompt": "節理と裂罅（れっか）の違いを答えよ。", "answer": "節理は面に沿う変位がほぼない破断面、裂罅は面に直交する変位をもち開口した割れ目である。", "image": null, "sourceNumber": 38}, {"category": "基礎", "prompt": "褶曲で曲率が最大となる部分を何というか。", "answer": "ヒンジ。", "image": null, "sourceNumber": 39}, {"category": "基礎", "prompt": "褶曲のヒンジを連ねた線を何というか。", "answer": "ヒンジ線（褶曲軸）。", "image": null, "sourceNumber": 40}, {"category": "基礎", "prompt": "ヒンジから離れ、曲率が緩やかな褶曲の部分を何というか。", "answer": "翼。", "image": null, "sourceNumber": 41}, {"category": "標準", "prompt": "褶曲軸面とは何か。", "answer": "上下に重なる各地層面のヒンジ線の集合がつくる面。", "image": null, "sourceNumber": 42}, {"category": "基礎", "prompt": "水平面を基準に上方へ閉じる山形の褶曲を何というか。", "answer": "アンチフォーム。", "image": null, "sourceNumber": 43}, {"category": "基礎", "prompt": "水平面を基準に下方へ閉じる谷形の褶曲を何というか。", "answer": "シンフォーム。", "image": null, "sourceNumber": 44}, {"category": "標準", "prompt": "アンチフォームと背斜を区別するために必要な観察は何か。", "answer": "地層の上下（若化）方向の判定。", "image": null, "sourceNumber": 45}, {"category": "標準", "prompt": "シンフォームと向斜を区別するために必要な観察は何か。", "answer": "地層の上下（若化）方向の判定。", "image": null, "sourceNumber": 46}, {"category": "標準", "prompt": "平行褶曲とはどのような褶曲か。", "answer": "褶曲のどの部分でも層厚がほぼ一定の褶曲。", "image": null, "sourceNumber": 47}, {"category": "標準", "prompt": "相似褶曲とはどのような褶曲か。", "answer": "褶曲軸面に平行に測った地層の幅が、褶曲のどの部分でもほぼ同じ褶曲。", "image": null, "sourceNumber": 48}, {"category": "基礎", "prompt": "正立褶曲とはどのような褶曲か。", "answer": "褶曲軸面がほぼ垂直な褶曲。", "image": null, "sourceNumber": 49}, {"category": "基礎", "prompt": "傾斜褶曲とはどのような褶曲か。", "answer": "褶曲軸面が傾斜している褶曲。", "image": null, "sourceNumber": 50}, {"category": "標準", "prompt": "転倒褶曲とはどのような褶曲か。", "answer": "傾斜褶曲のうち、片翼が逆転している褶曲。", "image": null, "sourceNumber": 51}, {"category": "標準", "prompt": "横臥褶曲とはどのような褶曲か。", "answer": "褶曲軸面が水平に近い褶曲。", "image": null, "sourceNumber": 52}, {"category": "標準", "prompt": "複褶曲とは何か。", "answer": "異なるスケールの褶曲が重なり合った形態の褶曲。", "image": null, "sourceNumber": 53}, {"category": "標準", "prompt": "寄生褶曲とは何か。", "answer": "大きな褶曲に含まれる小さな褶曲。", "image": null, "sourceNumber": 54}, {"category": "標準", "prompt": "キンク褶曲の形態的特徴は何か。", "answer": "両翼が平面的で、軸部の幅が狭く、折れ曲がったように見える。", "image": null, "sourceNumber": 55}, {"category": "標準", "prompt": "箱型褶曲の特徴は何か。", "answer": "背斜が隣り合い、地層が箱を伏せたような形になる褶曲。", "image": null, "sourceNumber": 56}, {"category": "応用", "prompt": "鞘状褶曲は別名何と呼ばれるか。", "answer": "円錐状褶曲。", "image": null, "sourceNumber": 57}, {"category": "応用", "prompt": "層平行圧縮による座屈で、層面すべりを伴う褶曲作用を何というか。", "answer": "フレクシュラルスリップ。", "image": null, "sourceNumber": 58}, {"category": "応用", "prompt": "コンピテント層とインコンピテント層の間の剪断で生じる寄生褶曲を何というか。", "answer": "引きずり褶曲（ドラッグ褶曲）。", "image": null, "sourceNumber": 59}, {"category": "応用", "prompt": "引きずり褶曲は何を読み取る手掛かりになるか。", "answer": "層間剪断の方向、ひいては剪断センス。", "image": null, "sourceNumber": 60}, {"category": "基礎", "prompt": "剪断センスとは何か。", "answer": "剪断面を挟む両側の相対的な運動方向。", "image": null, "sourceNumber": 61}, {"category": "標準", "prompt": "なぜ非対称な変形構造は剪断センスの判定に役立つのか。", "answer": "その非対称性がせん断の向きによって一義的に変わるから。", "image": null, "sourceNumber": 62}, {"category": "標準", "prompt": "リーデル剪断実験は何を理解するためのモデルか。", "answer": "剪断帯にできるR・R'・P・Yなどの剪断面の配列と剪断センス。", "image": null, "sourceNumber": 63}, {"category": "標準", "prompt": "複合面構造とは何か。", "answer": "Y面・P面・R1面など、複数の面構造が組み合わさった剪断組織。", "image": null, "sourceNumber": 64}, {"category": "応用", "prompt": "複合面構造でP・Y・R1面の向きと非対称性を組み合わせて何を判定するか。", "answer": "剪断センス。", "image": null, "sourceNumber": 65}, {"category": "応用", "prompt": "シグマ構造（σ構造）とは何か。", "answer": "ポーフィロクラストなどの周囲が非対称に回転・変形した構造で、剪断センス指標になる。", "image": null, "sourceNumber": 66}, {"category": "標準", "prompt": "講義では剪断センスの表現・計算に何を用いるとしたか。", "answer": "ステレオネット。", "image": null, "sourceNumber": 67}, {"category": "標準", "prompt": "断層面上の条線とスリッケンステップを観察すると、主に何が分かるか。", "answer": "断層のすべり方向と運動センス。", "image": null, "sourceNumber": 68}, {"category": "基礎", "prompt": "粒界すべりとはどのような変形相か。", "answer": "粒子そのものはあまり変形せず、粒子境界に沿ってすべる変形。", "image": null, "sourceNumber": 69}, {"category": "基礎", "prompt": "破砕とはどのような変形相か。", "answer": "粒子境界や粒子内部に微小破壊を伴う変形。", "image": null, "sourceNumber": 70}, {"category": "標準", "prompt": "粒界拡散とはどのような変形相か。", "answer": "粒子接触部が圧力溶解し、拡散して再沈殿する変形。", "image": null, "sourceNumber": 71}, {"category": "標準", "prompt": "結晶塑性とはどのような変形相か。", "answer": "粒子の再結晶を伴う変形。", "image": null, "sourceNumber": 72}, {"category": "応用", "prompt": "マイロナイトに結晶塑性や再結晶の証拠があることは、どのような変形を示唆するか。", "answer": "脆性的な破砕だけでなく、延性的な変形が関与したこと。", "image": null, "sourceNumber": 73}, {"category": "基礎", "prompt": "歪は三つに大別すると何か。", "answer": "膨縮・形態変化（ゆがみ）・回転。", "image": null, "sourceNumber": 74}, {"category": "基礎", "prompt": "均質歪とは何か。", "answer": "物体内部のすべての部分で歪が同一である歪。", "image": null, "sourceNumber": 75}, {"category": "基礎", "prompt": "不均質歪とは何か。", "answer": "物体内部で場所によって異なる歪をもつ歪。", "image": null, "sourceNumber": 76}, {"category": "標準", "prompt": "膨縮を伴う歪で、体積が増える変化を何と考えるか。", "answer": "正の体積変化（膨張）。", "image": null, "sourceNumber": 77}, {"category": "標準", "prompt": "回転を伴う歪を示す構造を解釈するとき、何と何を区別する必要があるか。", "answer": "物体自体の回転と、形態変化による見かけの回転。", "image": null, "sourceNumber": 78}, {"category": "基礎", "prompt": "応力の基本的な定義を式で表せ。", "answer": "応力S = 力F / 面積A。", "image": null, "sourceNumber": 79}, {"category": "基礎", "prompt": "ある面に作用する応力は、どの二成分に分けられるか。", "answer": "垂直応力（σn）と剪断応力（τ）。", "image": null, "sourceNumber": 80}, {"category": "基礎", "prompt": "σ1は何を表すか。", "answer": "最大圧縮主応力。", "image": null, "sourceNumber": 81}, {"category": "基礎", "prompt": "σ2は何を表すか。", "answer": "中間圧縮主応力。", "image": null, "sourceNumber": 82}, {"category": "基礎", "prompt": "σ3は何を表すか。", "answer": "最小圧縮主応力。", "image": null, "sourceNumber": 83}, {"category": "標準", "prompt": "有効応力はどのように求めるか。", "answer": "垂直応力から間隙水圧を引く。", "image": null, "sourceNumber": 84}, {"category": "標準", "prompt": "垂直応力が100 MPa、間隙水圧が100 MPaなら、有効応力はいくらか。", "answer": "0 MPa。", "image": null, "sourceNumber": 85}, {"category": "標準", "prompt": "応力が大きくても破壊が必ず起きるわけではない理由は何か。", "answer": "差応力が十分大きくならなければ破壊しないから。", "image": null, "sourceNumber": 86}, {"category": "標準", "prompt": "講義の符号規約で、差応力が正に大きくなると何が形成されやすいか。", "answer": "剪断割れ目、すなわち断層。", "image": null, "sourceNumber": 87}, {"category": "標準", "prompt": "講義の符号規約で、差応力が負に大きくなると何が形成されやすいか。", "answer": "引張割れ目、すなわち節理・裂罅。", "image": null, "sourceNumber": 88}, {"category": "応用", "prompt": "Andersonによる断層の力学的分類では、何が正断層・横ずれ断層・逆断層のタイプを決めるか。", "answer": "主応力の性質と配置。", "image": null, "sourceNumber": 89}, {"category": "基礎", "prompt": "活断層とは何か。", "answer": "将来ずれる可能性があり、過去およそ30万年にずれた証拠をもつ断層。", "image": null, "sourceNumber": 90}, {"category": "画像・基礎", "prompt": "図の b に示された断層タイプは何か。", "answer": "正断層。図では引張方向の力のもとで上盤が相対的に下がっている。", "image": "images/q91_fault_types.png", "sourceNumber": 91}, {"category": "画像・標準", "prompt": "図中の ns が表す変位は何か。", "answer": "実移動（net slip）。断層面に沿う変位ベクトルそのものである。", "image": "images/q92_fault_motion_terms.png", "sourceNumber": 92}, {"category": "画像・基礎", "prompt": "写真に見られる、地層が連続的に曲がる構造を何というか。", "answer": "褶曲。", "image": "images/q93_fold_outcrop.png", "sourceNumber": 93}, {"category": "画像・標準", "prompt": "図で、複数のヒンジ線の集合がつくる面は何か。", "answer": "褶曲軸面。", "image": "images/q94_fold_parts.png", "sourceNumber": 94}, {"category": "画像・応用", "prompt": "図の A と B のうち、どちらが平行褶曲か。", "answer": "A。褶曲のどの部分でも層厚がほぼ一定である。", "image": "images/q95_fold_style.png", "sourceNumber": 95}, {"category": "画像・標準", "prompt": "R1・P・Yなどの面が系統的に並ぶ図は、何を示すモデルか。", "answer": "リーデル剪断系（複合面構造）のモデル。", "image": "images/q96_riedel_shear.png", "sourceNumber": 96}, {"category": "画像・応用", "prompt": "写真中でP面・Y面などが読み取れる剪断組織を何というか。", "answer": "複合面構造。", "image": "images/q97_composite_surfaces.png", "sourceNumber": 97}, {"category": "画像・応用", "prompt": "写真の矢印では上側が右、下側が左へ相対移動している。この剪断センスは何か。", "answer": "右横ずれ（デクストラル）剪断。", "image": "images/q98_shear_sense_outcrop.png", "sourceNumber": 98}, {"category": "画像・応用", "prompt": "写真群に見られる、非対称なポーフィロクラストの形態を用いる剪断センス指標は何か。", "answer": "シグマ構造（σ構造）。", "image": "images/q99_micro_shear.png", "sourceNumber": 99}, {"category": "画像・応用", "prompt": "写真に見られる、褶曲の非対称性を利用して剪断センスを読む構造は何か。", "answer": "褶曲構造の非対称変形構造（非対称褶曲）。", "image": "images/q100_asymmetrical_folds.png", "sourceNumber": 100}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q101_user_shear_01.png", "sourceNumber": 101}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q102_user_shear_02.png", "sourceNumber": 102}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q103_user_shear_03.png", "sourceNumber": 103}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q104_user_shear_04.png", "sourceNumber": 104}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q105_user_shear_05.png", "sourceNumber": 105}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q106_user_shear_06.png", "sourceNumber": 106}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q107_user_shear_07.png", "sourceNumber": 107}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q108_user_shear_08.png", "sourceNumber": 108}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q109_user_shear_09.png", "sourceNumber": 109}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q110_user_shear_10.png", "sourceNumber": 110}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q111_user_shear_11.png", "sourceNumber": 111}];
+let currentQuiz = [];
+let currentIndex = 0;
+let knownCount = 0;
+let reviewQuestions = [];
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz(items = originalQuestions) {
+  currentQuiz = shuffle(items);
+  currentIndex = 0;
+  knownCount = 0;
+  reviewQuestions = [];
+  showQuestion();
+}
+
+function showQuestion() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  if (currentIndex >= currentQuiz.length) { showResult(); return; }
+  const item = currentQuiz[currentIndex];
+  status.textContent = `第${currentIndex + 1}問 / 全${currentQuiz.length}問　（理解済み: ${knownCount}）`;
+  const imageHtml = item.image ? `<img class="question-image" src="${item.image}" alt="問題図版">` : '';
+  const source = item.sourceNumber ? `元の第${item.sourceNumber}問` : '一問一答';
+  app.innerHTML = `
+    <section class="card">
+      <div class="q-meta"><span class="tag">${item.category}</span><span>${source}</span></div>
+      ${imageHtml}
+      <div class="q-text">${item.prompt}</div>
+      <button class="show-answer" onclick="showAnswer()">答えを表示</button>
+      <div class="answer-box" id="answer-box"><strong>答え：</strong><span id="answer-text"></span></div>
+      <div class="judge-row" id="judge-row"><button class="known-btn" onclick="judge(true)">理解できた</button><button class="review-btn" onclick="judge(false)">要復習</button></div>
+    </section>`;
+}
+
+function showAnswer() {
+  const item = currentQuiz[currentIndex];
+  document.getElementById('answer-text').textContent = item.answer;
+  document.getElementById('answer-box').style.display = 'block';
+  document.getElementById('judge-row').style.display = 'grid';
+  document.querySelector('.show-answer').style.display = 'none';
+}
+
+function judge(known) {
+  if (known) knownCount++; else reviewQuestions.push(currentQuiz[currentIndex]);
+  currentIndex++;
+  showQuestion();
+}
+
+function showResult() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  status.textContent = '結果';
+  const reviewMessage = reviewQuestions.length ? `要復習は ${reviewQuestions.length}題です。` : '全問を理解済みにできました！';
+  const reviewButton = reviewQuestions.length ? `<button class="restart-btn" onclick="startQuiz(reviewQuestions)">要復習の${reviewQuestions.length}題をもう一度</button>` : '';
+  app.innerHTML = `<section class="card result"><h2>今回の確認結果</h2><div class="score"><span>${knownCount}</span><small>/ ${currentQuiz.length} 題</small></div><p>${reviewMessage}</p>${reviewButton}<button class="restart-btn" onclick="startQuiz()">最初からもう一度</button></section>`;
+}
+
+startQuiz();
+</script>
+</body>
+</html>

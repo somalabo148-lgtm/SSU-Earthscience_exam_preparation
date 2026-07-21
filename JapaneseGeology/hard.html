@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>日本地質 難問チャレンジ 50問</title>
+<style>
+    :root { --primary:#2c3e50; --accent:#3d8478; --bg:#f2f6f4; --ok:#218c74; --review:#d66a4c; }
+    * { box-sizing:border-box; }
+    body { font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; background:var(--bg); color:#2d3436; margin:0; padding-bottom:55px; line-height:1.65; }
+    header { position:sticky; top:0; z-index:10; padding:14px 15px; color:#fff; text-align:center; background:var(--primary); box-shadow:0 2px 7px rgba(0,0,0,.18); }
+    h1 { margin:4px 0 0; font-size:1.2rem; }
+    .back-link-btn { display:inline-block; padding:6px 12px; color:#fff; background:rgba(255,255,255,.16); border-radius:5px; text-decoration:none; font-size:.84rem; }
+    .status-bar { margin-top:5px; font-size:.88rem; opacity:.9; }
+    .container { max-width:820px; margin:22px auto; padding:0 15px; }
+    .card { padding:24px; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(20,55,48,.10); }
+    .q-meta { display:flex; justify-content:space-between; gap:12px; margin-bottom:11px; color:#72817d; font-size:.86rem; font-weight:bold; }
+    .tag { max-width:72%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .q-text { padding-left:14px; border-left:4px solid var(--accent); font-size:1.12rem; font-weight:bold; }
+    .question-image { display:block; max-width:100%; max-height:470px; margin:18px auto; border-radius:8px; background:#1d2728; object-fit:contain; }
+    .show-answer { width:100%; margin-top:22px; padding:14px; border:0; border-radius:8px; background:var(--primary); color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .answer-box { display:none; margin-top:18px; padding:17px; border-radius:8px; border-left:5px solid var(--accent); background:#eaf6f2; }
+    .answer-box strong { color:#1f5f55; }
+    .judge-row { display:none; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+    .judge-row button, .restart-btn { padding:13px; border:0; border-radius:8px; color:#fff; font-weight:bold; font-size:.98rem; cursor:pointer; }
+    .known-btn { background:var(--ok); } .review-btn { background:var(--review); } .restart-btn { width:100%; margin-top:14px; background:var(--primary); }
+    .result { text-align:center; } .score { margin:20px auto; width:135px; height:135px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#fff; background:var(--accent); font-size:2.25rem; font-weight:bold; }
+    .score small { font-size:.8rem; font-weight:normal; } .result p { color:#596866; }
+    @media (max-width:520px) { .card { padding:19px; } .q-text { font-size:1.04rem; } .q-meta { align-items:flex-start; flex-direction:column; gap:2px; } .tag { max-width:100%; white-space:normal; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="back-link-btn" href="index.html">← 一覧に戻る</a>
+  <h1>日本地質 難問チャレンジ 50問</h1>
+  <div class="status-bar" id="status">読込中...</div>
+</header>
+<main class="container" id="app"></main>
+<script>
+const originalQuestions = [{"category": "総合・地帯区分", "prompt": "日本列島の地帯区分で、岩石の種類だけでなく形成過程と年代も併用する必要がある理由を答えよ。", "answer": "同じ岩種でも形成場・形成過程や年代が異なりうるためであり、三つの情報を組み合わせて初めて地質体の起源と位置づけを判定できる。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "地帯の境界を示す断層を一般の断層と区別して何と呼び、その名称が重要なのはなぜか。", "answer": "構造線と呼ぶ。異なる形成史をもつ地帯どうしの境界を示す重要な断層だからである。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "飛騨帯と美濃帯を、平による大区分のうち最も適切なものへ分類し、それぞれの根拠を述べよ。", "answer": "飛騨帯は大陸地殻（大陸起源の地質体）で、片麻岩・花崗岩類を主体とする。美濃帯は付加体で、海洋プレートの沈み込みと付加作用によるジュラ紀付加体である。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "日本列島の地質体の大部分が付加体であることは、列島の形成史について何を示すか。", "answer": "海洋プレートの沈み込みと付加作用が、列島形成に長期的かつ主要な役割を果たしてきたことを示す。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "中央構造線（MTL）を基準にした西南日本の内帯・外帯の位置関係を答えよ。", "answer": "MTLより北側が内帯、南側が外帯である。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "伊豆―小笠原弧と千島弧を、付加体や大陸地殻ではなく衝突島弧として扱う根拠を答えよ。", "answer": "両者とも火山性島弧であり、列島に衝突した島弧として扱われるためである。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "古生代〜三畳紀付加体、ジュラ紀付加体、白亜紀〜第三紀付加体から、それぞれ一例ずつ地帯を挙げよ。", "answer": "古生代〜三畳紀付加体は秋吉帯など、ジュラ紀付加体は美濃帯など、白亜紀〜第三紀付加体は四万十帯など。", "image": null, "sourceNumber": null}, {"category": "総合・地帯区分", "prompt": "講義資料の年代による地帯区分で、領家帯と四万十帯が同じ大きな年代区分に入る一方、形成過程が異なることを説明せよ。", "answer": "両者は白亜紀〜第三紀地帯に入るが、領家帯は花崗岩の熱に関係する高温型変成帯、四万十帯は沈み込み・付加作用でできた付加体である。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨変成岩類について、約330 Ma・230 Ma・180 Maの変成作用を、変成タイプとともに古い順に述べよ。", "answer": "約330 Maの低圧型広域変成作用、約230 Maの中圧型広域変成作用、約180 Maの船津花崗岩類による接触変成作用。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨片麻岩の砕屑性ジルコンに約1500 Maの年代が得られても、それを飛騨帯の最後の変成作用の年代とみなせない理由を答えよ。", "answer": "その年代は砕屑粒子の由来となった古い物質の年代を示し、飛騨片麻岩が受けた変成作用の年代そのものではないためである。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "船津花崗岩が古期花崗岩に貫入し、さらに手取層群に覆われるという関係から、三者の新旧関係を古い順に答えよ。", "answer": "古期花崗岩類、船津花崗岩、手取層群の順で新しくなる。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨帯を単一の変成イベントだけで説明できないことを、変成作用と花崗岩類の年代を用いて説明せよ。", "answer": "飛騨変成岩類には約330 Maの低圧型、約230 Maの中圧型、約180 Maの接触変成作用が重なり、花崗岩類も古期と約180 Maの新期に分かれるためである。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "宇奈月帯を飛騨帯から区別する際に使える、位置関係・変成作用・岩石の三つの特徴を答えよ。", "answer": "飛騨帯とは断層で接し、約250 Maの中圧型広域変成作用を受け、十字石片岩などの宇奈月変成岩類を含む。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯を単なる飛騨帯の一部とせず構造帯として扱う理由を、両側の地帯と岩相・構造の特徴から説明せよ。", "answer": "飛騨帯と美濃帯・三郡―蓮華帯の間にあり、浅海成層とその変成相が断層・剪断帯で寸断されて狭長に分布するためである。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯にオルドビス紀〜三畳紀の浅海成層が含まれることは、美濃帯のジュラ紀付加体とどう対照的か。", "answer": "飛騨外縁帯は古い浅海成層を主体とする構造帯であるのに対し、美濃帯はジュラ紀の沈み込み・付加作用で形成された付加体である。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "飛騨外縁帯に石灰岩・砕屑岩・珪長質〜苦鉄質火山岩類が共存することから、どのような地質学的な多様性を読み取れるか。", "answer": "浅海の堆積作用と火山活動を含む多様な前弧・縁辺環境の地質記録が、構造的に集積・断片化していることを示す。", "image": null, "sourceNumber": null}, {"category": "飛騨帯・飛騨外縁帯", "prompt": "手取層群に恐竜・アンモナイト・植物・貝化石が含まれることと、内湾〜湖沼成という堆積環境をどのように整合的に説明できるか。", "answer": "海とのつながりをもつ内湾から淡水性の湖沼まで、海成・陸成の環境が移り変わる堆積系として説明できる。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "玄武岩・石灰岩・チャート・泥岩・砂岩とメランジュがまとまって見つかったとき、美濃帯型の地質体と判断できる理由を説明せよ。", "answer": "遠洋性堆積物と海溝堆積物を含む海洋プレート層序が、沈み込み時の変形でメランジュを伴って付加したという、美濃帯型ジュラ紀付加体の特徴に合うためである。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯の玄武岩・石灰岩・チャートを、それぞれ主な形成場または形成要因と対応させよ。", "answer": "玄武岩は海洋底の火山活動、石灰岩は熱帯の浅海での生物遺骸の集積、チャートは遠洋での放散虫殻の堆積に対応する。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "遠洋域に粗粒な陸源堆積物が届かないという事実は、チャートの堆積場の判定にどう役立つか。", "answer": "礫や砂のような粗粒な陸源物質が乏しく、放散虫殻に由来する珪質堆積物が卓越するなら、陸から遠い遠洋域での堆積を示す。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯がジュラ紀付加体であっても、岩石中に古生代や三畳紀の年代情報が含まれうる理由を答えよ。", "answer": "付加体の形成時期は海洋プレート上の堆積物が沈み込み帯で付加した時期であり、取り込まれた遠洋性堆積物自体はそれより古く堆積していたことがあるためである。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "放散虫革命が美濃帯の地質年代論に与えた結論の変化を、古生代・三畳紀・ジュラ紀の語を用いて説明せよ。", "answer": "美濃帯の形成時代は古生代と考えられ、次いで三畳紀へ、放散虫化石による検討を経てジュラ紀へと改められた。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "メランジュの存在だけで、岩石が同じ時代・同じ場所で堆積したと結論できない理由を答えよ。", "answer": "メランジュは異なる岩塊や堆積物が沈み込み・変形により混在した岩石であり、成因・年代・堆積場の異なる要素を含みうるためである。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯と秩父帯がよく似た岩石組合せと形成過程をもつ一方、秩父帯だけが北帯・南帯に区分される鍵となる地帯は何か。", "answer": "黒瀬川帯。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "美濃帯と四万十帯を、形成時代と玄武岩・石灰岩・チャートの量の違いで比較せよ。", "answer": "美濃帯はジュラ紀付加体で玄武岩・石灰岩・チャートを含むのに対し、四万十帯は白亜紀〜古第三紀付加体で、それらの量が圧倒的に少なく砂岩・泥岩が卓越する。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "北部北上帯と渡島帯を美濃帯・秩父帯と対比できる根拠を答えよ。", "answer": "北部北上帯と渡島帯はいずれもジュラ紀付加体で、北部北上帯は海洋プレート層序とメランジュをもち、講義資料では渡島帯＝北部北上帯＝秩父帯と対応づけられている。", "image": null, "sourceNumber": null}, {"category": "美濃帯と付加体", "prompt": "領家帯の源岩が美濃―丹波帯のジュラ紀付加体であることは、領家変成岩と美濃帯の関係をどのように示すか。", "answer": "領家変成岩は美濃―丹波帯に相当するジュラ紀付加体が高温変成を受けたものであり、両者は源岩と変成後の岩石という関係にある。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "ジュラ紀付加体を源岩とし、花崗岩の熱で高温低圧型変成を受けた地帯を答え、その根拠を二つ述べよ。", "answer": "領家帯。源岩が美濃―丹波帯のジュラ紀付加体であり、領家花崗岩類の熱で領家変成岩類が形成されたためである。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "領家帯と三波川帯を、温度・圧力型と想定される深さの違いから対比せよ。", "answer": "領家帯は花崗岩の熱に関係する高温低圧型変成帯であるのに対し、三波川帯は約20〜80 kmの深さで形成された高圧型変成帯である。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "領家変成岩類の変成度が南西側ほど上がることは、花崗岩類の分布とどのように関係するか。", "answer": "南西側ほど花崗岩が大規模に分布するため、その熱的影響が強くなり変成度が上がると解釈される。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "飛騨帯の約180 Maの船津花崗岩と、領家花崗岩類の100〜65 Maを比較し、両者の時代と地質学的役割を述べよ。", "answer": "船津花崗岩はジュラ紀の花崗岩で飛騨片麻岩に接触変成作用を与えた。領家花崗岩類は白亜紀の花崗岩で、領家変成岩類の高温変成に関与した。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "三波川帯の泥質・砂質・珪質・苦鉄質片岩という岩石組合せは、どのような多様な源岩が変成したことを示すか。", "answer": "泥質・砂質の砕屑岩、珪質堆積物、苦鉄質火成岩など、組成の異なる岩石が高圧変成を受けたことを示す。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "三波川帯の最大被熱温度が300〜700℃、形成深度が20〜80 kmとされることは、浅所の接触変成より何を支持するか。", "answer": "沈み込み帯の深部に対応する高圧型の広域変成作用を支持する。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "三波川帯の砕屑物年代が70〜120 Maで、講義資料に「四万十帯？」と付記される意味を説明せよ。", "answer": "砕屑物の年代が四万十帯の形成時期と重なる可能性を示し、三波川帯の源岩・形成史と四万十帯との関係を検討する必要があることを意味する。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "秩父帯が美濃―丹波帯と同じジュラ紀付加体の特徴をもつにもかかわらず、独立した帯として扱われる直接の構造的根拠は何か。", "answer": "黒瀬川帯を挟んで北帯と南帯に区分されるという構造的な分帯があるためである。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "四万十帯の北帯・南帯の年代差を使って、付加作用の継続をどのように説明できるか。", "answer": "北帯は白亜紀、南帯は古第三紀の付加体であり、少なくとも白亜紀から古第三紀にかけて付加作用が継続したことを示す。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "四万十帯で砂岩・泥岩が卓越し、ジュラ紀付加体に多い玄武岩・石灰岩・チャートが少ないことは、付加した堆積物の供給・構成について何を示すか。", "answer": "四万十帯では海洋地殻や遠洋性炭酸塩・珪質堆積物よりも、海溝に供給された砕屑性の砂泥が主に付加したことを示す。", "image": null, "sourceNumber": null}, {"category": "変成帯と四万十帯", "prompt": "海面下に新第三紀以降の四万十帯が存在するという説明は、「四万十帯は現在も成長中」という表現をどのように裏付けるか。", "answer": "現在の沈み込み帯でも付加作用が続き、新第三紀以降に付加した部分が海面下に形成されていることを示すためである。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "西南日本でジュラ紀付加体の三列と黒瀬川帯の形成を説明する、横ずれ説とナップ説の運動像を対比せよ。", "answer": "横ずれ説は白亜紀の横ずれ運動による配列形成を考え、ナップ説はナップ構造による重なり・移動で形成されたと考える。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "西南日本の横ずれ説とナップ説が未解決であることは、地帯配列の復元で何が必要であることを示すか。", "answer": "単一の証拠だけでは決着せず、年代・構造・岩石学など複数の観点からの検証が必要であることを示す。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "北部北上帯を秩父帯の延長とみなす根拠を、形成時代・岩相・位置の三点から述べよ。", "answer": "北部北上帯はジュラ紀付加体で、海洋プレート層序とメランジュをもち、美濃帯・秩父帯と同様の特徴を示すうえ、位置関係から秩父帯の延長と考えられる。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "南部北上帯が北部北上帯と本質的に異なることを、地質体の種類・堆積環境・化石の三点で説明せよ。", "answer": "南部北上帯は付加体ではない古い陸塊で、陸棚堆積物を主体とし、化石に富む。北部北上帯はジュラ紀付加体である。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "氷上花崗岩が約450 Maでシルル系に不整合で覆われることは、南部北上帯の基盤について何を示すか。", "answer": "南部北上帯にはシルル紀以前に形成された古い花崗岩質基盤があり、その後に不整合を介して堆積層が重なったことを示す。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "阿武隈帯と領家帯の共通点を二つ、相違点を一つ述べよ。", "answer": "共通点はジュラ紀付加体起源の変成岩と白亜紀花崗岩に関係し、高温低圧型変成を示すこと。相違点は阿武隈帯にはカンブリア紀の変成岩類が含まれることである。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "東北日本の北部北上帯・南部北上帯・阿武隈帯を、早池峰構造帯・畑川構造線・棚倉構造線を用いて北から順に並べよ。", "answer": "北部北上帯―早池峰構造帯―南部北上帯―畑川構造線―阿武隈帯―棚倉構造線の順。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "北海道の渡島帯を、北部北上帯・秩父帯と対応づけられる根拠を答えよ。", "answer": "渡島帯がジュラ紀付加体であり、講義資料で渡島帯＝北部北上帯＝秩父帯と対応づけられているためである。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "北海道の空知・エゾ帯・常呂帯・根室帯を、付加体・変成岩・堆積岩の組合せで区別せよ。", "answer": "空知・エゾ帯は白亜紀付加体に高圧変成岩・蛇紋岩・神居古潭変成岩類を伴い、常呂帯は白亜紀付加体、根室帯は白亜紀以降の堆積岩類からなる。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "北海道形成史で、白亜紀のオホーツク古陸の衝突と約13 Maの千島弧衝突を区別して説明せよ。", "answer": "北海道は白亜紀にオホーツク古陸の衝突によって形成されたとされ、その後約13 Maに千島弧の衝突という別の衝突イベントが記録される。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "日高帯が「衝突によってのし上げた大陸地殻と白亜系」と表現されることは、北海道の衝突帯でどのような地殻運動を示すか。", "answer": "衝突により大陸地殻と白亜系が大きく押し上げられ、地殻深部の物質を含む地質体が露出したことを示す。", "image": null, "sourceNumber": null}, {"category": "西南日本・東北・北海道", "prompt": "北海道の石炭が古第三紀の温暖期に湖や湿地で形成されたという情報から、石炭層の形成に必要な条件を二つ述べよ。", "answer": "植物遺骸が大量に蓄積する湿地・湖沼環境と、それが保存・埋没される温暖湿潤な堆積環境である。", "image": null, "sourceNumber": null}];
+let currentQuiz = [];
+let currentIndex = 0;
+let knownCount = 0;
+let reviewQuestions = [];
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz(items = originalQuestions) {
+  currentQuiz = shuffle(items);
+  currentIndex = 0;
+  knownCount = 0;
+  reviewQuestions = [];
+  showQuestion();
+}
+
+function showQuestion() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  if (currentIndex >= currentQuiz.length) { showResult(); return; }
+  const item = currentQuiz[currentIndex];
+  status.textContent = `第${currentIndex + 1}問 / 全${currentQuiz.length}問　（理解済み: ${knownCount}）`;
+  const imageHtml = item.image ? `<img class="question-image" src="${item.image}" alt="問題図版">` : '';
+  const source = item.sourceNumber ? `元の第${item.sourceNumber}問` : '一問一答';
+  app.innerHTML = `
+    <section class="card">
+      <div class="q-meta"><span class="tag">${item.category}</span><span>${source}</span></div>
+      ${imageHtml}
+      <div class="q-text">${item.prompt}</div>
+      <button class="show-answer" onclick="showAnswer()">答えを表示</button>
+      <div class="answer-box" id="answer-box"><strong>答え：</strong><span id="answer-text"></span></div>
+      <div class="judge-row" id="judge-row"><button class="known-btn" onclick="judge(true)">理解できた</button><button class="review-btn" onclick="judge(false)">要復習</button></div>
+    </section>`;
+}
+
+function showAnswer() {
+  const item = currentQuiz[currentIndex];
+  document.getElementById('answer-text').textContent = item.answer;
+  document.getElementById('answer-box').style.display = 'block';
+  document.getElementById('judge-row').style.display = 'grid';
+  document.querySelector('.show-answer').style.display = 'none';
+}
+
+function judge(known) {
+  if (known) knownCount++; else reviewQuestions.push(currentQuiz[currentIndex]);
+  currentIndex++;
+  showQuestion();
+}
+
+function showResult() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  status.textContent = '結果';
+  const reviewMessage = reviewQuestions.length ? `要復習は ${reviewQuestions.length}題です。` : '全問を理解済みにできました！';
+  const reviewButton = reviewQuestions.length ? `<button class="restart-btn" onclick="startQuiz(reviewQuestions)">要復習の${reviewQuestions.length}題をもう一度</button>` : '';
+  app.innerHTML = `<section class="card result"><h2>今回の確認結果</h2><div class="score"><span>${knownCount}</span><small>/ ${currentQuiz.length} 題</small></div><p>${reviewMessage}</p>${reviewButton}<button class="restart-btn" onclick="startQuiz()">最初からもう一度</button></section>`;
+}
+
+startQuiz();
+</script>
+</body>
+</html>

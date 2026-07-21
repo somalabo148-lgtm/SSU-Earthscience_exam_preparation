@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>構造地質学 剪断センス問題集 12題</title>
+<style>
+    :root { --primary:#2c3e50; --accent:#3d8478; --bg:#f2f6f4; --ok:#218c74; --review:#d66a4c; }
+    * { box-sizing:border-box; }
+    body { font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; background:var(--bg); color:#2d3436; margin:0; padding-bottom:55px; line-height:1.65; }
+    header { position:sticky; top:0; z-index:10; padding:14px 15px; color:#fff; text-align:center; background:var(--primary); box-shadow:0 2px 7px rgba(0,0,0,.18); }
+    h1 { margin:4px 0 0; font-size:1.2rem; }
+    .back-link-btn { display:inline-block; padding:6px 12px; color:#fff; background:rgba(255,255,255,.16); border-radius:5px; text-decoration:none; font-size:.84rem; }
+    .status-bar { margin-top:5px; font-size:.88rem; opacity:.9; }
+    .container { max-width:820px; margin:22px auto; padding:0 15px; }
+    .card { padding:24px; background:#fff; border-radius:12px; box-shadow:0 3px 14px rgba(20,55,48,.10); }
+    .q-meta { display:flex; justify-content:space-between; gap:12px; margin-bottom:11px; color:#72817d; font-size:.86rem; font-weight:bold; }
+    .tag { max-width:72%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .q-text { padding-left:14px; border-left:4px solid var(--accent); font-size:1.12rem; font-weight:bold; }
+    .question-image { display:block; max-width:100%; max-height:470px; margin:18px auto; border-radius:8px; background:#1d2728; object-fit:contain; }
+    .show-answer { width:100%; margin-top:22px; padding:14px; border:0; border-radius:8px; background:var(--primary); color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .answer-box { display:none; margin-top:18px; padding:17px; border-radius:8px; border-left:5px solid var(--accent); background:#eaf6f2; }
+    .answer-box strong { color:#1f5f55; }
+    .judge-row { display:none; grid-template-columns:1fr 1fr; gap:10px; margin-top:16px; }
+    .judge-row button, .restart-btn { padding:13px; border:0; border-radius:8px; color:#fff; font-weight:bold; font-size:.98rem; cursor:pointer; }
+    .known-btn { background:var(--ok); } .review-btn { background:var(--review); } .restart-btn { width:100%; margin-top:14px; background:var(--primary); }
+    .result { text-align:center; } .score { margin:20px auto; width:135px; height:135px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column; color:#fff; background:var(--accent); font-size:2.25rem; font-weight:bold; }
+    .score small { font-size:.8rem; font-weight:normal; } .result p { color:#596866; }
+    @media (max-width:520px) { .card { padding:19px; } .q-text { font-size:1.04rem; } .q-meta { align-items:flex-start; flex-direction:column; gap:2px; } .tag { max-width:100%; white-space:normal; } }
+</style>
+</head>
+<body>
+<header>
+  <a class="back-link-btn" href="index.html">← 一覧に戻る</a>
+  <h1>構造地質学 剪断センス問題集 12題</h1>
+  <div class="status-bar" id="status">読込中...</div>
+</header>
+<main class="container" id="app"></main>
+<script>
+const originalQuestions = [{"category": "画像・応用", "prompt": "写真の矢印では上側が右、下側が左へ相対移動している。この剪断センスは何か。", "answer": "右横ずれ（デクストラル）剪断。", "image": "images/q98_shear_sense_outcrop.png", "sourceNumber": 98}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q101_user_shear_01.png", "sourceNumber": 101}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q102_user_shear_02.png", "sourceNumber": 102}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q103_user_shear_03.png", "sourceNumber": 103}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q104_user_shear_04.png", "sourceNumber": 104}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q105_user_shear_05.png", "sourceNumber": 105}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q106_user_shear_06.png", "sourceNumber": 106}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q107_user_shear_07.png", "sourceNumber": 107}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q108_user_shear_08.png", "sourceNumber": 108}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q109_user_shear_09.png", "sourceNumber": 109}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q110_user_shear_10.png", "sourceNumber": 110}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q111_user_shear_11.png", "sourceNumber": 111}];
+let currentQuiz = [];
+let currentIndex = 0;
+let knownCount = 0;
+let reviewQuestions = [];
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function startQuiz(items = originalQuestions) {
+  currentQuiz = shuffle(items);
+  currentIndex = 0;
+  knownCount = 0;
+  reviewQuestions = [];
+  showQuestion();
+}
+
+function showQuestion() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  if (currentIndex >= currentQuiz.length) { showResult(); return; }
+  const item = currentQuiz[currentIndex];
+  status.textContent = `第${currentIndex + 1}問 / 全${currentQuiz.length}問　（理解済み: ${knownCount}）`;
+  const imageHtml = item.image ? `<img class="question-image" src="${item.image}" alt="問題図版">` : '';
+  const source = item.sourceNumber ? `元の第${item.sourceNumber}問` : '一問一答';
+  app.innerHTML = `
+    <section class="card">
+      <div class="q-meta"><span class="tag">${item.category}</span><span>${source}</span></div>
+      ${imageHtml}
+      <div class="q-text">${item.prompt}</div>
+      <button class="show-answer" onclick="showAnswer()">答えを表示</button>
+      <div class="answer-box" id="answer-box"><strong>答え：</strong><span id="answer-text"></span></div>
+      <div class="judge-row" id="judge-row"><button class="known-btn" onclick="judge(true)">理解できた</button><button class="review-btn" onclick="judge(false)">要復習</button></div>
+    </section>`;
+}
+
+function showAnswer() {
+  const item = currentQuiz[currentIndex];
+  document.getElementById('answer-text').textContent = item.answer;
+  document.getElementById('answer-box').style.display = 'block';
+  document.getElementById('judge-row').style.display = 'grid';
+  document.querySelector('.show-answer').style.display = 'none';
+}
+
+function judge(known) {
+  if (known) knownCount++; else reviewQuestions.push(currentQuiz[currentIndex]);
+  currentIndex++;
+  showQuestion();
+}
+
+function showResult() {
+  const app = document.getElementById('app');
+  const status = document.getElementById('status');
+  status.textContent = '結果';
+  const reviewMessage = reviewQuestions.length ? `要復習は ${reviewQuestions.length}題です。` : '全問を理解済みにできました！';
+  const reviewButton = reviewQuestions.length ? `<button class="restart-btn" onclick="startQuiz(reviewQuestions)">要復習の${reviewQuestions.length}題をもう一度</button>` : '';
+  app.innerHTML = `<section class="card result"><h2>今回の確認結果</h2><div class="score"><span>${knownCount}</span><small>/ ${currentQuiz.length} 題</small></div><p>${reviewMessage}</p>${reviewButton}<button class="restart-btn" onclick="startQuiz()">最初からもう一度</button></section>`;
+}
+
+startQuiz();
+</script>
+</body>
+</html>
