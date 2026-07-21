@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Time Scales 英文和訳ランダム演習</title>
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --accent-color: #3498db;
+        --bg-color: #f4f7f6;
+        --card-bg: #ffffff;
+        --text-color: #333;
+    }
+    body {
+        font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+    }
+    h1 {
+        color: var(--primary-color);
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+    }
+    /* 戻るボタン */
+    .back-link-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 8px 16px;
+        background-color: #95a5a6;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: background-color 0.2s;
+    }
+    .container {
+        width: 100%;
+        max-width: 800px;
+    }
+    .card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        padding: 30px;
+        margin-bottom: 20px;
+        border: 1px solid #e1e1e1;
+    }
+    .question-label {
+        font-weight: bold;
+        color: white;
+        background-color: var(--accent-color);
+        padding: 5px 15px;
+        border-radius: 20px;
+        margin-bottom: 15px;
+        display: inline-block;
+        font-size: 0.9rem;
+    }
+    .source-label {
+        font-size: 0.8rem;
+        color: #7f8c8d;
+        margin-left: 10px;
+    }
+    .question-text {
+        font-size: 1.15rem;
+        line-height: 1.8;
+        margin-bottom: 25px;
+        font-family: Georgia, "Times New Roman", serif; /* 英文を読みやすく */
+        color: #2c3e50;
+    }
+    .answer-box {
+        display: none;
+        border-top: 2px dashed #bdc3c7;
+        padding-top: 20px;
+        margin-top: 20px;
+        background-color: #fcfcfc;
+        border-radius: 0 0 8px 8px;
+    }
+    .answer-label {
+        font-weight: bold;
+        color: #27ae60;
+        margin-bottom: 10px;
+        display: block;
+        font-size: 1.1rem;
+    }
+    .answer-text {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: #333;
+    }
+    .controls {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 30px;
+    }
+    button {
+        padding: 15px 30px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    button:active {
+        transform: translateY(2px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .btn-show {
+        background-color: var(--accent-color);
+        color: white;
+    }
+    .btn-show:hover {
+        background-color: #2980b9;
+    }
+    .btn-next {
+        background-color: var(--primary-color);
+        color: white;
+    }
+    .btn-next:hover {
+        background-color: #34495e;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+     <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+    <h1>Time Scales 英文和訳ランダム演習</h1>
+    <p style="text-align:center; color:#7f8c8d; margin-bottom:20px;">全10題からランダムに出題されます</p>
+    
+    <div class="card">
+        <div>
+            <span class="question-label" id="qLabel">Question</span>
+            <span class="source-label" id="qSource"></span>
+        </div>
+        <div class="question-text" id="qText">
+            </div>
+        
+        <div class="answer-box" id="aBox">
+            <span class="answer-label">模範解答</span>
+            <div class="answer-text" id="aText">
+                </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn-show" id="btnShow" onclick="showAnswer()">答えを見る</button>
+        <button class="btn-next" id="btnNext" onclick="nextQuestion()">次の問題</button>
+    </div>
+</div>
+
+<script>
+    const problems = [
+        {
+            id: 1,
+            source: "Introduction",
+            en: "Geologic processes are vast and unstoppable; however, except for a few spectacular examples, such as meteorite impacts, avalanches, and tsunamis, most are infinitely slow—so slow as to go unnoticed by any but careful scientific observers. For instance, we now know that the great lithospheric plates that form the outer rind of the solid Earth are moving with respect to one another, yet sensitive, state-of-the-art measurements are required to detect the differential slip between them.",
+            ja: "地質学的プロセスは広大で止めることのできないものである。しかし、隕石衝突、雪崩、津波といったいくつかの壮観な例を除けば、そのほとんどは無限に遅く、注意深い科学的な観察者以外には気づかれないほどである。例えば、固体地球の外殻を形成する巨大なリソスフェア（岩石圏）プレートが互いに関連して動いていることが現在では分かっているが、それらの間のわずかなずれを検出するには、高感度で最先端の測定が必要とされる。"
+        },
+        {
+            id: 2,
+            source: "Geologic Time",
+            en: "The universe as we know it is believed to have originated during the Big Bang, at a time when all matter was tightly clumped together approximately 15 billion years ago. We may wonder what the configuration of mass and energy was before the Big Bang, but no one has a clue as to the situation prior to this \"time zero.\" In any case, at the instant of the Big Bang, the combination of matter with antimatter generated repulsive nuclear forces that explosively blew this concentrated mass apart.",
+            ja: "我々が知るこの宇宙は、約150億年前、すべての物質が極めて高密度に凝集していた時期に起きた「ビッグバン」によって誕生したと考えられている。ビッグバン以前の質量やエネルギーの配置がどのようなものであったか疑問に思うかもしれないが、この「時間ゼロ」以前の状況については、誰一人として手がかりを持っていない。いずれにせよ、ビッグバンの瞬間、物質と反物質の結合によって反発的な核力が生じ、凝集していた質量は爆発的に四散した。"
+        },
+        {
+            id: 3,
+            source: "Biologic Time (2023年度 追試)",
+            en: "The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia, and must have existed even earlier. These filamentous single-celled organisms formed domical or mushroom-like colonies called stromatolites.",
+            ja: "生物活動の痕跡は始生代にまで十分に遡るため、地球上の生命の進化は地質学的時間とかなり密接に対応している。嫌気性（すなわち酸素を消費せずに生きる）かつ光合成を行うバクテリアが、西オーストラリアの35億年前の珪質堆積物から報告されており、それより以前にも存在していたに違いない。これらの糸状の単細胞生物は、ストロマトライトと呼ばれるドーム状あるいはキノコ状のコロニー（集落）を形成した。"
+        },
+        {
+            id: 4,
+            source: "Biologic Time",
+            en: "The young Earth had a reducing atmosphere rich in methane, ammonia, and/or carbon monoxide/carbon dioxide, hence the most primitive, nonnucleated cells were necessarily anaerobes. Waste products of such organisms include oxygen, which led to the progressive oxidation of the near-surface, condensed portion of the planet, and ultimately to the gradual accumulation of free oxygen in the atmosphere. This increasing abundance of molecular oxygen in turn promoted the emergence of other biochemical energy conversion systems.",
+            ja: "若い地球は、メタン、アンモニア、そして一酸化炭素や二酸化炭素に富んだ還元的な大気を持っていたため、最も原始的な細胞核を持たない細胞（原核生物）は必然的に嫌気性生物であった。そのような生物の代謝産物には酸素が含まれており、それが地球の地表近くの凝縮した部分（海洋や地殻など）の進行的な酸化を招き、最終的には大気中への遊離酸素の徐々な蓄積へとつながった。この分子状酸素の豊富化は、今度は他の生化学的エネルギー変換システムの出現を促進した。"
+        },
+        {
+            id: 5,
+            source: "Biologic Time (過去問)",
+            en: "Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. However, a rich collection of soft-bodied creatures of perplexing lineage—the so-called Ediacara fauna—has been described from the youngest Proterozoic strata of eastern Australia.",
+            ja: "先カンブリア時代の終わり頃（約6億〜8億年前）になって初めて、より複雑な多細胞生物、そして続いて原始的な無脊椎動物の存在を示す証拠が得られる。その手がかりは主に、植物の圧痕（あっこん）や、海底に住む無脊椎動物によって作られた化石の通り道や痕跡という形で存在している。しかし、不可解な系統を持つ軟体生物の豊富なコレクション――いわゆるエディアカラ動物群――が、オーストラリア東部の最も新しい原生代の地層から報告されている。"
+        },
+        {
+            id: 6,
+            source: "Biologic Time",
+            en: "Imperceptible changes in the horse population have occurred over geologic time. Portions of an evolutionary continuum are represented by individual species. A gradual increase in animal size took place, along with parallel structural changes in the dentition and especially in the limbs and digits. Especially significant is the gradual conversion of the five-toed <i>Hyracotherium</i> to the modern genus, which runs only on the middle toe (now a hoof), the four vestigial digits having become greatly reduced in size.",
+            ja: "地質学的時間を通じて、馬の個体群には感知できないほどの変化が生じた。進化の連続体の一部が、個々の種によって表されている。動物のサイズの緩やかな増大が起こり、それと並行して歯列、そして特に四肢と指において構造的な変化が起こった。特に重要なのは、5本指のヒラコテリウムから、4つの痕跡的な指がサイズを大きく縮小し、中指（現在は蹄となっている）だけで走る現代の属への緩やかな転換である。"
+        },
+        {
+            id: 7,
+            source: "Biologic Time",
+            en: "Clearly, the life-span of the least biologic unit—an individual animal—is quite brief relative to the duration of the species. Assuming that a human generation is approximately 20 years, approximately 10,000 generations of anatomically modern man have existed since the late Pleistocene, only approximately 100 generations since the birth of Christ, and just 25 generations since the invention of the printing press and the beginning of the Renaissance.",
+            ja: "明らかに、最小の生物単位である個々の動物の寿命は、種の存続期間に比べれば極めて短い。人間の世代交代をおよそ20年と仮定すると、解剖学的な現代人は後期更新世以降およそ1万世代、キリスト生誕以降はわずかおよそ100世代、そして活版印刷の発明とルネサンスの始まり以降はわずか25世代しか存在していないことになる。"
+        },
+        {
+            id: 8,
+            source: "Political Time",
+            en: "Although the technological aspects are formidable, they represent only a small part of the problem: Humanity's adverse impact on the natural surroundings is deeply and inextricably interwoven with political, economic, and social attitudes, as well as numerous, profoundly conflicting values and goals. Changes in socioeconomic behavior, resource utilization, and environmental management produce both winners and losers. Accordingly, progress has been slow even in the most favorable situations.",
+            ja: "技術的な側面も手強いが、それは問題のほんの一部に過ぎない。自然環境に対する人類の悪影響は、政治的、経済的、社会的な態度、そして数多くの深く対立する価値観や目標と、深く不可分に織り交ざっている。社会経済的行動、資源利用、環境管理の変化は、勝者と敗者の両方を生み出す。したがって、最も好ましい状況下であっても進歩は遅かった。"
+        },
+        {
+            id: 9,
+            source: "Political Time",
+            en: "However, in 1974, the American chemists Molina and Rowland found that, although harmless in the lower atmosphere, these CFCs gradually diffuse into the stratosphere, where, in the presence of sunlight, they react with other gaseous species, liberate chlorine, and destroy ozone in the process. Chlorine is believed to be the principal agent upsetting the natural balance of ozone production and destruction.",
+            ja: "しかし1974年、アメリカの化学者モリーナとローランドは、これらのCFC（フロン類）は下層大気では無害だが、徐々に成層圏へと拡散し、そこで日光を浴びて他の気体物質と反応し、塩素を放出して、その過程でオゾンを破壊することを発見した。塩素は、オゾンの生成と破壊の自然なバランスを崩す主な要因であると考えられている。"
+        },
+        {
+            id: 10,
+            source: "Catastrophes",
+            en: "The Earth's biota experienced a global crisis 65 million years ago, manifested by the great dying out of the dinosaurs, as well as many other, unrelated plant and animal species. This time of mass extinction coincided precisely with the deposition of a ubiquitous layer of clay, as confirmed by radiometric dating. The clay contains unusually large concentrations of platinum-group elements, and locally, soot, glass droplets, and mineral grains display pressure-shock features.",
+            ja: "地球の生物相は6500万年前に地球規模の危機を経験し、それは恐竜や、その他の多くの無関係な動植物種の大量絶滅として現れた。放射年代測定によって確認されたように、この大量絶滅の時期は、どこにでもある（世界的に分布する）粘土層の堆積と正確に一致していた。その粘土は異常に高濃度の白金族元素を含んでおり、局地的には、煤（すす）、ガラスの小滴、および圧力衝撃の特徴を示す鉱物粒子が見られる。"
+        }
+    ];
+
+    let currentProblem = null;
+
+    function getRandomProblem() {
+        const randomIndex = Math.floor(Math.random() * problems.length);
+        return problems[randomIndex];
+    }
+
+    function showQuestion() {
+        // Hide answer from previous question
+        document.getElementById('aBox').style.display = 'none';
+        document.getElementById('btnShow').style.display = 'inline-block';
+        
+        // Randomly select a problem
+        currentProblem = getRandomProblem();
+        
+        // Update DOM
+        document.getElementById('qLabel').textContent = `Question ${currentProblem.id}`;
+        document.getElementById('qSource').textContent = `(${currentProblem.source})`;
+        document.getElementById('qText').innerHTML = currentProblem.en;
+        document.getElementById('aText').textContent = currentProblem.ja;
+    }
+
+    function showAnswer() {
+        document.getElementById('aBox').style.display = 'block';
+        document.getElementById('btnShow').style.display = 'none';
+        
+        // Scroll to answer if needed
+        document.getElementById('aBox').scrollIntoView({behavior: "smooth", block: "nearest"});
+    }
+
+    function nextQuestion() {
+        showQuestion();
+    }
+
+    // Initial load
+    window.onload = showQuestion;
+
+</script>
+
+</body>
+</html>

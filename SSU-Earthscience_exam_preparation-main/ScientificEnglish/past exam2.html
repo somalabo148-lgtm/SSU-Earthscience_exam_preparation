@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地質学・生命史 和訳演習（モバイル最適化版）</title>
+    <style>
+        :root {
+            --primary-color: #2980b9;
+            --bg-color: #f0f2f5;
+            --text-color: #333;
+            --card-bg: #fff;
+        }
+
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        .back-link-btn {
+            display: inline-block;
+            padding: 6px 12px;
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        .quiz-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .quiz-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 10px;
+            margin: 0 0 15px 0;
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            height: 60vh;
+        }
+
+        .english-area {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-y: auto;
+            font-family: "Georgia", serif;
+            font-size: 1.05em;
+        }
+
+        .input-area {
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        textarea {
+            flex-grow: 1;
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: none;
+        }
+
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .show-ans-btn {
+            background-color: #34495e;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .answer-area {
+            display: none;
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f1f9f1;
+            border: 1px solid #d4e8d4;
+            border-radius: 8px;
+            font-size: 0.95em;
+        }
+
+        .answer-title {
+            font-weight: bold;
+            color: #27ae60;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .workspace {
+                grid-template-columns: 1fr;
+                height: 75vh;
+                grid-template-rows: 1fr 1.2fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+        <h1>地質学・生命史 和訳演習</h1>
+    </header>
+
+    <div class="quiz-container">
+        <div class="quiz-section">
+            <h2>第1題：生命の多様化と進化の時代</h2>
+            <div class="workspace">
+                <div class="english-area">
+                    Only toward the end of the Precambrian (approximately 600 to 800 million years ago) do we have any evidence for the presence of more complex, multicellular organisms and, subsequently, of primitive invertebrate life. The clues are present predominantly in the form of plant impressions, and fossil tracks and traces made by bottom-dwelling marine invertebrates. However, a rich collection of soft-bodied creatures of perplexing lineage - the so-called Ediacara fauna has been described from the youngest Proterozoic strata (termed "Vendian" in age) of eastern Australia. By the beginning of the Cambrian period, plants and animals displaying remarkable morphologic diversification and occupying a wide range of habitats burst onto the scene. To our knowledge, most life forms had developed shells or other preservable hard parts by this time. Such organisms are more likely to leave fossil evidence than are soft-bodied forms. Who knows how many floral and faunal types left no record at all?<br><br>
+                    The Paleozoic Era, lasting 325 million years, witnessed a proliferation of invertebrates, fishes, and amphibians. The following 180-million-year-long Mesozoic Era is characterized as the age of dinosaurs. Reptiles actually arose in the late Paleozoic, and some have survived into the Cenozoic, or age of mammals. Similarly, primitive mammals existed throughout the Mesozoic Era; however, only after the demise of the dinosaurs approximately 65 million years ago - did they inherit the Earth. Once the reptiles' reign of terror was largely concluded, mammals rapidly occupied the many ecologic niches previously controlled by their cold-blooded precursors, diversifying and evolving in the process an activity that continues to this day. The general phenomenon by which organisms evolve in harmony with the changing environment is termed adaptive radiation.
+                </div>
+                <div class="input-area">
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
+                    <div class="controls">
+                        <span style="font-size: 0.8em; color: #666;">※スクロールで英文を確認できます</span>
+                        <button class="show-ans-btn" onclick="toggleAnswer(0)">正解表示</button>
+                    </div>
+                    <div id="answer-0" class="answer-area">
+                        <span class="answer-title">【公式和訳】</span>
+                        先カンブリア紀（およそ6から8億年前）の終わり頃にしか、より複雑な多細胞生物の存在とその後の原始的な無脊椎動物の存在について何の証拠も得られていない。 その手がかり（証拠）は主に植物の印象化石や底生の海洋性の無脊椎動物によって作られた生痕化石という形で存在する。 しかしながら、エディアカラ動物群と呼ばれる系統不明の多種多様な軟らかい体をした動物は、東オーストラリアの最も新しい原生代の地層（「ヴェンド紀」と呼ばれる時代）から発見された。 カンブリア紀の始まりまでに、著しい形態的な多様化を示し、広範囲にわたる生息地を占有した植物と動物が突如として現れた。 我々の知っている限り、このときにはほとんどの生命は殻やその他の保存され得る堅い部位を発達させていた。 このような生命体は、軟らかい体の生物よりも化石の証拠を残しやすい。 どれほどの動植物群が何の記録（痕跡）も残さなかったのかなど、誰が知っているだろうか？<br><br>
+                        3億2500万年続いた古生代には、無脊椎動物と魚類と両生類の急増が起きた。 その後の1億8000万年間の中生代は、恐竜の時代として特徴付けられる。 爬虫類は実際、後期古生代に登場し、その一部は哺乳類の時代である新生代まで生き残った。 同様に、原始的な哺乳類は中生代を通して存在していたが、およそ6500万年前の恐竜の絶滅のあとになって初めて地球を支配するようになった。 爬虫類の支配がほとんど終わると、哺乳類は爬虫類によって支配されていた生態学的なニッチを急速に占めるとともに多様化と進化を遂げた。その過程は今日までも続いている。 生物が変化し続ける環境と調和を取りながら進化する一般的な現象のことを適応放散と呼ぶ。
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <h2>第2題：始生代の生命と環境（追試）</h2>
+            <div class="workspace">
+                <div class="english-area">
+                    The evolution of terrestrial life corresponds rather closely to geologic time because traces of biologic activity extend well back into the Archean Eon. Bacteria that are anaerobic (i.e., that live without consuming oxygen) and photosynthetic have been described from 3.5-billion-year-old siliceous sedimentary deposits of western Australia and must have existed even earlier. These filamentous single-celled organisms formed domical, or mushroom-like colonies called stromatolites. They flourished in tidal marine waters, and still do in protected lagoons such as Shark Bay in western Australia, and the Gulf of California. As fine clay washed over these ancient biogenic mounds and they were buried by later sediments, aqueous fluids percolated through the muds, hardening them into layered rock; in the process, the original organic structures were replaced by new mineral matter, thus preserving some such colonies as fossil stromatolitic reefs.<br><br>
+                    Stromatolites were widespread in the early Earth. Minerals preserved in Archean strata, as well as computer models of planetary outgassing and paleoclimatology, suggest that early in its history, the planet was enveloped by a strongly reducing atmosphere characterized by the scarcity of free oxygen but rich in methane, hydrogen, and perhaps also ammonia.
+                </div>
+                <div class="input-area">
+                    <textarea placeholder="ここに和訳を入力..."></textarea>
+                    <div class="controls">
+                        <span style="font-size: 0.8em; color: #666;">※英文と入力欄は独立して動かせます</span>
+                        <button class="show-ans-btn" onclick="toggleAnswer(1)">正解表示</button>
+                    </div>
+                    <div id="answer-1" class="answer-area">
+                        <span class="answer-title">【公式和訳】</span>
+                        生物活動の痕跡は始生代にまでさかのぼるため、陸上生命の進化は地質時代とかなり密接に対応している。 嫌気性（すなわち酸素を消費せずに生きること）かつ光合成を行う細菌は、西オーストラリアの35億年前の珪質堆積物から発見されており、それらはさらに古い時代にも存在していたに違いない。 これらの糸状単細胞生物は、ストロマトライトと呼ばれるドーム状またはきのこ状のコロニーを形成していた。 それらはかつて潮汐域の海洋で繁栄し、現在でも、西オーストラリアのシャーク湾やカリフォルニア湾などの保護されたラグーン内でみられる。 微細な粘土がこれらの古代の生物起源のマウンド（ストロマトライト）を覆い、後の堆積物によって埋められるにつれて水性の流体が泥を通って浸透し、それらを層状の堆積岩へと硬化させた。 その過程で元の生物由来の構造は新しい鉱物成分に置き換えられ、結果としていくつかのコロニーはストロマトライト礁の化石として保存された。<br><br>
+                        ストロマトライトは初期地球に広く分布していた。 始生代の地層に保存された鉱物や、惑星のガス放出と古気候学のコンピューターモデルは、地球史初期において、遊離酸素が欠乏し、メタン、水素、そしておそらくアンモニアに富む非常に還元的な大気に覆われていたことを示唆している。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAnswer(id) {
+            const ans = document.getElementById('answer-' + id);
+            const btn = ans.previousElementSibling.querySelector('.show-ans-btn');
+            if (ans.style.display === 'block') {
+                ans.style.display = 'none';
+                btn.textContent = '正解表示';
+            } else {
+                ans.style.display = 'block';
+                btn.textContent = '正解を隠す';
+            }
+        }
+    </script>
+</body>
+</html>
+

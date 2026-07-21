@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>信大理学部理学科地球学コース試験対策まとめ</title>
+<style>
+    :root { --primary: #2c3e50; --accent: #3498db; --bg: #f0f2f5; }
+    body { font-family: "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: #333; padding: 20px; text-align: center; margin: 0; }
+    
+    header { margin-bottom: 40px; margin-top: 20px; }
+    h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
+    p { color: #7f8c8d; margin-top: 10px; }
+
+    .nav-list { max-width: 600px; margin: 0 auto; display: grid; gap: 20px; }
+    
+    /* リンクカードのスタイル */
+    .subject-card { 
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 25px; background: white; text-decoration: none; color: #333; 
+        border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
+        transition: transform 0.2s, box-shadow 0.2s;
+        border-left: 6px solid #bdc3c7; /* デフォルトはグレー（準備中） */
+    }
+
+    /* 公開中のスタイル */
+    .subject-card.active { 
+        border-left-color: var(--accent); 
+        cursor: pointer;
+    }
+    .subject-card.active:hover { 
+        transform: translateY(-3px); 
+        box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
+    }
+
+    /* 準備中のスタイル */
+    .subject-card.disabled {
+        opacity: 0.7;
+        cursor: not-allowed;
+        background-color: #f9f9f9;
+    }
+
+    .info { text-align: left; display: flex; align-items: center; }
+    .icon { margin-right: 15px; font-size: 1.8em; }
+    .title { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary); }
+    .sub { font-size: 0.85em; color: #95a5a6; }
+
+    .status-badge { 
+        font-size: 0.8em; padding: 5px 12px; border-radius: 15px; 
+        background: #eee; color: #7f8c8d; font-weight: bold;
+    }
+    .active .status-badge {
+        background: #e1f5fe; color: var(--accent);
+    }
+
+    footer { margin-top: 50px; color: #bdc3c7; font-size: 0.8rem; }
+</style>
+</head>
+<body>
+
+    <header>
+        <h1>🌍 地球学コース<br>試験対策ポータル</h1>
+        <p>各分野のドリル・過去問・単語帳</p>
+    </header>
+
+    <div class="nav-list">
+        
+        <a href="Quaternary/index.html" class="subject-card active">
+            <div class="info">
+                <span class="icon">🦕</span>
+                <div>
+                    <span class="title">第四紀学25年度</span>
+                    <span class="sub">Quaternary Research</span>
+                </div>
+            </div>
+            <span class="status-badge">公開中 ▶</span>
+        </a>
+        
+        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
+            <div class="info">
+                <span class="icon">🦖</span>
+                <div>
+                    <span class="title">地球史学25年度</span>
+                    <span class="sub">Historical Geology</span>
+                </div>
+            </div>
+            <span class="status-badge">準備中</span>
+        </a>
+
+        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
+            <div class="info">
+                <span class="icon">🌏</span>
+                <div>
+                    <span class="title">地学概論24年度</span>
+                    <span class="sub">Intro to Earth Science</span>
+                </div>
+            </div>
+            <span class="status-badge">準備中</span>
+        </a>
+
+        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()" >
+            <div class="info">
+                <span class="icon">💎</span>
+                <div>
+                    <span class="title">鉱物学25年度</span>
+                    <span class="sub">Mineralogy</span>
+                </div>
+            </div>
+            <span class="status-badge">準備中</span>
+        </a>
+
+        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
+            <div class="info">
+                <span class="icon">🌋</span>
+                <div>
+                    <span class="title">岩石学25年度</span>
+                    <span class="sub">Petrology</span>
+                </div>
+            </div>
+            <span class="status-badge">準備中</span>
+        </a>
+
+        <a href="ScientificEnglish/index.html" class="subject-card active">
+            <div class="info">
+                <span class="icon">🇬🇧</span>
+                <div>
+                    <span class="title">科学英語25年度</span>
+                    <span class="sub">Scientific English</span>
+                </div>
+            </div>
+            <span class="status-badge">公開中 ▶</span>
+        </a>
+    </div>
+
+    <footer>
+        © Earth Science Study Portal
+    </footer>
+
+    <script>
+        // 準備中の項目をクリックした時の動作
+        function showMsg() {
+            alert("この科目は現在準備中です。\n公開までしばらくお待ちください！");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>聞き取り第5回：The Marine Environment（修正版）</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        /* 追加した戻るボタンのスタイル */
+        .back-link-btn {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 16px;
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+        }
+        .back-link-btn:hover {
+            background-color: #7f8c8d;
+        }
+        .video-info {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .question-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .q-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .q-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2980b9;
+        }
+        .play-link-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            display: inline-block;
+            transition: background-color 0.2s;
+            text-decoration: none;
+        }
+        .play-link-btn:hover {
+            background-color: #c0392b;
+        }
+        /* 埋め込み失敗時の予備リンク */
+        .fallback-link {
+            font-size: 0.8em;
+            color: #e74c3c;
+            margin-left: 10px;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        .theme-text {
+            font-size: 0.95em;
+            color: #555;
+            margin-bottom: 15px;
+            background: #f0f8ff;
+            padding: 10px;
+            border-left: 4px solid #3498db;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .controls {
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .check-btn {
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        .check-btn:hover {
+            background-color: #219150;
+        }
+        .result-area {
+            margin-top: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            border-radius: 4px;
+            display: none;
+            line-height: 1.6;
+        }
+        .diff-word { margin: 0 2px; }
+        .correct-word { color: #27ae60; font-weight: bold; }
+        .wrong-word { color: #c0392b; text-decoration: line-through; margin-right: 4px; }
+        .missing-word { color: #2980b9; font-weight: bold; border-bottom: 2px solid #2980b9; }
+        .perfect { color: #27ae60; font-weight: bold; font-size: 1.2em; }
+        .translation-toggle { font-size: 0.85em; color: #7f8c8d; cursor: pointer; text-decoration: underline; }
+        .japanese-trans { margin-top: 10px; padding-top: 10px; border-top: 1px dashed #eee; font-size: 0.9em; color: #555; display: none; }
+        .embedded-video-container { margin-top: 10px; margin-bottom: 10px; display: none; background: #000; border-radius: 4px; overflow: hidden; }
+    </style>
+</head>
+<body>
+
+    <a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+    <h1>聞き取り第5回：The Marine Environment</h1>
+    
+    <div class="video-info">
+        <p>※ 再生できない場合は「別タブで開く」をつかってください。</p>
+    </div>
+
+    <div id="quiz-container"></div>
+
+    <script>
+        const VIDEO_ID = "N1kF88Eznr8";
+        // YouTubeのドメインをnocookieに変更
+        const EMBED_BASE = "https://www.youtube-nocookie.com/embed/";
+
+        // 第5回のデータ
+        const quizData = [
+            {
+                id: 1,
+                timeDisplay: "00:56 ～ 01:06",
+                startSeconds: 56,
+                theme: "海洋システムにおける有光層（photic zone）と光合成について",
+                correct: "A further very important element of the marine system is the photic zone, which is the water column penetrated by light. Here, photosynthesis is possible and small plants can flourish forming the first ring of the food chain.",
+                translation: "海洋システムのもう一つの非常に重要な要素は「有光層」であり、これは光が透過する水柱のことです。ここでは光合成が可能であり、小さな植物が繁栄して、食物連鎖の最初の環を形成しています。"
+            },
+            {
+                id: 2,
+                timeDisplay: "01:44 ～ 01:52",
+                startSeconds: 104,
+                theme: "大陸棚（continental shelf）の定義と特徴について",
+                correct: "The continental shelf is a flat domain adjacent to the coast, characterized by a water depth below 150 to 200m. A well-defined shelf edge marks the transition with the continental slope.",
+                translation: "大陸棚は海岸に隣接する平坦な領域で、水深が150〜200メートル未満であることを特徴としています。明瞭な大陸棚外縁が、大陸斜面への移行部を示しています。"
+            },
+            {
+                id: 3,
+                timeDisplay: "02:17 ～ 02:25",
+                startSeconds: 137,
+                theme: "大陸棚の機能（堆積物の貯蔵場所）について",
+                correct: "Continental shelves are the domains of currents and tides and the fundamental temporary storage place of sediments between the coast and the abyssal plain.",
+                translation: "大陸棚は海流や潮汐が支配する領域であり、海岸と深海平原の間にある堆積物の基本的で一時的な貯蔵場所となります。"
+            },
+            {
+                id: 4,
+                timeDisplay: "02:50 ～ 02:57",
+                startSeconds: 170,
+                theme: "大陸斜面（continental slope）を通過する堆積物の動きについて",
+                correct: "It is the region bypassed by the sediments which have been deposited on the shelf and then transported down to the abyssal plain.",
+                translation: "ここは、一度大陸棚に堆積し、その後深海平原へと運ばれる堆積物が通過する領域です。"
+            },
+            {
+                id: 5,
+                timeDisplay: "03:21 ～ 03:27",
+                startSeconds: 201,
+                theme: "深海平原（abyssal plains）の上層部における光と生命の関係について",
+                correct: "Only the uppermost hundreds of meters of the water column are penetrated by light making life possible.",
+                translation: "水柱の最上部、数百メートルだけに光が届き、生命の存在を可能にしています。"
+            }
+        ];
+
+        const container = document.getElementById('quiz-container');
+        
+        quizData.forEach((q, index) => {
+            // 別タブ用の通常リンク
+            const directLink = `https://youtu.be/${VIDEO_ID}?t=${q.startSeconds}`;
+
+            const html = `
+                <div class="question-card">
+                    <div class="q-header">
+                        <span class="q-title">第${q.id}問 (${q.timeDisplay})</span>
+                        <div class="theme-text">
+                            <strong>テーマ:</strong> ${q.theme}
+                        </div>
+                        <br>
+                        <div>
+                            <a href="${directLink}" target="_blank" class="fallback-link">別タブで開く</a>
+                        </div>
+                    </div>
+                    
+                    <div id="video-area-${index}" class="embedded-video-container"></div>
+
+                  
+                    <div>
+                        <button class="play-link-btn" onclick="playEmbeddedVideo(${index}, ${q.startSeconds})">▶ 埋め込み再生</button>
+                        <br>
+                        <textarea id="input-${index}" placeholder="ここに英語の文章を入力してください..."></textarea>
+                    </div>
+                    <div class="controls">
+                        <button class="check-btn" onclick="checkAnswer(${index})">答え合わせ</button>
+                        <span class="translation-toggle" onclick="toggleTrans(${index})">日本語訳を表示/非表示</span>
+                    </div>
+                    <div id="result-${index}" class="result-area"></div>
+                    <div id="trans-${index}" class="japanese-trans">
+                        <strong>日本語訳:</strong><br>${q.translation}
+                    </div>
+                </div>
+            `;
+            container.innerHTML += html;
+        });
+
+        function playEmbeddedVideo(index, startSeconds) {
+            quizData.forEach((_, i) => {
+                const area = document.getElementById(`video-area-${i}`);
+                if (i !== index) {
+                    area.innerHTML = "";
+                    area.style.display = "none";
+                }
+            });
+
+            const targetArea = document.getElementById(`video-area-${index}`);
+            targetArea.style.display = "block";
+            
+            // 自動再生は削除(autoplay=1 -> 0)し、nocookieドメインを使用
+            targetArea.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="150" 
+                    src="${EMBED_BASE}${VIDEO_ID}?start=${startSeconds}" 
+                    frameborder="0" 
+                    allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+                <div style="text-align:center; font-size:0.8em; color:#666; margin-top:5px;">
+                    ※再生ボタンを押してください。それでもエラーが出る場合は「別タブで開く」をご利用ください。
+                </div>
+            `;
+        }
+
+        function toggleTrans(index) {
+            const el = document.getElementById(`trans-${index}`);
+            el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function checkAnswer(index) {
+            const userText = document.getElementById(`input-${index}`).value.trim();
+            const correctText = quizData[index].correct;
+            const resultDiv = document.getElementById(`result-${index}`);
+            if (!userText) {
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '<span style="color:red;">テキストを入力してください。</span>';
+                return;
+            }
+            if (userText === correctText) {
+                resultDiv.innerHTML = '<div class="perfect">正解です！ Perfect!</div>';
+                resultDiv.style.display = 'block';
+                return;
+            }
+            let html = "<strong>判定結果:</strong><br>";
+            html += generateDiffHTML(userText, correctText);
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = html;
+        }
+
+        function generateDiffHTML(userStr, correctStr) {
+            const clean = s => s.toLowerCase().replace(/[.,?!;:"'’]/g, "");
+            const userWords = userStr.split(/\s+/);
+            const correctWords = correctStr.split(/\s+/);
+            let output = "<div>";
+            let uIndex = 0;
+            for (let i = 0; i < correctWords.length; i++) {
+                let cWord = correctWords[i];
+                let cWordClean = clean(cWord);
+                if (uIndex >= userWords.length) {
+                    output += `<span class="diff-word missing-word" title="正解: ${cWord}">${cWord}</span> `;
+                    continue;
+                }
+                let uWord = userWords[uIndex];
+                let uWordClean = clean(uWord);
+                if (cWordClean === uWordClean) {
+                    output += `<span class="diff-word correct-word">${cWord}</span> `;
+                    uIndex++;
+                } else {
+                    let nextUMatch = (uIndex + 1 < userWords.length) && (clean(userWords[uIndex+1]) === cWordClean);
+                    if (nextUMatch) {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word correct-word">${cWord}</span> `;
+                        uIndex += 2; 
+                    } else {
+                        output += `<span class="diff-word wrong-word">${uWord}</span> `;
+                        output += `<span class="diff-word missing-word">${cWord}</span> `;
+                        uIndex++;
+                    }
+                }
+            }
+            while(uIndex < userWords.length) {
+                output += `<span class="diff-word wrong-word">${userWords[uIndex]}</span> `;
+                uIndex++;
+            }
+            output += "</div>";
+            output += "<div style='margin-top:10px; font-size:0.8em; color:#666;'>※ 緑：正解 / <span style='color:#c0392b; text-decoration:line-through;'>赤：間違い</span> / <span style='color:#2980b9; font-weight:bold; border-bottom: 2px solid #2980b9;'>青：不足していた正解</span></div>";
+            return output;
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+

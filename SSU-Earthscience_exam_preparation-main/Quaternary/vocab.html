@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第四紀学 英単語特訓ドリル </title>
+<style>
+    body { font-family: "Helvetica Neue", Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #eef2f3; }
+    h1 { color: #2c3e50; text-align: center; border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+   /* 追加した戻るボタンのスタイル */
+    .back-link-btn {
+        display: inline-block;
+        margin-bottom: 15px;
+        padding: 8px 16px;
+        background-color: #95a5a6;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 0.9em;
+        transition: background-color 0.2s;
+    }
+    .back-link-btn:hover {
+        background-color: #7f8c8d;
+    }
+    .quiz-container { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    .section-title { background-color: #34495e; color: white; padding: 5px 10px; margin-top: 30px; border-radius: 4px; font-size: 1.1em; }
+    .question-box { margin-bottom: 15px; padding: 15px; border-bottom: 1px solid #eee; display: flex; flex-wrap: wrap; align-items: center; }
+    .japanese { font-weight: bold; font-size: 1.1em; width: 220px; color: #333; }
+    input[type="text"] { flex: 1; padding: 8px; font-size: 16px; border: 2px solid #ddd; border-radius: 4px; min-width: 150px; }
+    button { padding: 8px 15px; font-size: 14px; background-color: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; margin-left: 10px; }
+    button:hover { background-color: #2980b9; }
+    .result { margin-left: 10px; font-weight: bold; min-width: 80px; }
+    .correct { color: #27ae60; }
+    .incorrect { color: #c0392b; }
+    .hint { display: none; width: 100%; margin-top: 5px; font-size: 0.9em; color: #e74c3c; background: #fdedec; padding: 5px; border-radius: 4px; }
+    #score-area { text-align: center; margin-top: 30px; font-size: 1.4em; font-weight: bold; color: #2c3e50; }
+    .btn-all { display: block; width: 100%; max-width: 200px; margin: 20px auto; padding: 15px; font-size: 18px; background-color: #27ae60; }
+    .btn-all:hover { background-color: #219150; }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-link-btn">← 一覧に戻る</a>
+<h1>第四紀学 英単語特訓</h1>
+<div class="quiz-container">
+    <p>日本語に対応する英単語を入力してください（大文字・小文字は区別しません）。</p>
+    <div id="quiz-area"></div>
+    <button class="btn-all" onclick="checkAll()">一括採点する</button>
+    <div id="score-area"></div>
+</div>
+
+<script>
+    // 問題データ
+    const questions = [
+        // 基本用語
+        { cat: "基本・地質時代", q: "第四紀", a: ["Quaternary"] },
+        { cat: "基本・地質時代", q: "更新世", a: ["Pleistocene"] },
+        { cat: "基本・地質時代", q: "完新世", a: ["Holocene"] },
+        
+        // 層序・年代学
+        { cat: "層序・年代学", q: "年代層序", a: ["Chronostratigraphy"] },
+        { cat: "層序・年代学", q: "気候層序 (気候変化史)", a: ["Climatostratigraphy"] },
+        { cat: "層序・年代学", q: "編年", a: ["Chronology"] },
+        
+        // 年代測定
+        { cat: "年代測定", q: "放射性炭素年代測定", a: ["Radiocarbon dating"] },
+        { cat: "年代測定", q: "暦年較正年代", a: ["Calibrated age"] },
+        { cat: "較正", q: "較正", a: ["Calibration"] },
+        { cat: "制約付き年代 (ベイズ推定等)", q: "制限付き年代", a: ["Constrained age"] },
+
+        // テフラ・火山
+        { cat: "テフラ・火山", q: "テフラ", a: ["Tephra"] },
+        { cat: "テフラ・火山", q: "軽石", a: ["Pumice"] },
+        { cat: "テフラ・火山", q: "スコリア", a: ["Scoria"] },
+        { cat: "テフラ・火山", q: "火山灰", a: ["Ash", "Volcanic ash"] },
+        { cat: "テフラ・火山", q: "凝灰岩", a: ["Tuff"] },
+        { cat: "テフラ・火山", q: "鍵層", a: ["Key bed"] },
+
+        // 地震・断層
+        { cat: "地震・断層", q: "プレート間地震", a: ["Interplate earthquake"] },
+        { cat: "地震・断層", q: "プレート内地震", a: ["Intraplate earthquake"] },
+        { cat: "地震・断層", q: "正断層", a: ["Normal fault"] },
+        { cat: "地震・断層", q: "逆断層", a: ["Reverse fault"] }, 
+        { cat: "地震・断層", q: "横ずれ断層", a: ["Strike-slip fault"] },
+        { cat: "地震・断層・災害", q: "クレバススプレー (決壊堆積物)", a: ["Crevasse splay", "Crevasse splay deposit"] },
+
+    ];
+
+    function initQuiz() {
+        const area = document.getElementById("quiz-area");
+        let html = "";
+        let currentCat = "";
+
+        questions.forEach((item, index) => {
+            if (item.cat !== currentCat) {
+                html += `<div class="section-title">${item.cat}</div>`;
+                currentCat = item.cat;
+            }
+            html += `
+            <div class="question-box">
+                <div class="japanese">${item.q}</div>
+                <input type="text" id="ans-${index}" placeholder="英語で入力..." onkeydown="if(event.key==='Enter') checkOne(${index})">
+                <button onclick="checkOne(${index})">判定</button>
+                <span id="res-${index}" class="result"></span>
+                <div id="hint-${index}" class="hint">正解: ${item.a[0]}</div>
+            </div>`;
+        });
+        area.innerHTML = html;
+    }
+
+    function normalize(str) {
+        return str.trim().toLowerCase().replace(/[^a-z0-9 ]/g, "");
+    }
+
+    function checkOne(index) {
+        const input = document.getElementById(`ans-${index}`);
+        const resSpan = document.getElementById(`res-${index}`);
+        const hintDiv = document.getElementById(`hint-${index}`);
+        const userVal = normalize(input.value);
+        
+        const isCorrect = questions[index].a.some(ans => normalize(ans) === userVal);
+
+        if (isCorrect) {
+            resSpan.textContent = "⭕ OK";
+            resSpan.className = "result correct";
+            hintDiv.style.display = "none";
+            input.style.backgroundColor = "#e8f8f5";
+        } else {
+            resSpan.textContent = "❌";
+            resSpan.className = "result incorrect";
+            hintDiv.style.display = "block";
+            input.style.backgroundColor = "#fef9e7";
+        }
+    }
+
+    function checkAll() {
+        let correctCount = 0;
+        questions.forEach((item, index) => {
+            checkOne(index);
+            const userVal = normalize(document.getElementById(`ans-${index}`).value);
+            if (item.a.some(ans => normalize(ans) === userVal)) correctCount++;
+        });
+        const scoreArea = document.getElementById("score-area");
+        scoreArea.textContent = `正解数: ${correctCount} / ${questions.length}`;
+        if(correctCount === questions.length) {
+             scoreArea.innerHTML += "<br><span style='color:#e67e22'>🎉 Perfect! 素晴らしい！</span>";
+        }
+    }
+
+    window.onload = initQuiz;
+</script>
+
+</body>
+
+</html>
