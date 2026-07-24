@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>古生物科学 分類学 知識チェック 20問</title>
+<style>
+    :root { --ink:#243832; --muted:#60746f; --green:#2d7a69; --pale:#eaf5f0; --line:#cfdfd9; --paper:#fff; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:#f3f8f5; font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; line-height:1.7; }
+    header { padding:25px 18px; color:#fff; background:linear-gradient(120deg,#24504a,#34806f); } .header-inner, main { max-width:850px; margin:auto; }
+    h1 { margin:0; font-size:clamp(1.35rem,4vw,2rem); } header p { margin:5px 0 0; color:#edf8f4; } .back { display:inline-block; margin-top:12px; color:#fff; font-weight:bold; text-decoration:none; }
+    main { padding:20px 14px 42px; } .note { margin:0 0 18px; padding:13px 16px; background:var(--pale); border-left:5px solid var(--green); border-radius:8px; color:#31564e; }
+    .question { margin:0 0 14px; padding:18px 20px; background:var(--paper); border:1px solid var(--line); border-radius:12px; box-shadow:0 4px 14px #1b493b10; }
+    .number { display:inline-grid; place-items:center; width:28px; height:28px; margin-right:8px; border-radius:50%; color:#fff; background:var(--green); font-size:.85rem; font-weight:bold; } h2 { display:inline; margin:0; font-size:1.05rem; } .question p { margin:10px 0 0; }
+    details { margin-top:12px; padding-top:10px; border-top:1px solid var(--line); } summary { color:var(--green); cursor:pointer; font-weight:bold; } .answer { margin:9px 0 0; padding:11px 13px; background:#f7fbf9; border-radius:8px; }
+    .footer { margin-top:25px; text-align:center; color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+<header><div class="header-inner"><h1>古生物科学　分類学<br>知識チェック 20問</h1><p>答えを口頭または紙に書いてから、解答を開いて確認しましょう。</p><a class="back" href="index.html">← 古生物科学メニューへ戻る</a></div></header>
+<main>
+    <p class="note">範囲：伝統的分類学・分岐分類学・進化分類学・数量分類学、形質極性、単系統群、最節約法。</p>
+    <section id="questions"></section>
+    <p class="footer">20問すべてを自力で説明できれば、このノートの主要事項は押さえられています。</p>
+</main>
+<script>
+const questions = [
+  ['分類学の主な目的は何か。','生物間の系統関係を理解すること。'],
+  ['「形質」と「形質状態」の違いを説明しなさい。','形質は観察対象となる項目、形質状態はその項目がとる具体的な状態である。'],
+  ['taxon と taxa の関係を答えなさい。','taxonは分類群の単数形、taxaは複数形。'],
+  ['伝統的分類学では、主に何を用いて分類群を認識するか。','主に形態形質と、その形質状態の組み合わせを用いる。'],
+  ['種を認識する際に、形態以外で考慮する要素を二つ答えなさい。','分布と生殖的隔離。'],
+  ['環境によって変化しやすい形質を分類に用いにくい理由は何か。','環境応答による違いであり、遺伝的・系統的な差を反映しない場合があるため。'],
+  ['伝統的分類学が主観的になりやすい理由を二つ答えなさい。','個体変異や収斂進化のため形態的類似を判断しにくく、形質の重み付けにも主観が入るため。'],
+  ['分岐分類学（cladistics）とはどのような分類か。','共有派生形質に基づいて系統関係を推定し、単系統群を認識する分類法。'],
+  ['原始形質と派生形質をそれぞれ説明しなさい。','原始形質は祖先から受け継いだ状態、派生形質はその祖先状態から変化して生じた状態。'],
+  ['原始・派生の形質極性を判断する方法を三つ答えなさい。','化石記録、個体発生、外群比較。'],
+  ['外群比較では、外群と内群に共通する形質状態を原始・派生のどちらと判断するか。','原始形質と判断する。'],
+  ['共有派生形質とは何か。また系統樹作成でなぜ重要か。','複数の分類群に共通する派生形質。共通祖先を共有するクレードの認識に使うため重要である。'],
+  ['固有派生形質とは何か。','ある一分類群だけに見られる派生形質。'],
+  ['単系統群を定義しなさい。','ある祖先と、その祖先のすべての子孫を含む群。'],
+  ['側系統群を定義しなさい。','単系統群から一部の子孫を除いた群。'],
+  ['多系統群を定義しなさい。','複数の異なる系統に由来する分類群を、共通祖先を含めずに寄せ集めた群。'],
+  ['進化分類学における「グレード」とは何か。','一般的な形態的類似性に基づく、進化段階としてのまとまり。'],
+  ['数量分類学の特徴を二つ、問題点を一つ答えなさい。','数値データを用いること、全形質を等しく扱いクラスター分析を行うこと。問題点は真の系統関係を反映しない場合があること。'],
+  ['二状態形質とは何か。例を一つ挙げなさい。','二つの状態だけをもつ形質。例：花がある／ない。'],
+  ['最節約法とはどのような基準で系統樹を選ぶ方法か。','進化的形質変化の総数が最も少ない系統樹を選ぶ方法。']
+];
+document.getElementById('questions').innerHTML = questions.map((item, i) => `<article class="question"><span class="number">${i + 1}</span><h2>${item[0]}</h2><details><summary>解答を表示</summary><p class="answer">${item[1]}</p></details></article>`).join('');
+</script>
+</body>
+</html>

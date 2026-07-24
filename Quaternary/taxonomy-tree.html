@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>古生物科学 分類学 系統樹・樹形図作図演習 9問</title>
+<style>
+    :root { --ink:#243832; --muted:#60746f; --green:#2d7a69; --pale:#eaf5f0; --line:#cfdfd9; --paper:#fff; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:#f3f8f5; font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; line-height:1.7; }
+    header { padding:25px 18px; color:#fff; background:linear-gradient(120deg,#24504a,#34806f); } .header-inner, main { max-width:920px; margin:auto; }
+    h1 { margin:0; font-size:clamp(1.35rem,4vw,2rem); } header p { margin:5px 0 0; color:#edf8f4; } .back { display:inline-block; margin-top:12px; color:#fff; font-weight:bold; text-decoration:none; }
+    main { padding:20px 14px 42px; } .note { margin:0 0 18px; padding:13px 16px; background:var(--pale); border-left:5px solid var(--green); border-radius:8px; color:#31564e; }
+    .question { margin:0 0 18px; padding:clamp(18px,4vw,28px); background:var(--paper); border:1px solid var(--line); border-radius:13px; box-shadow:0 4px 14px #1b493b10; }
+    h2 { margin:0 0 10px; color:#24504a; font-size:1.2rem; } .question p { margin:8px 0; } .tag { display:inline-block; padding:2px 9px; color:#176252; background:var(--pale); border-radius:999px; font-size:.82rem; font-weight:bold; }
+    .matrix-wrap { overflow-x:auto; margin:13px 0; } table { width:100%; min-width:430px; border-collapse:collapse; text-align:center; } th,td { padding:7px 10px; border:1px solid var(--line); } th { background:#eef6f2; } td:first-child,th:first-child { text-align:left; font-weight:bold; }
+    details { margin-top:15px; border-top:1px solid var(--line); padding-top:12px; } summary { color:var(--green); cursor:pointer; font-weight:bold; } .answer { margin:10px 0 0; padding:12px 14px; background:#f7fbf9; border-radius:8px; }
+    code { padding:2px 5px; background:#e7f0ec; border-radius:4px; font-family:Consolas,monospace; color:#184a3f; white-space:normal; } .footer { text-align:center; color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+<header><div class="header-inner"><h1>古生物科学　分類学<br>系統樹・樹形図作図演習 9問</h1><p>まず紙に樹を書き、必要になってから解答を開いてください。</p><a class="back" href="index.html">← 古生物科学メニューへ戻る</a></div></header>
+<main>
+    <p class="note">特記がない限り、外群は左側、<strong>0／a＝原始形質、1／b＝派生形質</strong>として根付き系統樹を書きます。枝の回転で同じトポロジーになる樹形は正解です。</p>
+    <section id="questions"></section>
+    <p class="footer">最節約法では、形質変化の合計回数が最小になる樹を選びます。</p>
+</main>
+<script>
+const questions = [
+  {title:'問題1　基本的な形質マトリクス', prompt:'次の形質マトリクスから最節約の根付き系統樹を書き、各形質が変化した枝を示しなさい。', heads:['分類群','形質1','形質2','形質3','形質4'], rows:[['外群 O','0','0','0','0'],['A','1','1','1','1'],['B','1','1','1','0'],['C','1','1','0','0'],['D','1','0','0','0']], answer:'樹形は <code>(O,(D,(C,(B,A))))</code>。形質1は内群、形質2はA・B・C、形質3はA・B、形質4はAの枝で変化する。'},
+  {title:'問題2　未解決の分岐', prompt:'確実に認められるクレードを示す系統樹を書きなさい。支持されない分岐は多分岐としてよい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5'], rows:[['外群 O','0','0','0','0','0'],['A','1','1','0','1','0'],['B','1','1','0','0','0'],['C','1','0','0','0','0'],['D','1','0','1','0','1'],['E','1','0','1','0','0']], answer:'A・B群とD・E群が確実なクレード。Cと両クレードの関係は決められないので、<code>(O,(C,(A,B),(D,E)))</code> のような多分岐でよい。'},
+  {title:'問題3　二つの姉妹群', prompt:'次の形質マトリクスから最節約樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','0','0','0'],['A','1','1','0'],['B','1','1','0'],['C','1','0','1'],['D','1','0','1']], answer:'形質2がA・B、形質3がC・Dの共有派生形質なので、<code>(O,((A,B),(C,D)))</code>。'},
+  {title:'問題4　最節約法での同点', prompt:'次のデータについて、候補樹 <code>((A,B),(C,D))</code> と <code>((A,C),(B,D))</code> のうち、最節約法で優れるものを選びなさい。選べない場合は理由も述べなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','0','0','0'],['A','1','1','1'],['B','1','1','0'],['C','1','0','1'],['D','1','0','0']], answer:'一意には選べない。前者では形質2が1変化、形質3が2変化、後者では形質2が2変化、形質3が1変化となり、どちらも合計4変化で同点になる。'},
+  {title:'問題5　化石記録による極性判断', prompt:'各形質について、化石記録からaが古くbが新しい状態と分かった。形質極性を決め、系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','a','a','a'],['A','b','a','a'],['B','b','b','a'],['C','b','b','b'],['D','b','b','b']], answer:'aを原始形質、bを派生形質とする。樹形は <code>(O,(A,(B,(C,D))))</code>。'},
+  {title:'問題6　個体発生による極性判断', prompt:'各形質について、幼体のaが原始形質、成体のbが派生形質と判断された。系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','a','a','a'],['M','b','a','a'],['N','b','b','a'],['P','b','b','b'],['Q','b','b','b']], answer:'樹形は <code>(O,(M,(N,(P,Q))))</code>。P・Qは形質3の共有派生形質でまとまる。'},
+  {title:'問題7　外群比較による極性判断', prompt:'外群Oの状態を原始形質とみなし、内群A〜Dの系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3','形質4'], rows:[['外群 O','a','a','a','a'],['A','b','a','a','a'],['B','b','b','a','a'],['C','b','b','b','a'],['D','b','b','b','b']], answer:'外群と共通するaを原始形質、内群だけに現れるbを派生形質とみなす。樹形は <code>(O,(A,(B,(C,D))))</code>。'},
+  {title:'問題8　系統樹から分類群を判定する', prompt:'系統樹 <code>(O,(D,(C,(A,B))))</code> を紙に描き、次の群を単系統群・側系統群・多系統群に分類しなさい。<br>群Ⅰ：A・B・C・D　　群Ⅱ：B・C・D　　群Ⅲ：A・D', heads:null, rows:null, answer:'群Ⅰは単系統群、群Ⅱは側系統群、群Ⅲは多系統群。群Ⅱは共通祖先からAという子孫を除いており、群Ⅲは離れた系統を寄せ集めている。'},
+  {title:'問題9　数量分類による樹形図', prompt:'次の6つの二状態形質をすべて等しい重みで扱う。異なる形質状態の数を分類群間の距離とし、最も近い群から結合する。群を結合した後の距離は平均値で求め、クラスター分析による樹形図（デンドログラム）を書きなさい。最後に、この樹形図がそのまま系統樹といえない理由も述べなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6'], rows:[['A','1','1','0','0','0','0'],['B','1','1','0','0','1','0'],['C','0','0','1','1','0','0'],['D','0','0','1','1','0','1']], answer:'A−B間とC−D間の距離はいずれも1なので、最初にA・B群とC・D群をつくる。二つの群の平均距離は <code>(4+5+5+6)÷4=5</code>。したがって樹形図のトポロジーは <code>((A,B),(C,D))</code>。ただしこれは全形質を等しく距離化した数量分類の樹形図であり、原始形質・派生形質や共通祖先を考慮しないため、そのまま真の系統樹とはいえない。'}
+];
+function tableHtml(q) {
+  if (!q.heads) return '';
+  return `<div class="matrix-wrap"><table><thead><tr>${q.heads.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${q.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+document.getElementById('questions').innerHTML = questions.map((q, i) => `<article class="question"><span class="tag">作図 ${i + 1} / ${questions.length}</span><h2>${q.title}</h2><p>${q.prompt}</p>${tableHtml(q)}<details><summary>解答・考え方を表示</summary><div class="answer">${q.answer}</div></details></article>`).join('');
+</script>
+</body>
+</html>
