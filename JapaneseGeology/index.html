@@ -3,264 +3,50 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel ="apple-touch-icon" href="地球学.png">
-<link rel ="icon" href="地球学.png">
-<title>地球学コース試験対策まとめ</title>
+<title>古生物科学 分類学 系統樹・樹形図作図演習 15問</title>
 <style>
-    :root { --primary: #2c3e50; --accent: #3498db; --bg: #f0f2f5; }
-    body { font-family: "Helvetica Neue", Arial, sans-serif; background: var(--bg); color: #333; padding: 20px; text-align: center; margin: 0; }
-    
-    header { margin-bottom: 30px; margin-top: 20px; }
-    h1 { color: var(--primary); margin: 0; font-size: 1.8rem; }
-    p { color: #7f8c8d; margin-top: 10px; }
-
-    /* お知らせ欄のスタイル */
-    .news-box {
-        max-width: 600px;
-        margin: 0 auto 30px auto;
-        background: #fff;
-        border-radius: 12px;
-        padding: 15px 20px;
-        text-align: left;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        border: 1px solid #e1e4e8;
-    }
-    .news-box h3 {
-        margin: 0 0 10px 0;
-        font-size: 1em;
-        color: var(--primary);
-        border-bottom: 1px solid #f0f2f5;
-        padding-bottom: 5px;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-    }
-    .news-box ul {
-        margin: 0;
-        padding-left: 0;
-        list-style: none;
-        font-size: 0.9em;
-    }
-    .news-box li {
-        margin-bottom: 6px;
-        line-height: 1.4;
-    }
-    .news-box .date {
-        background-color: #f0f2f5;
-        color: #7f8c8d;
-        padding: 2px 6px;
-        border-radius: 4px;
-        margin-right: 8px;
-        font-size: 0.85em;
-        font-weight: bold;
-    }
-
-    .nav-list { max-width: 600px; margin: 0 auto; display: grid; gap: 20px; }
-    
-    /* リンクカードのスタイル */
-    .subject-card { 
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 25px; background: white; text-decoration: none; color: #333; 
-        border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); 
-        transition: transform 0.2s, box-shadow 0.2s;
-        border-left: 6px solid #bdc3c7; /* デフォルトはグレー（準備中） */
-    }
-
-    /* 公開中のスタイル */
-    .subject-card.active { 
-        border-left-color: var(--accent); 
-        cursor: pointer;
-    }
-    .subject-card.active:hover { 
-        transform: translateY(-3px); 
-        box-shadow: 0 8px 15px rgba(0,0,0,0.1); 
-    }
-
-    /* 準備中のスタイル */
-    .subject-card.disabled {
-        opacity: 0.7;
-        cursor: not-allowed;
-        background-color: #f9f9f9;
-    }
-
-    .info { text-align: left; display: flex; align-items: center; }
-    .icon { margin-right: 15px; font-size: 1.8em; display: flex; align-items: center; } /* SVG用に調整 */
-    .title { font-weight: bold; font-size: 1.2em; display: block; color: var(--primary); }
-    .sub { font-size: 0.85em; color: #95a5a6; }
-
-    .status-badge { 
-        font-size: 0.8em; padding: 5px 12px; border-radius: 15px; 
-        background: #eee; color: #7f8c8d; font-weight: bold;
-        white-space: nowrap;
-    }
-    .active .status-badge {
-        background: #e1f5fe; color: var(--accent);
-    }
-
-    footer { margin-top: 50px; color: #bdc3c7; font-size: 0.8rem; }
+    :root { --ink:#243832; --muted:#60746f; --green:#2d7a69; --pale:#eaf5f0; --line:#cfdfd9; --paper:#fff; }
+    * { box-sizing:border-box; } body { margin:0; color:var(--ink); background:#f3f8f5; font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; line-height:1.7; }
+    header { padding:25px 18px; color:#fff; background:linear-gradient(120deg,#24504a,#34806f); } .header-inner, main { max-width:920px; margin:auto; }
+    h1 { margin:0; font-size:clamp(1.35rem,4vw,2rem); } header p { margin:5px 0 0; color:#edf8f4; } .back { display:inline-block; margin-top:12px; color:#fff; font-weight:bold; text-decoration:none; }
+    main { padding:20px 14px 42px; } .note { margin:0 0 18px; padding:13px 16px; background:var(--pale); border-left:5px solid var(--green); border-radius:8px; color:#31564e; }
+    .question { margin:0 0 18px; padding:clamp(18px,4vw,28px); background:var(--paper); border:1px solid var(--line); border-radius:13px; box-shadow:0 4px 14px #1b493b10; }
+    h2 { margin:0 0 10px; color:#24504a; font-size:1.2rem; } .question p { margin:8px 0; } .tag { display:inline-block; padding:2px 9px; color:#176252; background:var(--pale); border-radius:999px; font-size:.82rem; font-weight:bold; }
+    .matrix-wrap { overflow-x:auto; margin:13px 0; } table { width:100%; min-width:430px; border-collapse:collapse; text-align:center; } th,td { padding:7px 10px; border:1px solid var(--line); } th { background:#eef6f2; } td:first-child,th:first-child { text-align:left; font-weight:bold; }
+    details { margin-top:15px; border-top:1px solid var(--line); padding-top:12px; } summary { color:var(--green); cursor:pointer; font-weight:bold; } .answer { margin:10px 0 0; padding:12px 14px; background:#f7fbf9; border-radius:8px; }
+    code { padding:2px 5px; background:#e7f0ec; border-radius:4px; font-family:Consolas,monospace; color:#184a3f; white-space:normal; } .footer { text-align:center; color:var(--muted); font-size:.85rem; }
 </style>
 </head>
 <body>
-
-    <header>
-        <h1>🌍 地球学コース<br>試験対策ポータル</h1>
-        <p>各分野のドリル・過去問・単語帳</p>
-    </header>
-
-    <div class="news-box">
-        <h3>🔔 更新情報</h3>
-        <ul>
-            <li><span class="date">07/25</span> 古生物科学の分類学作図演習を、難問6題追加で15問にしました</li>
-            <li><span class="date">07/21</span> 日本地質の基本一問一答100問・難問50問を追加しました</li>
-            <li><span class="date">07/21</span> 構造地質学の一問一答111題・剪断センス問題集12題を追加しました</li>
-            <li><span class="date">07/21</span> 古生物科学の5択クイズ100問と難問チャレンジ50問を追加しました</li>
-            <li><span class="date">07/21</span> 堆積学に難問チャレンジ50問を追加しました</li>
-            <li><span class="date">07/21</span> 堆積学の5択クイズ100問を追加しました（第10回を除外）</li>
-            <li><span class="date">01/25</span> 科学英語の過去問ページを作りました</li>
-            <li><span class="date">01/25</span> 科学英語の日本語訳問題と単語確認用ページを追加しました</li>
-            <li><span class="date">01/22</span> アプリアイコンを設定しました</li>
-        </ul>
-    </div>
-
-    <div class="nav-list">
-        
-        <a href="Quaternary/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">
-                    <svg width="45" height="45" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle;">
-                        <circle cx="50" cy="50" r="48" fill="#ecf0f1" />
-                        <path d="M75,55 C78,45 70,35 60,30 C55,20 40,15 30,25 C20,30 20,45 20,55 L20,70 L30,70 L30,60 C35,60 45,60 50,65 L50,75 L60,75 L60,60 C65,60 70,60 75,55 Z" fill="#2c3e50"/>
-                        <path d="M30,50 Q20,60 15,45" stroke="#ecf0f1" stroke-width="3" fill="none"/>
-                        <path d="M40,50 Q30,65 25,45" stroke="#ecf0f1" stroke-width="3" fill="none"/>
-                    </svg>
-                </span>
-                <div>
-                    <span class="title">第四紀学25年度</span>
-                    <span class="sub">Quaternary Research</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-        
-
-        <a href="Sedimentology/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">🪨</span>
-                <div>
-                    <span class="title">堆積学</span>
-                    <span class="sub">Sedimentology</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-        
-        <a href="Paleontology/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">🦴</span>
-                <div>
-                    <span class="title">古生物科学</span>
-                    <span class="sub">Paleontology</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-
-        <a href="JapaneseGeology/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">🗾</span>
-                <div>
-                    <span class="title">日本地質</span>
-                    <span class="sub">Geology of Japan</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-
-        <a href="StructuralGeology/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">↔️</span>
-                <div>
-                    <span class="title">構造地質学</span>
-                    <span class="sub">Structural Geology</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-
-        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
-            <div class="info">
-                <span class="icon">🦖</span>
-                <div>
-                    <span class="title">地球史学25年度</span>
-                    <span class="sub">Historical Geology</span>
-                </div>
-            </div>
-            <span class="status-badge">準備中</span>
-        </a>
-
-        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
-            <div class="info">
-                <span class="icon">🌏</span>
-                <div>
-                    <span class="title">地学概論24年度</span>
-                    <span class="sub">Intro to Earth Science</span>
-                </div>
-            </div>
-            <span class="status-badge">準備中</span>
-        </a>
-
-        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()" >
-            <div class="info">
-                <span class="icon">💎</span>
-                <div>
-                    <span class="title">鉱物学25年度</span>
-                    <span class="sub">Mineralogy</span>
-                </div>
-            </div>
-            <span class="status-badge">準備中</span>
-        </a>
-
-        <a href="javascript:void(0)" class="subject-card disabled" onclick="showMsg()">
-            <div class="info">
-                <span class="icon">🌋</span>
-                <div>
-                    <span class="title">岩石学25年度</span>
-                    <span class="sub">Petrology</span>
-                </div>
-            </div>
-            <span class="status-badge">準備中</span>
-        </a>
-
-        <a href="ScientificEnglish/index.html" class="subject-card active">
-            <div class="info">
-                <span class="icon">🇬🇧</span>
-                <div>
-                    <span class="title">科学英語25年度</span>
-                    <span class="sub">Scientific English</span>
-                </div>
-            </div>
-            <span class="status-badge">公開中 ▶</span>
-        </a>
-    </div>
-
-    <footer>
-        © Earth Science Study Portal
-    </footer>
-
-    <script>
-        // 準備中の項目をクリックした時の動作
-        function showMsg() {
-            alert("この科目は現在準備中です。\n公開までしばらくお待ちください！");
-        }
-    </script>
+<header><div class="header-inner"><h1>古生物科学　分類学<br>系統樹・樹形図作図演習 15問</h1><p>後半の難問は形質8〜9個を使います。まず紙に樹を書き、必要になってから解答を開いてください。</p><a class="back" href="index.html">← 古生物科学メニューへ戻る</a></div></header>
+<main>
+    <p class="note">特記がない限り、外群は左側、<strong>0／a＝原始形質、1／b＝派生形質</strong>として根付き系統樹を書きます。枝の回転で同じトポロジーになる樹形は正解です。</p>
+    <section id="questions"></section>
+    <p class="footer">最節約法では、形質変化の合計回数が最小になる樹を選びます。</p>
+</main>
+<script>
+const questions = [
+  {title:'問題1　基本的な形質マトリクス', prompt:'次の形質マトリクスから最節約の根付き系統樹を書き、各形質が変化した枝を示しなさい。', heads:['分類群','形質1','形質2','形質3','形質4'], rows:[['外群 O','0','0','0','0'],['A','1','1','1','1'],['B','1','1','1','0'],['C','1','1','0','0'],['D','1','0','0','0']], answer:'樹形は <code>(O,(D,(C,(B,A))))</code>。形質1は内群、形質2はA・B・C、形質3はA・B、形質4はAの枝で変化する。'},
+  {title:'問題2　未解決の分岐', prompt:'確実に認められるクレードを示す系統樹を書きなさい。支持されない分岐は多分岐としてよい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5'], rows:[['外群 O','0','0','0','0','0'],['A','1','1','0','1','0'],['B','1','1','0','0','0'],['C','1','0','0','0','0'],['D','1','0','1','0','1'],['E','1','0','1','0','0']], answer:'A・B群とD・E群が確実なクレード。Cと両クレードの関係は決められないので、<code>(O,(C,(A,B),(D,E)))</code> のような多分岐でよい。'},
+  {title:'問題3　二つの姉妹群', prompt:'次の形質マトリクスから最節約樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','0','0','0'],['A','1','1','0'],['B','1','1','0'],['C','1','0','1'],['D','1','0','1']], answer:'形質2がA・B、形質3がC・Dの共有派生形質なので、<code>(O,((A,B),(C,D)))</code>。'},
+  {title:'問題4　最節約法での同点', prompt:'次のデータについて、候補樹 <code>((A,B),(C,D))</code> と <code>((A,C),(B,D))</code> のうち、最節約法で優れるものを選びなさい。選べない場合は理由も述べなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','0','0','0'],['A','1','1','1'],['B','1','1','0'],['C','1','0','1'],['D','1','0','0']], answer:'一意には選べない。前者では形質2が1変化、形質3が2変化、後者では形質2が2変化、形質3が1変化となり、どちらも合計4変化で同点になる。'},
+  {title:'問題5　化石記録による極性判断', prompt:'各形質について、化石記録からaが古くbが新しい状態と分かった。形質極性を決め、系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','a','a','a'],['A','b','a','a'],['B','b','b','a'],['C','b','b','b'],['D','b','b','b']], answer:'aを原始形質、bを派生形質とする。樹形は <code>(O,(A,(B,(C,D))))</code>。'},
+  {title:'問題6　個体発生による極性判断', prompt:'各形質について、幼体のaが原始形質、成体のbが派生形質と判断された。系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3'], rows:[['外群 O','a','a','a'],['M','b','a','a'],['N','b','b','a'],['P','b','b','b'],['Q','b','b','b']], answer:'樹形は <code>(O,(M,(N,(P,Q))))</code>。P・Qは形質3の共有派生形質でまとまる。'},
+  {title:'問題7　外群比較による極性判断', prompt:'外群Oの状態を原始形質とみなし、内群A〜Dの系統樹を書きなさい。', heads:['分類群','形質1','形質2','形質3','形質4'], rows:[['外群 O','a','a','a','a'],['A','b','a','a','a'],['B','b','b','a','a'],['C','b','b','b','a'],['D','b','b','b','b']], answer:'外群と共通するaを原始形質、内群だけに現れるbを派生形質とみなす。樹形は <code>(O,(A,(B,(C,D))))</code>。'},
+  {title:'問題8　系統樹から分類群を判定する', prompt:'系統樹 <code>(O,(D,(C,(A,B))))</code> を紙に描き、次の群を単系統群・側系統群・多系統群に分類しなさい。<br>群Ⅰ：A・B・C・D　　群Ⅱ：B・C・D　　群Ⅲ：A・D', heads:null, rows:null, answer:'群Ⅰは単系統群、群Ⅱは側系統群、群Ⅲは多系統群。群Ⅱは共通祖先からAという子孫を除いており、群Ⅲは離れた系統を寄せ集めている。'},
+  {title:'問題9　数量分類による樹形図', prompt:'次の6つの二状態形質をすべて等しい重みで扱う。異なる形質状態の数を分類群間の距離とし、最も近い群から結合する。群を結合した後の距離は平均値で求め、クラスター分析による樹形図（デンドログラム）を書きなさい。最後に、この樹形図がそのまま系統樹といえない理由も述べなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6'], rows:[['A','1','1','0','0','0','0'],['B','1','1','0','0','1','0'],['C','0','0','1','1','0','0'],['D','0','0','1','1','0','1']], answer:'A−B間とC−D間の距離はいずれも1なので、最初にA・B群とC・D群をつくる。二つの群の平均距離は <code>(4+5+5+6)÷4=5</code>。したがって樹形図のトポロジーは <code>((A,B),(C,D))</code>。ただしこれは全形質を等しく距離化した数量分類の樹形図であり、原始形質・派生形質や共通祖先を考慮しないため、そのまま真の系統樹とはいえない。'},
+  {title:'難問1　共有派生形質とホモプラシー', prompt:'次の8形質マトリクスから最節約樹を書き、ホモプラシーを示す形質を答えなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8'], rows:[['外群 O','0','0','0','0','0','0','0','0'],['A','1','1','0','0','0','1','0','1'],['B','1','1','0','0','0','0','0','0'],['C','1','0','1','0','0','0','0','1'],['D','1','0','1','1','0','0','0','0'],['E','1','0','1','1','1','0','1','0'],['F','1','0','1','1','1','0','0','0']], answer:'樹形は <code>(O,((A,B),(C,(D,(E,F)))))</code>。形質8はAとCで独立に獲得されたホモプラシー。'},
+  {title:'難問2　追加問題1', prompt:'次の8形質マトリクスから最節約樹を書き、ホモプラシーを示す形質を答えなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8'], rows:[['外群 O','0','0','0','0','0','0','0','0'],['A','1','1','0','0','0','1','0','0'],['B','1','1','0','0','0','0','0','1'],['C','1','0','1','0','0','0','0','0'],['D','1','0','1','1','0','0','1','0'],['E','1','0','1','1','1','0','0','1'],['F','1','0','1','1','1','0','0','0']], answer:'樹形は <code>(O,((A,B),(C,(D,(E,F)))))</code>。形質8はBとEで独立に獲得されたホモプラシー。'},
+  {title:'難問3　追加問題2', prompt:'次の9形質マトリクスから最節約樹を書き、ホモプラシーを示す形質を答えなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8','形質9'], rows:[['外群 O','0','0','0','0','0','0','0','0','0'],['A','1','1','0','0','0','1','0','0','0'],['B','1','1','1','0','0','0','0','0','1'],['C','1','1','1','0','0','0','1','0','0'],['D','1','0','0','1','1','0','0','0','0'],['E','1','0','0','1','1','0','0','1','0'],['F','1','0','0','1','0','0','0','0','1']], answer:'樹形は <code>(O,((A,(B,C)),((D,E),F)))</code>。形質9はBとFで独立に生じたホモプラシー。'},
+  {title:'難問4　追加問題3', prompt:'次の9形質マトリクスから最節約樹を書き、共有派生形質とホモプラシーを区別しなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8','形質9'], rows:[['外群 O','0','0','0','0','0','0','0','0','0'],['A','1','1','1','1','1','1','0','0','0'],['B','1','1','1','1','1','0','0','0','1'],['C','1','1','1','1','0','0','1','0','0'],['D','1','1','1','0','0','0','0','0','1'],['E','1','1','0','0','0','0','0','1','0'],['F','1','0','0','0','0','0','0','0','0']], answer:'樹形は <code>(O,(F,(E,(D,(C,(A,B))))))</code>。形質1〜5は各段階の共有派生形質であり、形質9はBとDに別々に生じたホモプラシー。'},
+  {title:'難問5　追加問題4', prompt:'次の9形質マトリクスから最節約樹を書き、形質9をどのように解釈するか答えなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8','形質9'], rows:[['外群 O','0','0','0','0','0','0','0','0','0'],['A','1','1','0','0','0','0','0','0','1'],['B','1','1','0','0','0','0','1','0','0'],['C','1','0','1','0','0','0','0','0','0'],['D','1','0','1','1','0','0','0','1','0'],['E','1','0','1','1','1','0','0','0','1'],['F','1','0','1','1','1','1','0','0','0'],['G','1','0','1','1','1','1','0','0','0']], answer:'樹形は <code>(O,((A,B),(C,(D,(E,(F,G))))))</code>。形質9はAとEで独立に獲得されたホモプラシー。'},
+  {title:'難問6　追加問題5', prompt:'次の9形質マトリクスから最節約樹を書きなさい。形質7は、独立な獲得よりも派生後の逆転として解釈できるか考えなさい。', heads:['分類群','形質1','形質2','形質3','形質4','形質5','形質6','形質7','形質8','形質9'], rows:[['外群 O','0','0','0','0','0','0','0','0','0'],['A','1','1','0','0','1','0','1','0','0'],['B','1','1','0','0','0','0','1','1','0'],['C','1','0','1','0','0','0','1','1','0'],['D','1','0','1','1','0','0','0','0','1'],['E','1','0','1','1','0','1','1','0','0']], answer:'樹形は <code>(O,((A,B),(C,(D,E))))</code>。形質7は内群の基部で1が一度獲得され、Dで0へ逆転したと考えると2変化で説明できる。形質8はBとCに独立に獲得されたホモプラシー。'}
+];
+function tableHtml(q) {
+  if (!q.heads) return '';
+  return `<div class="matrix-wrap"><table><thead><tr>${q.heads.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${q.rows.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+document.getElementById('questions').innerHTML = questions.map((q, i) => `<article class="question"><span class="tag">作図 ${i + 1} / ${questions.length}</span><h2>${q.title}</h2><p>${q.prompt}</p>${tableHtml(q)}<details><summary>解答・考え方を表示</summary><div class="answer">${q.answer}</div></details></article>`).join('');
+</script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
