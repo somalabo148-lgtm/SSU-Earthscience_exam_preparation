@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>古生物科学 化石帯 図判定・境界演習 7問</title>
+<style>
+  :root { --ink:#26333c; --muted:#627078; --blue:#226d99; --band:#dceef8; --line:#9badb8; --paper:#fff; --good:#157347; --bad:#b52a36; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:#f2f6f8; color:var(--ink); font-family:"Helvetica Neue",Arial,"Yu Gothic",sans-serif; line-height:1.65; }
+  header { padding:25px 18px; color:#fff; background:linear-gradient(120deg,#235369,#347f9d); }
+  .header-inner,main { max-width:900px; margin:auto; }
+  h1 { margin:0; font-size:clamp(1.35rem,4vw,2rem); } header p { margin:5px 0 0; color:#e9f5fa; }
+  .back { display:inline-block; margin-top:12px; color:#fff; font-weight:bold; text-decoration:none; }
+  main { padding:20px 14px 42px; }
+  .guide { margin:0 0 18px; padding:13px 16px; border-left:5px solid var(--blue); border-radius:8px; background:#e7f3f8; color:#315464; }
+  .question { margin:0 0 18px; padding:clamp(18px,4vw,28px); background:var(--paper); border:1px solid #d8e2e7; border-radius:14px; box-shadow:0 4px 14px #1b384710; }
+  .tag { display:inline-block; padding:2px 9px; border-radius:999px; background:#e6f2f8; color:#1c648c; font-size:.82rem; font-weight:bold; }
+  h2 { margin:8px 0; color:#22536a; font-size:1.18rem; } .question p { margin:7px 0; }
+  .strat-wrap { display:flex; justify-content:center; margin:14px 0 18px; }
+  .strat { position:relative; width:min(100%,490px); height:270px; overflow:hidden; border-bottom:1px solid #c6d3da; background:linear-gradient(to bottom,#fcfeff,#f7fbfd); }
+  .time { position:absolute; right:20px; top:33px; height:188px; border-left:2px solid var(--ink); } .time::before { content:""; position:absolute; top:-8px; left:-5px; border-left:5px solid transparent; border-right:5px solid transparent; border-bottom:9px solid var(--ink); } .time-label { position:absolute; right:0; top:224px; font-size:.78rem; color:var(--muted); }
+  .section-label { position:absolute; bottom:5px; color:var(--muted); font-size:.78rem; }
+  .range { position:absolute; left:var(--x); bottom:var(--bottom); width:5px; height:var(--height); border-radius:4px; background:var(--blue); }
+  .range::before,.range::after { content:""; position:absolute; left:-5px; width:15px; border-top:2px solid var(--ink); } .range::before { top:0; transform:rotate(-35deg); transform-origin:left; } .range::after { bottom:0; transform:rotate(35deg); transform-origin:left; }
+  .taxon-label { position:absolute; left:calc(var(--x) - 4px); bottom:calc(var(--bottom) + var(--height) + 8px); color:var(--ink); font-size:.95rem; font-weight:bold; }
+  .band { position:absolute; left:55px; right:70px; bottom:var(--bottom); height:var(--height); background:var(--band); border-top:2px dashed #477990; border-bottom:2px dashed #477990; }
+  .band-label { position:absolute; left:63px; bottom:calc(var(--bottom) + var(--height) - 22px); color:#22536a; font-size:.76rem; font-weight:bold; }
+  .lineage { position:absolute; left:140px; bottom:32px; width:165px; height:205px; } .lineage .node { position:absolute; left:65px; width:35px; height:35px; display:grid; place-items:center; border:2px solid var(--blue); border-radius:50%; background:#fff; color:#164c6b; font-weight:bold; } .lineage .node:nth-child(1) { bottom:0; } .lineage .node:nth-child(2) { bottom:84px; } .lineage .node:nth-child(3) { bottom:168px; } .lineage .link { position:absolute; left:82px; width:2px; background:var(--blue); height:50px; } .lineage .link.one { bottom:34px; } .lineage .link.two { bottom:118px; }
+  .dots { position:absolute; left:145px; bottom:70px; width:150px; height:110px; display:grid; grid-template-columns:repeat(5,1fr); gap:9px; align-content:center; } .dot { width:13px; height:13px; border-radius:50%; background:var(--blue); justify-self:center; }
+  .sparse { position:absolute; left:214px; width:12px; height:12px; border-radius:50%; background:var(--blue); } .sparse.one { bottom:42px; } .sparse.two { bottom:58px; } .sparse.three { bottom:198px; } .sparse.four { bottom:218px; }
+  .choices { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:9px; margin-top:12px; }
+  .choice { padding:10px 12px; border:2px solid #cfdde3; border-radius:9px; background:#fff; color:var(--ink); cursor:pointer; font:inherit; text-align:left; }
+  .choice:hover:not(:disabled) { border-color:#5b9ab8; background:#f5fbfe; } .choice:disabled { cursor:default; } .choice.correct { border-color:var(--good); background:#eaf7ef; color:#0b6437; } .choice.incorrect { border-color:var(--bad); background:#fff0f1; color:#9d1d27; }
+  .feedback { min-height:1.65em; margin:12px 0 0; font-weight:bold; } .feedback.good { color:var(--good); } .feedback.bad { color:var(--bad); }
+  .explanation { display:none; margin-top:11px; padding:12px 14px; border-radius:8px; background:#f1f8fb; } .explanation.show { display:block; }
+  .summary { margin:20px 0 0; padding:16px; border-radius:10px; background:#e7f3f8; color:#234b5f; text-align:center; }
+  @media (max-width:480px) { .choices { grid-template-columns:1fr; } .strat { height:250px; } }
+</style>
+</head>
+<body>
+<header><div class="header-inner"><h1>古生物科学　化石帯 図判定・境界演習 7問</h1><p>化石の産出範囲と帯の境界から、化石帯の種類を判定します。</p><a class="back" href="index.html">← 古生物科学メニューへ戻る</a></div></header>
+<main>
+  <p class="guide">図は上ほど新しい地層です。淡青色の範囲が問題となる帯を示します。帯名を選んだ後、境界がどの産出イベントで決まるかを確認しましょう。</p>
+  <section id="questions"></section>
+  <p id="summary" class="summary">7問すべてに答えると、ここに結果が表示されます。</p>
+</main>
+<script>
+const choiceLabels = ['タクソン・レンジ帯','共存区間帯','間隔帯','系列帯','群集帯','多産帯'];
+const range = (x,bottom,height,label) => `<div class="range" style="--x:${x}px;--bottom:${bottom}px;--height:${height}px"></div><span class="taxon-label" style="--x:${x}px;--bottom:${bottom}px;--height:${height}px">${label}</span>`;
+const band = (bottom,height,label='') => `<div class="band" style="--bottom:${bottom}px;--height:${height}px"></div>${label ? `<span class="band-label" style="--bottom:${bottom}px;--height:${height}px">${label}</span>` : ''}`;
+const base = (content, caption) => `<div class="strat" role="img" aria-label="${caption}">${content}<div class="time"></div><span class="time-label">時間</span><span class="section-label" style="left:70px">層序断面</span></div>`;
+const figures = {
+  range: () => base(`${band(47,170)}${range(205,47,170,'a')}`, 'タクソンaの全産出範囲を示す図'),
+  concurrent: () => base(`${band(78,94)}${range(165,78,145,'a')}${range(255,35,137,'b')}`, 'タクソンaとbの産出範囲が重なる図'),
+  intervalFad: () => base(`${band(66,123)}${range(165,66,155,'a')}${range(265,189,60,'b')}`, 'タクソンaとbの産出下限を基準とする図'),
+  intervalLad: () => base(`${band(128,66)}${range(165,28,100,'a')}${range(265,28,166,'b')}`, 'タクソンaとbの産出上限を基準とする図'),
+  lineage: () => base(`${band(27,205)}<div class="lineage"><div class="node">a</div><div class="node">b</div><div class="node">c</div><div class="link one"></div><div class="link two"></div></div>`, 'aからb、cへ連続する進化系列の図'),
+  assemblage: () => base(`${band(56,137)}${range(125,42,170,'a')}${range(180,67,124,'b')}${range(235,50,162,'c')}${range(290,74,110,'d')}`, '複数のタクソンが特徴的な組合せをつくる図'),
+  abundance: () => base(`${band(72,95)}${range(220,32,190,'a')}<div class="dots">${'<span class="dot"></span>'.repeat(15)}</div><span class="sparse one"></span><span class="sparse two"></span><span class="sparse three"></span><span class="sparse four"></span>`, 'タクソンaが特定区間で著しく多産する図')
+};
+const questions = [
+  {type:'range', title:'問題1　単一タクソンの全産出範囲', prompt:'タクソンaの最初の産出から最後の産出までを帯としている。淡青色の範囲は何帯か。', answer:'タクソン・レンジ帯', why:'一つのタクソンaの産出下限から産出上限までで定義される帯です。'},
+  {type:'concurrent', title:'問題2　二タクソンの重複範囲', prompt:'タクソンaとbが同時に産出する範囲だけを帯としている。淡青色の範囲は何帯か。', answer:'共存区間帯', why:'指定された二タクソンの産出範囲が重なる部分で定義されます。'},
+  {type:'intervalFad', title:'問題3　二つの産出下限で定義される帯', prompt:'下限をタクソンaの産出下限、上限をタクソンbの産出下限という二つの生層序面で定めている。淡青色の範囲は何帯か。', answer:'間隔帯', why:'二つの指定生層序面の間で定義される間隔帯です。両タクソンの共存は必要ありません。'},
+  {type:'intervalLad', title:'問題4　二つの産出上限で定義される帯', prompt:'下限をタクソンaの産出上限、上限をタクソンbの産出上限としている。淡青色の範囲は何帯か。', answer:'間隔帯', why:'産出下限どうし、産出上限どうしなど、二つの生層序面を用いて定義する帯は間隔帯です。'},
+  {type:'lineage', title:'問題5　進化系列で定義される帯', prompt:'a → b → cという祖先―子孫関係にある進化系列の一部を帯としている。淡青色の範囲は何帯か。', answer:'系列帯', why:'進化系列の特定部分を用いて定義する帯を系列帯といいます。'},
+  {type:'assemblage', title:'問題6　特徴的な化石群集', prompt:'タクソンa・b・c・dの特徴的な組合せによって認識される。淡青色の範囲は何帯か。', answer:'群集帯', why:'複数タクソンの特徴的な組合せ、すなわち化石群集によって認識される帯です。'},
+  {type:'abundance', title:'問題7　特定タクソンの著しい多産', prompt:'タクソンaは帯の外にも産出するが、淡青色の範囲でだけ著しく個体数が多い。この範囲は何帯か。', answer:'多産帯', why:'特定タクソンが局所的・一時的に著しく多産する区間で定義される多産帯です。'}
+];
+let answered = 0, score = 0;
+function render() {
+  document.getElementById('questions').innerHTML = questions.map((q, i) => `<article class="question" data-index="${i}"><span class="tag">図判定 ${i + 1} / ${questions.length}</span><h2>${q.title}</h2><p>${q.prompt}</p><div class="strat-wrap">${figures[q.type]()}</div><div class="choices">${choiceLabels.map(choice => `<button class="choice" type="button" data-choice="${choice}">${choice}</button>`).join('')}</div><p class="feedback"></p><div class="explanation"><strong>解説：</strong>${q.why}</div></article>`).join('');
+  document.querySelectorAll('.choice').forEach(button => button.addEventListener('click', selectAnswer));
+}
+function selectAnswer(event) {
+  const button = event.currentTarget;
+  const card = button.closest('.question');
+  if (card.dataset.done) return;
+  card.dataset.done = 'true'; answered += 1;
+  const q = questions[Number(card.dataset.index)];
+  const correct = button.dataset.choice === q.answer;
+  if (correct) score += 1;
+  card.querySelectorAll('.choice').forEach(item => { item.disabled = true; if (item.dataset.choice === q.answer) item.classList.add('correct'); });
+  if (!correct) button.classList.add('incorrect');
+  const feedback = card.querySelector('.feedback');
+  feedback.textContent = correct ? '正解です。' : `不正解です。正解：${q.answer}`;
+  feedback.className = `feedback ${correct ? 'good' : 'bad'}`;
+  card.querySelector('.explanation').classList.add('show');
+  if (answered === questions.length) document.getElementById('summary').textContent = `結果：${questions.length}問中 ${score}問正解。境界の根拠もあわせて復習しましょう。`;
+}
+render();
+</script>
+</body>
+</html>
