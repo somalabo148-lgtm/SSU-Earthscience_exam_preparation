@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>構造地質学 剪断センス問題集 12題</title>
+<title>構造地質学 剪断センス問題集 15題</title>
 <style>
     :root { --primary:#2c3e50; --accent:#3d8478; --bg:#f2f6f4; --ok:#218c74; --review:#d66a4c; }
     * { box-sizing:border-box; }
@@ -32,12 +32,18 @@
 <body>
 <header>
   <a class="back-link-btn" href="index.html">← 一覧に戻る</a>
-  <h1>構造地質学 剪断センス問題集 12題</h1>
+  <h1>構造地質学 剪断センス問題集 15題</h1>
   <div class="status-bar" id="status">読込中...</div>
 </header>
 <main class="container" id="app"></main>
 <script>
 const originalQuestions = [{"category": "画像・応用", "prompt": "写真の矢印では上側が右、下側が左へ相対移動している。この剪断センスは何か。", "answer": "右横ずれ（デクストラル）剪断。", "image": "images/q98_shear_sense_outcrop.png", "sourceNumber": 98}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q101_user_shear_01.png", "sourceNumber": 101}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q102_user_shear_02.png", "sourceNumber": 102}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q103_user_shear_03.png", "sourceNumber": 103}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q104_user_shear_04.png", "sourceNumber": 104}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q105_user_shear_05.png", "sourceNumber": 105}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q106_user_shear_06.png", "sourceNumber": 106}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q107_user_shear_07.png", "sourceNumber": 107}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q108_user_shear_08.png", "sourceNumber": 108}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q109_user_shear_09.png", "sourceNumber": 109}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "左横ずれ。", "image": "images/q110_user_shear_10.png", "sourceNumber": 110}, {"category": "画像・剪断センス", "prompt": "次の写真に見られる剪断帯の剪断センスは何か。", "answer": "右横ずれ。", "image": "images/q111_user_shear_11.png", "sourceNumber": 111}];
+originalQuestions.push(
+  { category: '画像・剪断センス', prompt: '次の写真に見られる剪断帯の剪断センスは何か。', answer: '右横ずれ。', image: 'images/q112_user_shear_12.png', sourceNumber: 112 },
+  { category: '画像・剪断センス', prompt: '次の写真に見られる剪断帯の剪断センスは何か。', answer: '左横ずれ。', image: 'images/q113_user_shear_13.png', sourceNumber: 113 },
+  { category: '画像・剪断センス', prompt: '次の写真に見られる剪断帯の剪断センスは何か。', answer: '左横ずれ。', image: 'images/q114_user_shear_14.png', sourceNumber: 114 }
+);
+
 let currentQuiz = [];
 let currentIndex = 0;
 let knownCount = 0;
