@@ -130,6 +130,59 @@
     text-decoration: none;
   }
   .portal-back:hover { background: #0d4259; }
+  .search-panel {
+    position: fixed;
+    z-index: 10;
+    top: 14px;
+    right: 14px;
+    width: min(390px, calc(100vw - 32px));
+    padding: 10px;
+    border: 1px solid #c9d9e1;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, .96);
+    box-shadow: 0 3px 12px rgba(23, 37, 54, .16);
+  }
+  .search-label { display: block; margin: 0 0 5px; color: #135a7a; font-size: 12px; font-weight: 800; }
+  .search-controls { display: flex; gap: 6px; }
+  #note-search {
+    min-width: 0;
+    flex: 1;
+    padding: 9px 10px;
+    border: 1px solid #9cb5c2;
+    border-radius: 7px;
+    font: inherit;
+  }
+  #note-search:focus { outline: 3px solid rgba(98, 169, 196, .35); border-color: #135a7a; }
+  #search-clear {
+    padding: 0 11px;
+    border: 0;
+    border-radius: 7px;
+    color: #fff;
+    background: #5b6978;
+    font: inherit;
+    cursor: pointer;
+  }
+  #search-clear:hover { background: #344f61; }
+  #search-summary { margin-top: 6px; color: var(--muted); font-size: 12px; line-height: 1.35; }
+  #search-results { max-height: min(42vh, 330px); margin: 8px 0 0; padding: 0; overflow-y: auto; list-style: none; }
+  .search-result { margin: 5px 0; }
+  .search-result button {
+    display: block;
+    width: 100%;
+    padding: 8px 9px;
+    border: 1px solid #d5e1e7;
+    border-radius: 7px;
+    color: #213b4a;
+    background: #f7fafb;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  .search-result button:hover, .search-result button:focus { border-color: #62a9c4; background: #eaf5fa; }
+  .search-result-title { display: block; color: #135a7a; font-size: 12px; font-weight: 800; }
+  .search-result-snippet { display: block; margin-top: 2px; font-size: 12px; line-height: 1.35; }
+  mark.search-hit { padding: 0 .08em; border-radius: .16em; background: #ffe49a; color: inherit; }
+  body > section { scroll-margin-top: 74px; }
   @media (max-width: 680px) {
     body { padding: 8px; font-size: 10pt; }
     body > section, body > section.cover { padding: 26px 18px 32px; }
@@ -139,9 +192,10 @@
     .cover .scope { width: 100%; }
     .two-col { grid-template-columns: 1fr; }
     table { display: block; overflow-x: auto; white-space: nowrap; }
+    .search-panel { top: 54px; right: 8px; width: calc(100vw - 16px); }
   }
   @media print {
-    .portal-back { display: none; }
+    .portal-back, .search-panel { display: none; }
     body { padding: 0; background: var(--paper); }
     body > section { max-width: none; margin: 0; padding: 0; box-shadow: none; }
     body > section.cover { min-height: 0; height: 250mm; margin-top: 0; padding: 22mm 16mm; }
@@ -150,6 +204,15 @@
 </head>
 <body>
 <a class="portal-back" href="../index.html">← 学習ポータルに戻る</a>
+<aside class="search-panel" aria-label="講義ノート内検索">
+  <label class="search-label" for="note-search">ノート内検索 <span aria-hidden="true">⌘／Ctrl + K</span></label>
+  <div class="search-controls">
+    <input id="note-search" type="search" placeholder="例：Rayleigh数、潮汐、地磁気" autocomplete="off">
+    <button id="search-clear" type="button">クリア</button>
+  </div>
+  <div id="search-summary" aria-live="polite">キーワードを入力すると該当する章を表示します。</div>
+  <ul id="search-results" hidden></ul>
+</aside>
 
 <section class="cover">
   <div class="eyebrow">2026年度・全14回対応</div>
@@ -1293,6 +1356,129 @@
     2026年8月1日の監査で、同期回転時の熱収支と潮汐トルクの表現を訂正・明確化した。
   </div>
 </section>
+
+<script>
+(() => {
+  const input = document.getElementById('note-search');
+  const clearButton = document.getElementById('search-clear');
+  const summary = document.getElementById('search-summary');
+  const resultList = document.getElementById('search-results');
+  const sections = Array.from(document.querySelectorAll('body > section'));
+
+  function clearHighlights() {
+    document.querySelectorAll('mark.search-hit').forEach((mark) => {
+      mark.replaceWith(document.createTextNode(mark.textContent));
+    });
+    document.body.normalize();
+  }
+
+  function highlightMatches(query) {
+    const normalizedQuery = query.toLocaleLowerCase();
+    sections.forEach((section) => {
+      const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          const parent = node.parentElement;
+          if (!node.nodeValue.trim() || !parent || parent.closest('math, script, style, mark')) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+      textNodes.forEach((node) => {
+        const original = node.nodeValue;
+        const lower = original.toLocaleLowerCase();
+        let start = lower.indexOf(normalizedQuery);
+        if (start === -1) return;
+        const fragment = document.createDocumentFragment();
+        let cursor = 0;
+        while (start !== -1) {
+          if (start > cursor) fragment.append(document.createTextNode(original.slice(cursor, start)));
+          const mark = document.createElement('mark');
+          mark.className = 'search-hit';
+          mark.textContent = original.slice(start, start + query.length);
+          fragment.append(mark);
+          cursor = start + query.length;
+          start = lower.indexOf(normalizedQuery, cursor);
+        }
+        if (cursor < original.length) fragment.append(document.createTextNode(original.slice(cursor)));
+        node.replaceWith(fragment);
+      });
+    });
+  }
+
+  function compactText(text) {
+    return text.replace(/\s+/g, ' ').trim();
+  }
+
+  function renderResults(query) {
+    clearHighlights();
+    resultList.replaceChildren();
+    const trimmed = query.trim();
+    if (!trimmed) {
+      resultList.hidden = true;
+      summary.textContent = 'キーワードを入力すると該当する章を表示します。';
+      return;
+    }
+
+    const normalizedQuery = trimmed.toLocaleLowerCase();
+    const matches = sections.map((section) => {
+      const text = compactText(section.textContent);
+      const position = text.toLocaleLowerCase().indexOf(normalizedQuery);
+      return { section, text, position };
+    }).filter((item) => item.position !== -1);
+
+    highlightMatches(trimmed);
+    resultList.hidden = false;
+    if (!matches.length) {
+      summary.textContent = `「${trimmed}」は見つかりませんでした。`;
+      return;
+    }
+
+    summary.textContent = `「${trimmed}」が ${matches.length} 個の章・節に見つかりました。`;
+    matches.forEach(({ section, text, position }) => {
+      const heading = section.querySelector('h2, h1');
+      const title = heading ? compactText(heading.textContent) : '講義ノート';
+      const start = Math.max(0, position - 46);
+      const end = Math.min(text.length, position + trimmed.length + 68);
+      const snippet = `${start ? '…' : ''}${text.slice(start, end)}${end < text.length ? '…' : ''}`;
+      const item = document.createElement('li');
+      item.className = 'search-result';
+      const button = document.createElement('button');
+      button.type = 'button';
+      const titleLine = document.createElement('span');
+      titleLine.className = 'search-result-title';
+      titleLine.textContent = title;
+      const snippetLine = document.createElement('span');
+      snippetLine.className = 'search-result-snippet';
+      snippetLine.textContent = snippet;
+      button.append(titleLine, snippetLine);
+      button.addEventListener('click', () => {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      item.append(button);
+      resultList.append(item);
+    });
+  }
+
+  input.addEventListener('input', () => renderResults(input.value));
+  clearButton.addEventListener('click', () => {
+    input.value = '';
+    renderResults('');
+    input.focus();
+  });
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') clearButton.click();
+  });
+  document.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+      event.preventDefault();
+      input.focus();
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
